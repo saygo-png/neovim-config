@@ -1,0 +1,3 @@
+# My Neovim
+
+This is a personal configuration of neovim written in Nix, using the https://github.com/nix-community/nixvim[Nixvim] project.
