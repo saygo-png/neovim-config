@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -50,18 +51,18 @@
     };
   };
 
-  # extraPlugins = let
-  #   mkNvimplugin = name:
-  #     pkgs.vimUtils.buildVimPlugin {
-  #       inherit name;
-  #       src = builtins.getAttr ("nvim-plugin-" + name) inputs;
-  #     };
-  # in
-  #   [pkgs.vimPlugins.vim-pencil]
-  #   ++ map mkNvimplugin [
-  #     "cutlass"
-  #     "faster"
-  #   ];
+  extraPlugins = let
+    mkNvimplugin = name:
+      pkgs.vimUtils.buildVimPlugin {
+        inherit name;
+        src = builtins.getAttr ("nvim-plugin-" + name) inputs;
+      };
+  in
+    [pkgs.vimPlugins.vim-pencil]
+    ++ map mkNvimplugin [
+      "cutlass"
+      "faster"
+    ];
 
   highlightOverride = {
     noCursor.blend = 100;
@@ -419,29 +420,29 @@
       -- }}}
 
       -- Cutlass (Delete copy registers) {{{
-      -- require("cutlass").setup({
-      --   override_del = true,
-      --   exclude = { "ns", "nS", "nx", "nX", "nxx", "nX", "vx", "vX", "xx", "xX" }, -- Motion plugins rebind this
-      -- })
+      require("cutlass").setup({
+        override_del = true,
+        exclude = { "ns", "nS", "nx", "nX", "nxx", "nX", "vx", "vX", "xx", "xX" }, -- Motion plugins rebind this
+      })
       -- }}}
 
       -- Faster.nvim (Speed up big files) {{{
-      -- require("faster").setup({
-      --   behaviours = {
-      --     bigfile = {
-      --       on = true,
-      --       features_disabled = {
-      --         "illuminate", "matchparen", "lsp", "treesitter",
-      --         "indent_blankline", "vimopts", "syntax", "filetype"
-      --       },
-      --       -- Files larger than `filesize` are considered big files. Value is in MB.
-      --       filesize = 0.3,
-      --       -- Autocmd pattern that controls on which files behaviour will be applied.
-      --       -- `*` means any file.
-      --       pattern = "*",
-      --     }
-      --   }
-      -- })
+      require("faster").setup({
+        behaviours = {
+          bigfile = {
+            on = true,
+            features_disabled = {
+              "illuminate", "matchparen", "lsp", "treesitter",
+              "indent_blankline", "vimopts", "syntax", "filetype"
+            },
+            -- Files larger than `filesize` are considered big files. Value is in MB.
+            filesize = 0.3,
+            -- Autocmd pattern that controls on which files behaviour will be applied.
+            -- `*` means any file.
+            pattern = "*",
+          }
+        }
+      })
       --- }}}
 
       -- Gitsigns {{{
