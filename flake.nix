@@ -1,6 +1,12 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,13 +30,21 @@
 
   outputs = {
     nixvim,
+    systems,
     nixpkgs,
     ...
   } @ inputs: let
-    forEachSystem = function:
-      nixpkgs.lib.genAttrs ["x86_64-linux"] (system: function nixpkgs.legacyPackages.${system});
+    inherit (nixpkgs) lib;
+    eachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+    pkgsFor = lib.genAttrs (import systems) (system:
+      import nixpkgs {
+        inherit system;
+      });
+
+    treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
-    packages = forEachSystem (pkgs: let
+    formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+    packages = eachSystem (pkgs: let
       nixvimModule = {
         inherit pkgs;
         module = import ./config;

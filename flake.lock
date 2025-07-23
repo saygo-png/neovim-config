@@ -183,7 +183,9 @@
         "nixvim": "nixvim",
         "nvim-plugin-cutlass": "nvim-plugin-cutlass",
         "nvim-plugin-faster": "nvim-plugin-faster",
-        "nvim-plugin-telescope-git-file-history": "nvim-plugin-telescope-git-file-history"
+        "nvim-plugin-telescope-git-file-history": "nvim-plugin-telescope-git-file-history",
+        "systems": "systems_3",
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "systems": {
@@ -213,6 +215,40 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "id": "systems",
+        "type": "indirect"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753006367,
+        "narHash": "sha256-tzbhc4XttkyEhswByk5R38l+ztN9UDbnj0cTcP6Hp9A=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "421b56313c65a0815a52b424777f55acf0b56ddf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     }
