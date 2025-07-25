@@ -7,6 +7,7 @@ _: {
     "@punctuation.special".link = "";
     "@punctuation.delimiter".link = "";
     "DiagnosticDeprecated".link = "GruvboxAquaUnderline";
+    "DiagnosticUnderlineInfo".underline = false;
   };
 
   colorschemes.gruvbox = {
