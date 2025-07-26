@@ -1,5 +1,53 @@
 _: {
   lsp = {
+    keymaps = [
+      {
+        key = "<Leader>e";
+        action = "<cmd>lua vim.diagnostic.open_float()<CR>";
+        options.desc = "Diagnostic";
+      }
+      {
+        key = "gD";
+        lspBufAction = "declaration";
+        options.desc = "";
+      }
+      {
+        key = "K";
+        action = "<cmd>Lspsaga hover_doc<CR>";
+        options.desc = "Hover";
+      }
+      {
+        key = "<leader>a";
+        action = "<cmd>Lspsaga code_action<CR>";
+        options.desc = "Code [a]ctions";
+      }
+      {
+        key = "gd";
+        action.__raw = "require('telescope.builtin').lsp_definitions";
+        options.desc = "";
+      }
+      {
+        key = "gt";
+        action.__raw = "require('telescope.builtin').lsp_type_definitions";
+        options.desc = "";
+      }
+      {
+        key = "gr";
+        action.__raw = "require('telescope.builtin').lsp_references";
+        options.desc = "";
+      }
+      {
+        key = "gI";
+        action.__raw = "require('telescope.builtin').lsp_implementations";
+        options.desc = "";
+      }
+      {
+        key = "<leader>s";
+        action.__raw = "require('telescope.builtin').lsp_document_symbols";
+        options.desc = "";
+      }
+    ];
+
     servers = {
       "*".settings = {
         root_markers = [".git"];
@@ -77,24 +125,6 @@ _: {
       lightbulb.enable = false;
     };
   };
-
-  keymaps = [
-    {
-      key = "<Leader>e";
-      action = "<cmd>lua vim.diagnostic.open_float()<CR>";
-      options.desc = "Diagnostic";
-    }
-    {
-      key = "K";
-      action = "<cmd>Lspsaga hover_doc<CR>";
-      options.desc = "Hover";
-    }
-    {
-      key = "<leader>a";
-      action = "<cmd>Lspsaga code_action<CR>";
-      options.desc = "Code [a]ctions";
-    }
-  ];
 
   diagnostic.settings = {
     signs = true;
