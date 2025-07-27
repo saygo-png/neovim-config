@@ -15,10 +15,7 @@
   };
 
   highlightOverride = {
-    "@constructor".link = "";
     "@punctuation.bracket".link = "";
-    "@punctuation.special".link = "";
-    "@punctuation.delimiter".link = "";
     "@variable.parameter.haskell".link = "";
   };
 }

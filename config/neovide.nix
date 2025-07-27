@@ -4,14 +4,14 @@
     # lua
     ''
       if vim.g.neovide then
-        vim.o.guifont = 'Courier Prime:h13:#e-antialias:#h-slight'
+        -- vim.o.guifont = 'Courier Prime:h13:#e-antialias:#h-slight'
         vim.api.nvim_set_hl(0, 'Normal', { bg = "#282828" })
       end
     '';
 
   globals = {
     neovide_refresh_rate = 144;
-    neovide_opacity = 0.5;
+    neovide_normal_opacity = 0.5;
     neovide_floating_shadow = false;
     neovide_cursor_smooth_blink = true;
     neovide_floating_blur_amount_x = 20.0;
