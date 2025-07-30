@@ -1,11 +1,10 @@
 {lib, ...}: {
-  extraConfigLua =
-    lib.mkBefore
+  extraConfigLuaPost =
     # lua
     ''
       if vim.g.neovide then
         -- vim.o.guifont = 'Courier Prime:h13:#e-antialias:#h-slight'
-        vim.api.nvim_set_hl(0, 'Normal', { bg = "#282828" })
+        vim.api.nvim_set_hl(0, 'Normal', { fg = "#d5c4a1", bg = "#282828" })
       end
     '';
 
