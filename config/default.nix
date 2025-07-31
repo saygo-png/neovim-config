@@ -51,18 +51,13 @@
     };
   };
 
-  extraPlugins = let
-    mkNvimplugin = name:
-      pkgs.vimUtils.buildVimPlugin {
-        inherit name;
-        src = builtins.getAttr ("nvim-plugin-" + name) inputs;
-      };
-  in
-    [pkgs.vimPlugins.vim-pencil]
-    ++ map mkNvimplugin [
-      "cutlass"
-      "faster"
-    ];
+  extraPlugins = [
+    pkgs.vimPlugins.vim-pencil
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "cutlass";
+      src = inputs.nvim-plugin-cutlass;
+    })
+  ];
 
   highlightOverride = {
     noCursor.blend = 100;
@@ -426,25 +421,6 @@
       })
       -- }}}
 
-      -- Faster.nvim (Speed up big files) {{{
-      require("faster").setup({
-        behaviours = {
-          bigfile = {
-            on = true,
-            features_disabled = {
-              "illuminate", "matchparen", "lsp", "treesitter",
-              "indent_blankline", "vimopts", "syntax", "filetype"
-            },
-            -- Files larger than `filesize` are considered big files. Value is in MB.
-            filesize = 0.3,
-            -- Autocmd pattern that controls on which files behaviour will be applied.
-            -- `*` means any file.
-            pattern = "*",
-          }
-        }
-      })
-      --- }}}
-
       -- Gitsigns {{{
       vim.keymap.set("n", "<leader>gsc", "<cmd>Gitsigns toggle_signs<CR>", {desc = "[g]it[s]igns [c]olumn"})
       vim.keymap.set("n", "<leader>gsb", "<cmd>Gitsigns toggle_current_line_blame<CR>", {desc = "[g]it[s]igns [b]lame"})
@@ -467,6 +443,7 @@
   # Plugins {{{
   plugins = {
     direnv.enable = true;
+    faster.enable = true;
     comment.enable = true;
     fugitive.enable = true;
     vim-surround.enable = true;

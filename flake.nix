@@ -21,11 +21,6 @@
       url = "github:gbprod/cutlass.nvim";
       flake = false;
     };
-
-    nvim-plugin-faster = {
-      url = "github:pteroctopus/faster.nvim";
-      flake = false;
-    };
   };
 
   outputs = {
