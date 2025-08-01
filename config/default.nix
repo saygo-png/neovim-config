@@ -336,6 +336,7 @@
 
     project-nvim = {
       enable = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
       settings = {
         silent_chdir = false;
         exclude_dirs = ["~/nixos/resources/haskell/*"];
@@ -363,6 +364,7 @@
 
     mini = {
       enable = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
       modules = {
         indentscope = {
           symbol = "│";
