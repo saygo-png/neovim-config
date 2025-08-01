@@ -2,7 +2,10 @@ _: {
   plugins = {
     oil = {
       enable = true;
-      lazyLoad.settings.cmd = "Oil";
+      lazyLoad.settings = {
+        cmd = "Oil";
+        event = "VimEnter";
+      };
       settings.defaultFileExplorer = true;
     };
 
