@@ -413,19 +413,11 @@
             inherit icon;
           };
         in [
-          (nRegister "<leader>s" "Swap" " ")
-          (nRegister "<leader>o" "Open" " ")
           (nRegister "<leader>r" "Re" " ")
           (nRegister "<leader>q" "Quit" "󱢓 ")
-          (nRegister "<leader>d" "Definition" "")
           (nRegister "<leader>S" "Sort by length" "󰒼 ")
-          (nRegister "<S-k>" "Hover info" "")
 
-          (nRegister "<leader>g" "go" "󰜎 ")
           (nRegister "<leader>gs" "Gitsigns" " ")
-          (nRegister "<leader>gd" "go to definition" "")
-          (nRegister "<leader>gr" "go to references" "")
-          (nRegister "<leader>gi" "go to implementation" "")
         ];
       };
     };
