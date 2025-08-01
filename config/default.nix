@@ -426,12 +426,6 @@
           (nRegister "<leader>gd" "go to definition" "")
           (nRegister "<leader>gr" "go to references" "")
           (nRegister "<leader>gi" "go to implementation" "")
-
-          (nRegister "<leader>ha" "Add file" "")
-          (nRegister "<leader>hm" "File menu" "")
-          (nRegister "<leader>hc" "Command menu" "")
-          (nRegister "<leader>hn" "Next file" "")
-          (nRegister "<leader>hp" "Previous file" "")
         ];
       };
     };

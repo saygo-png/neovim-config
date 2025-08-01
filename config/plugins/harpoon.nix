@@ -9,12 +9,15 @@ _: {
       '';
     };
 
-    which-key.settings.spec = [
-      {
-        __unkeyed = "<leader>h";
-        group = "Harpoon";
-        icon = "󱢓";
-      }
+    which-key.settings.spec = let
+      nRegister = __unkeyed: group: icon: {inherit icon group __unkeyed;};
+    in [
+      (nRegister "<leader>h" "Harpoon" "󱢓")
+      (nRegister "<leader>ha" "Add file" "󱢓")
+      (nRegister "<leader>hm" "File menu" "󱢓")
+      (nRegister "<leader>hc" "Command menu" "󱢓")
+      (nRegister "<leader>hn" "Next file" "󱢓")
+      (nRegister "<leader>hp" "Previous file" "󱢓")
     ];
   };
 
