@@ -219,10 +219,6 @@
       end
       vim.keymap.set('n', '<S-f>', toggle_quickfix, { silent = true, desc = "Toggle quickfix" })
 
-      -- Jump whitespace
-      vim.keymap.set("n", "{", "<Cmd>call search('^\\s*\\S', 'Wbc') | call search('^\\s*$\\|\\%^', 'Wb')<CR>", { desc = "jump whitespace forward"})
-      vim.keymap.set("n", "}", "<Cmd>call search('^\\s*\\S', 'Wc') | call search('^\\s*$\\|\\%$', 'W')<CR>", { desc = "jump whitespae backward"})
-
       -- Keep selection when indenting.
       vim.keymap.set("v", ">", ">gv", { desc = "Keep selection after indenting" })
       vim.keymap.set("v", "<", "<gv", { desc = "Keep selection after unindenting" })
