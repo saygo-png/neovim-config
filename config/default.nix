@@ -7,6 +7,7 @@
   imports = [
     ./neovide.nix
     #
+    ./plugins/oil.nix
     ./plugins/dial.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
@@ -17,19 +18,12 @@
     ./plugins/vimVisualMulti.nix
     #
     ./plugins/ide/lsp.nix
+    ./plugins/ide/linting.nix
     ./plugins/ide/formatting.nix
   ];
 
-  # I put them in the global scope since direnv deletes the one in the neovim scope
-  extraPackages = [
-    pkgs.tree-sitter
-    pkgs.deadnix # Nix linter
-    pkgs.nodePackages.jsonlint
-    pkgs.hlint # Haskell linter
-    pkgs.statix # Another linter
-    pkgs.isort # Python import sorter
-    pkgs.markdownlint-cli # Markdown linter
-  ];
+  # For lspsaga
+  extraPackages = [ pkgs.tree-sitter ];
 
   performance = {
     byteCompileLua = {
@@ -45,7 +39,6 @@
       enable = true;
       standalonePlugins = with pkgs.vimPlugins; [
         "nvim-treesitter"
-        "oil.nvim"
         mini-nvim
       ];
     };
@@ -406,10 +399,6 @@
 
       -- Plugins {{{
 
-      -- oil.nvim {{{
-      vim.keymap.set("n", "<leader>f", "<cmd>Oil<CR>", {desc = "[f]ile browser"})
-      -- }}};
-
       -- Nvim-tree {{{
       vim.keymap.set("n", "<leader>op", "<cmd>NvimTreeToggle<CR>", {desc = "[o]pen [p]roject"})
       -- }}}
@@ -560,24 +549,6 @@
       };
     };
 
-    lint = let
-      statixConfig = builtins.toFile "statix.toml" ''disabled = [repeated_keys]'';
-    in {
-      enable = true;
-      linters.statix.args = ["--config=${statixConfig}"];
-      lintersByFt = {
-        c = ["clangtidy"];
-        cpp = ["clangtidy"];
-        haskell = ["hlint"];
-        json = ["jsonlint"];
-        bash = ["shellcheck"];
-        shell = ["shellcheck"];
-        nix = ["nix" "deadnix" "statix"];
-        dockerfile = ["hadolint"];
-        markdown = ["markdownlint"];
-      };
-    };
-
     which-key = {
       enable = true;
       lazyLoad.settings.event = "DeferredUIEnter";
@@ -596,7 +567,6 @@
           (nRegister "<leader>r" "Re" " ")
           (nRegister "<leader>q" "Quit" "󱢓 ")
           (nRegister "<leader>d" "Definition" "")
-          (nRegister "<leader>f" "File browser" " ")
           (nRegister "<leader>S" "Sort by length" "󰒼 ")
           (nRegister "<S-k>" "Hover info" "")
 
@@ -613,11 +583,6 @@
           (nRegister "<leader>hp" "Previous file" "")
         ];
       };
-    };
-
-    oil = {
-      enable = true;
-      settings.defaultFileExplorer = true;
     };
 
     luasnip = {
