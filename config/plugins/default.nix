@@ -1,0 +1,27 @@
+_: {
+  # Plugins without any config beyond lazyloading go here.
+  plugins = {
+    direnv.enable = true;
+    fugitive.enable = true;
+    vim-surround.enable = true;
+    friendly-snippets.enable = true;
+
+    faster = {
+      enable = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
+    };
+
+    comment = {
+      enable = true;
+      # lazyLoad.settings.event = "DeferredUIEnter"; # Errors
+    };
+
+    web-devicons = {
+      enable = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
+    };
+
+    lz-n.enable = true;
+    lzn-auto-require.enable = true;
+  };
+}

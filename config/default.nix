@@ -8,6 +8,7 @@
     ./neovide.nix
     ./statusline.nix
     #
+    ./plugins
     ./plugins/oil.nix
     ./plugins/dial.nix
     ./plugins/flash.nix
@@ -327,17 +328,6 @@
 
   # Plugins {{{
   plugins = {
-    direnv.enable = true;
-    faster.enable = true;
-    comment.enable = true;
-    fugitive.enable = true;
-    vim-surround.enable = true;
-    web-devicons.enable = true;
-    friendly-snippets.enable = true;
-
-    lz-n.enable = true;
-    lzn-auto-require.enable = true;
-
     lspkind = {
       enable = true;
       # lazyLoad.settings.event = "DeferredUIEnter"; # https://github.com/nix-community/nixvim/pull/3563
