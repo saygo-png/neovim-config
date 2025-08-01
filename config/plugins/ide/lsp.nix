@@ -1,4 +1,5 @@
-_: {
+{pkgs, ...}: {
+  extraPackages = [pkgs.tree-sitter]; # Needed for lspsaga
   lsp = {
     keymaps = [
       {

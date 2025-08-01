@@ -26,9 +26,6 @@
     ./plugins/ide/formatting.nix
   ];
 
-  # For lspsaga
-  extraPackages = [pkgs.tree-sitter];
-
   performance = {
     byteCompileLua = {
       enable = true;
