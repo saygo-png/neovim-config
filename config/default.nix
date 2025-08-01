@@ -16,6 +16,7 @@
     ./plugins/harpoon.nix
     ./plugins/rainbow.nix
     ./plugins/telescope.nix
+    ./plugins/nvim-tree.nix
     ./plugins/treesitter.nix
     ./plugins/vimVisualMulti.nix
     #
@@ -298,10 +299,6 @@
 
       -- Plugins {{{
 
-      -- Nvim-tree {{{
-      vim.keymap.set("n", "<leader>op", "<cmd>NvimTreeToggle<CR>", {desc = "[o]pen [p]roject"})
-      -- }}}
-
       -- Cutlass (Delete copy registers) {{{
       require("cutlass").setup({
         override_del = true,
@@ -345,16 +342,6 @@
       enable = true;
       # lazyLoad.settings.event = "DeferredUIEnter"; # https://github.com/nix-community/nixvim/pull/3563
       cmp.enable = true;
-    };
-
-    nvim-tree = {
-      enable = true;
-      respectBufCwd = true;
-      syncRootWithCwd = true;
-      updateFocusedFile = {
-        enable = true;
-        updateRoot = true;
-      };
     };
 
     project-nvim = {
