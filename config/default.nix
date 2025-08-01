@@ -16,6 +16,7 @@
     ./plugins/harpoon.nix
     ./plugins/rainbow.nix
     ./plugins/telescope.nix
+    ./plugins/treesitter.nix
     ./plugins/vimVisualMulti.nix
     #
     ./plugins/ide/lsp.nix
@@ -24,7 +25,7 @@
   ];
 
   # For lspsaga
-  extraPackages = [ pkgs.tree-sitter ];
+  extraPackages = [pkgs.tree-sitter];
 
   performance = {
     byteCompileLua = {
@@ -39,7 +40,6 @@
     combinePlugins = {
       enable = true;
       standalonePlugins = with pkgs.vimPlugins; [
-        "nvim-treesitter"
         mini-nvim
       ];
     };
@@ -111,7 +111,6 @@
     # Folds.
     foldenable = false;
     foldmethod = "marker";
-    # foldexpr = "nvim_treesitter#foldexpr()";
 
     # More space.
     cmdheight = 0;
@@ -129,6 +128,7 @@
     # (https://neovim.io/doc/user/options.html#'laststatus')
     laststatus = 3;
   };
+
   globals = {
     mapleader = " ";
     maplocalleader = ",";
@@ -136,7 +136,6 @@
   };
 
   extraFiles = {
-    "ftplugin/haskell.vim".text = "set nocursorline"; # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
     "ftplugin/markdown.vim".text = "setlocal wrap";
   };
 
@@ -155,18 +154,6 @@
       -- Hide end of line tildes.
       vim.opt.fillchars:append({ eob = " " })
       -- }}}
-
-      -- Stops treesitter node increment in command window (q:) {{{
-      vim.api.nvim_create_augroup("_cmd_win", { clear = true })
-      vim.api.nvim_create_autocmd("CmdWinEnter", {
-          callback = function()
-              local ok, _ = pcall(vim.keymap.del, "n", "<CR>", { buffer = true })
-              if not ok then
-                  -- Silently ignore error when node increment isnt set, like in q/
-              end
-          end,
-          group = "_cmd_win",
-      })
       -- }}}
 
       vim.cmd[[
@@ -415,41 +402,6 @@
       lazyLoad.settings.event = "DeferredUIEnter";
       enable = true;
       settings.auto_close = true;
-    };
-
-    treesitter = let
-      boolMatch = let
-        checkPassed =
-          lib.assertMsg
-          (builtins.match "abc" "abc" == [] && builtins.match "foo" "abc" == null)
-          "builtins.match must have changed";
-      in
-        regex: str: (builtins.match regex str) != null && checkPassed;
-
-      inherit (pkgs.vimPlugins.nvim-treesitter.passthru) allGrammars;
-      matchCommentGrammar = str: boolMatch ".*comment-grammar.*" str;
-      filteredGrammars = builtins.filter (set: !matchCommentGrammar set.name) allGrammars;
-    in {
-      enable = true;
-      folding = true;
-      nixvimInjections = true;
-      nixGrammars = true; # Install grammars with Nix
-      grammarPackages = filteredGrammars;
-      settings = {
-        indent.enable = true;
-        ignore_install = ["comment"]; # Comment parser is very slow
-        auto_install = false;
-        highlight.enable = true;
-        incremental_selection = {
-          enable = true;
-          keymaps = {
-            scope_incremental = "gsi";
-            node_decremental = "<BS>";
-            node_incremental = "<Enter>";
-            init_selection = "<Enter>";
-          };
-        };
-      };
     };
 
     gitsigns = {
