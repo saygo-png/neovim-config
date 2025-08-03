@@ -8,7 +8,7 @@
   plugins = {
     telescope = {
       enable = true;
-      lazyLoad.settings.cmd = "Telescope";
+      # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
       enabledExtensions = ["git_file_history"];
       extensions.fzf-native = {
         enable = true;
@@ -91,7 +91,7 @@
         icon = " ";
       }
     ];
-    project-nvim.enableTelescope = true;
+    project-nvim.enableTelescope = false;
     harpoon.enableTelescope = true;
   };
 
@@ -121,7 +121,7 @@
       {
         key = "<leader>tg";
         action.__raw = "function()
-            require'telescope.builtin'.grep_string({ shorten_path = true, word_match = '-w', only_sort_text = true, search = '' })
+            require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
           end";
         options.desc = "[t]elescope fuzzy [g]rep";
       }
