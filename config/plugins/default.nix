@@ -13,7 +13,7 @@ _: {
 
     comment = {
       enable = true;
-      # lazyLoad.settings.event = "DeferredUIEnter"; # Errors
+      lazyLoad.settings.event = "DeferredUIEnter";
     };
 
     web-devicons = {
