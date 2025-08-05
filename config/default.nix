@@ -44,6 +44,9 @@
     };
   };
 
+  # Speeds up eval.
+  enableMan = false;
+
   extraPlugins = [
     pkgs.vimPlugins.vim-pencil
     (pkgs.vimUtils.buildVimPlugin {

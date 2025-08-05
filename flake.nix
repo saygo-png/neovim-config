@@ -41,11 +41,24 @@
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     packages = eachSystem (pkgs: let
       nixvimModule = {
-        inherit pkgs;
+        pkgs = fastPkgs;
         module = import ./config;
         extraSpecialArgs = {
           inherit inputs;
         };
+      };
+
+      # https://github.com/nix-community/nixvim/issues/3518
+      fastPkgs = import nixpkgs {
+        inherit (pkgs) system;
+        overlays = [
+          (_: prev: {
+            wrapNeovimUnstable = neovim-unwrapped: wrapper:
+              (prev.wrapNeovimUnstable neovim-unwrapped wrapper).overrideAttrs (_: {
+                dontFixup = true;
+              });
+          })
+        ];
       };
     in rec {
       neovim = nixvim.legacyPackages.${pkgs.system}.makeNixvimWithModule nixvimModule;
