@@ -224,7 +224,7 @@
       vim.keymap.set("v", "<", "<gv", { desc = "Keep selection after unindenting" })
 
       -- Previous buffer
-      vim.keymap.set('n', '<S-B>', '<C-6>')
+      vim.keymap.set('n', '<S-l>', '<C-6>')
 
       -- Split movement
       vim.keymap.set("n", "<S-M-h>", "<cmd>wincmd h<CR>", { desc = "Move to the split on the left side" })
