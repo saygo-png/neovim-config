@@ -335,7 +335,7 @@
 
     lspkind = {
       enable = true;
-      # lazyLoad.settings.event = "DeferredUIEnter"; # https://github.com/nix-community/nixvim/pull/3563
+      lazyLoad.settings.event = "DeferredUIEnter";
       cmp.enable = true;
     };
 
