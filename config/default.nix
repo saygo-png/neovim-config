@@ -324,6 +324,15 @@
 
   # Plugins {{{
   plugins = {
+    colorful-winsep = {
+      enable = true;
+      settings = {
+        hi.fg = "#7d8618";
+        symbols = ["─" "│" "┌" "┐" "└" "┘"];
+      };
+      lazyLoad.settings.event = "WinLeave";
+    };
+
     lspkind = {
       enable = true;
       # lazyLoad.settings.event = "DeferredUIEnter"; # https://github.com/nix-community/nixvim/pull/3563
