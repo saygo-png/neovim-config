@@ -83,6 +83,23 @@
         "type": "github"
       }
     },
+    "nixpkgs-cutlass": {
+      "locked": {
+        "lastModified": 1754843610,
+        "narHash": "sha256-l1Vg1xQGFjVmywnMxtAoduoElLS1mwWFBMIbYgVzC/I=",
+        "ref": "refs/heads/cutlass-nvim",
+        "rev": "93ad15fe1b99c56f34472b1620e09e2fde7c176f",
+        "revCount": 3,
+        "shallow": false,
+        "type": "git",
+        "url": "file:///home/samsepi0l/builds/nixpkgs"
+      },
+      "original": {
+        "shallow": false,
+        "type": "git",
+        "url": "file:///home/samsepi0l/builds/nixpkgs"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -164,6 +181,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "nixpkgs-cutlass": "nixpkgs-cutlass",
         "nixvim": "nixvim",
         "nvim-plugin-cutlass": "nvim-plugin-cutlass",
         "nvim-plugin-telescope-git-file-history": "nvim-plugin-telescope-git-file-history",

@@ -47,12 +47,15 @@
   # Speeds up eval.
   enableMan = false;
 
-  extraPlugins = [
+  extraPlugins = let
+    lpkgs = import inputs.nixpkgs-cutlass {system = "x86_64-linux";};
+  in [
     pkgs.vimPlugins.vim-pencil
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "cutlass";
-      src = inputs.nvim-plugin-cutlass;
-    })
+    lpkgs.vimPlugins.cutlass-nvim
+    # (pkgs.vimUtils.buildVimPlugin {
+    #   name = "cutlass";
+    #   src = inputs.nvim-plugin-cutlass;
+    # })
   ];
 
   highlightOverride = {
