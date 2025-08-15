@@ -55,7 +55,7 @@
         capabilities.textDocument.semanticTokens.multilineTokenSupport = true;
       };
 
-      rust_analyzer.enable = true;
+      # rust_analyzer.enable = true;
       pyright.enable = true;
       bashls.enable = true;
       lua_ls.enable = true;
