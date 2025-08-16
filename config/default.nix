@@ -303,6 +303,11 @@
       require("cutlass").setup({
         override_del = true,
         exclude = { "ns", "nS", "nx", "nX", "nxx", "nX", "vx", "vX", "xx", "xX" }, -- Motion plugins rebind this
+        registers = {
+          select = "s",
+          delete = "d",
+          change = "c",
+        },
       })
       -- }}}
 
