@@ -350,7 +350,7 @@
       enable = true;
       lazyLoad.settings.event = "DeferredUIEnter";
       settings = {
-        silent_chdir = false;
+        silent_chdir = true;
         exclude_dirs = ["~/nixos/resources/haskell/*"];
       };
     };
