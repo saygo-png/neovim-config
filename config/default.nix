@@ -1,18 +1,17 @@
 {
   lib,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
     ./neovide.nix
-    ./statusline.nix
-    #
+
     ./plugins
     ./plugins/oil.nix
     ./plugins/dial.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
+    ./plugins/lualine.nix
     ./plugins/gruvbox.nix
     ./plugins/harpoon.nix
     ./plugins/rainbow.nix
@@ -47,15 +46,9 @@
   # Speeds up eval.
   enableMan = false;
 
-  extraPlugins = let
-    lpkgs = import inputs.nixpkgs-cutlass {system = "x86_64-linux";};
-  in [
+  extraPlugins = [
     pkgs.vimPlugins.vim-pencil
-    lpkgs.vimPlugins.cutlass-nvim
-    # (pkgs.vimUtils.buildVimPlugin {
-    #   name = "cutlass";
-    #   src = inputs.nvim-plugin-cutlass;
-    # })
+    pkgs.vimPlugins.cutlass-nvim
   ];
 
   highlightOverride = {
