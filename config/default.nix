@@ -133,10 +133,6 @@
     python_recommended_style = 0; # Otherwise python sets itself to indent 4
   };
 
-  extraFiles = {
-    "ftplugin/markdown.vim".text = "setlocal wrap";
-  };
-
   extraConfigLua =
     # Lua
     ''
