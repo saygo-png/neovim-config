@@ -3,6 +3,7 @@ _: {
   plugins = {
     direnv.enable = true;
     fugitive.enable = true;
+    persistence.enable = true;
     vim-surround.enable = true;
     friendly-snippets.enable = true;
 
