@@ -69,11 +69,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1754498491,
-        "narHash": "sha256-erbiH2agUTD0Z30xcVSFcDHzkRvkRXOQ3lb887bcVrs=",
+        "lastModified": 1755615617,
+        "narHash": "sha256-HMwfAJBdrr8wXAkbGhtcby1zGFvs+StOp19xNsbqdOg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c2ae88e026f9525daf89587f3cbee584b92b6134",
+        "rev": "20075955deac2583bb12f07151c2df830ef346b4",
         "type": "github"
       },
       "original": {
@@ -81,23 +81,6 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
-      }
-    },
-    "nixpkgs-cutlass": {
-      "locked": {
-        "lastModified": 1754843610,
-        "narHash": "sha256-l1Vg1xQGFjVmywnMxtAoduoElLS1mwWFBMIbYgVzC/I=",
-        "ref": "refs/heads/cutlass-nvim",
-        "rev": "93ad15fe1b99c56f34472b1620e09e2fde7c176f",
-        "revCount": 3,
-        "shallow": false,
-        "type": "git",
-        "url": "file:///home/samsepi0l/builds/nixpkgs"
-      },
-      "original": {
-        "shallow": false,
-        "type": "git",
-        "url": "file:///home/samsepi0l/builds/nixpkgs"
       }
     },
     "nixvim": {
@@ -110,11 +93,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1754682350,
-        "narHash": "sha256-4Dgf0cA/ZJtj9eTzG0yNMRBcd5fll3hhWx2WdwltAP8=",
+        "lastModified": 1755717891,
+        "narHash": "sha256-MbuYOji6oxqk2nawrfjnKkAoXnVqrXAp1vQPdjtb/Q4=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "832de87d40f9a40430372552ab0b583680187cf3",
+        "rev": "1bd91097c381aafec012babcfcd1d90821a0782e",
         "type": "github"
       },
       "original": {
@@ -146,22 +129,6 @@
         "type": "github"
       }
     },
-    "nvim-plugin-cutlass": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1702908963,
-        "narHash": "sha256-zmS/JlcGW8hLWla01F2z9QMfnIYvWr5BkPCoZqzsAFw=",
-        "owner": "gbprod",
-        "repo": "cutlass.nvim",
-        "rev": "1ac7e4b53d79410be52a9e464d44c60556282b3e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gbprod",
-        "repo": "cutlass.nvim",
-        "type": "github"
-      }
-    },
     "nvim-plugin-telescope-git-file-history": {
       "flake": false,
       "locked": {
@@ -181,9 +148,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "nixpkgs-cutlass": "nixpkgs-cutlass",
         "nixvim": "nixvim",
-        "nvim-plugin-cutlass": "nvim-plugin-cutlass",
         "nvim-plugin-telescope-git-file-history": "nvim-plugin-telescope-git-file-history",
         "systems": "systems_3",
         "treefmt-nix": "treefmt-nix"
@@ -240,11 +205,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1754492133,
-        "narHash": "sha256-B+3g9+76KlGe34Yk9za8AF3RL+lnbHXkLiVHLjYVOAc=",
+        "lastModified": 1754847726,
+        "narHash": "sha256-2vX8QjO5lRsDbNYvN9hVHXLU6oMl+V/PsmIiJREG4rE=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "1298185c05a56bff66383a20be0b41a307f52228",
+        "rev": "7d81f6fb2e19bf84f1c65135d1060d829fae2408",
         "type": "github"
       },
       "original": {
