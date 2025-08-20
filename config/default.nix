@@ -43,6 +43,8 @@
     };
   };
 
+  luaLoader.enable = true;
+
   # Speeds up eval.
   enableMan = false;
 
