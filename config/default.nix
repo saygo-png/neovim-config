@@ -252,8 +252,8 @@
       vim.keymap.set("n", "gg", "ggzz", { desc = "Center top" })
       vim.keymap.set("n", "<Esc>", function() vim.fn.setreg("/", {}) end)
       vim.keymap.set("v", "gj", "J", { desc = "join lines" })
-      vim.keymap.set("v", "J", ":m '>+1<CR>gv==kgvo<esc>=kgvo", { desc = "move highlighted text down" })
-      vim.keymap.set("v", "K", ":m '<-2<CR>gv==jgvo<esc>=jgvo", { desc = "move highlighted text up" })
+      vim.keymap.set("v", "J", ":m '<-2<CR>gv=gv", { desc = "move highlighted text down" })
+      vim.keymap.set("v", "K", ":m '>+1<CR>gv=gv", { desc = "move highlighted text up" })
 
       -- Tabs
       vim.keymap.set('n', 'tk', ':tabnext<CR>', {silent = true, desc = "Go to next tab" })
@@ -283,8 +283,7 @@
       -- Autocomplete
       vim.keymap.set("i", "<C-x>", "<C-x><C-o>", { desc = "Autocomplete" })
 
-      vim.keymap.set('n', '<leader>q', vim.cmd.quit, { desc = "Quit"})
-      vim.keymap.set('n', '<leader>Q', vim.cmd.only, { desc = "Quit other windows"})
+      vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
       -- }}}
 
       -- Plugins {{{
