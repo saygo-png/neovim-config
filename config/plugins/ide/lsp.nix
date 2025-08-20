@@ -120,10 +120,12 @@
 
     lspsaga = {
       enable = true;
-      ui.border = "single";
-      symbolInWinbar.enable = true;
-      implement.enable = true;
-      lightbulb.enable = false;
+      settings = {
+        ui.border = "single";
+        symbol_in_winbar.enable = true;
+        implement.enable = true;
+        lightbulb.enable = false;
+      };
     };
   };
 
