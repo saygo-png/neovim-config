@@ -23,6 +23,21 @@
         options.desc = "Code [a]ctions";
       }
       {
+        key = "gh";
+        action = "<cmd>Lspsaga show_workspace_diagnostics<CR>";
+        options.desc = "Diagnostics [h]elp";
+      }
+      {
+        key = "gp";
+        action = "<cmd>Lspsaga diagnostic_jump_prev<CR>";
+        options.desc = "[p]revious diagnostic";
+      }
+      {
+        key = "gn";
+        action = "<cmd>Lspsaga diagnostic_jump_next<CR>";
+        options.desc = "[n]ext diagnostic";
+      }
+      {
         key = "gd";
         action.__raw = "require('telescope.builtin').lsp_definitions";
         options.desc = "";
