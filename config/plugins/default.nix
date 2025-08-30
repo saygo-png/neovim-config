@@ -7,6 +7,17 @@ _: {
     vim-surround.enable = true;
     friendly-snippets.enable = true;
 
+    fidget = {
+      enable = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
+      settings = {
+        notification.window = {
+          winblend = 0;
+          border = "single";
+        };
+      };
+    };
+
     faster = {
       enable = true;
       lazyLoad.settings.event = "DeferredUIEnter";
