@@ -21,10 +21,7 @@
   plugins = {
     conform-nvim = {
       enable = true;
-      lazyLoad.settings = {
-        keys = ["<leader>c" "gq"];
-        cmd = "Conform";
-      };
+      lazyLoad.settings.cmd = "Conform";
       settings = {
         lsp_fallback = false;
         formatters_by_ft = {
