@@ -1,9 +1,9 @@
-{pkgs, ...}: {
-  extraPlugins = [pkgs.vimPlugins.rainbow];
-  globals = {
-    rainbow_active = 1;
-    rainbow_conf = {
-      guifgs = [
+_: {
+  plugins.rainbow = {
+    enable = true;
+    settings = {
+      active = 1;
+      conf.guifgs = [
         "#fabd2f"
         "#8ec07c"
         "#d3869b"
@@ -13,7 +13,6 @@
       ];
     };
   };
-
   highlightOverride = {
     "@punctuation.bracket".link = "";
     "@variable.parameter.haskell".link = "";
