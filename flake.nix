@@ -29,7 +29,8 @@
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     packages = eachSystem (pkgs: let
       nixvimModule = {
-        pkgs = fastPkgs;
+        # inherit pkgs;
+        # pkgs = fastPkgs;
         module = import ./config;
         extraSpecialArgs = {
           inherit inputs;
