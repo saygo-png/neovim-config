@@ -18,11 +18,6 @@ _: {
       };
     };
 
-    faster = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-    };
-
     comment = {
       enable = true;
       lazyLoad.settings.event = "DeferredUIEnter";
