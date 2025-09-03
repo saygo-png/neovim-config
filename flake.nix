@@ -10,7 +10,7 @@
     nixvim = {
       # url = "git+file:///home/samsepi0l/builds/nixvim?ref=lspsaga-mkNeovimPlugin";
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nvim-plugin-telescope-git-file-history = {
