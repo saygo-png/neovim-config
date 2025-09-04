@@ -10,6 +10,7 @@
     pkgs.isort # Python import sorter
     pkgs.prettierd # Javascript formatter
     pkgs.haskellPackages.fourmolu # Haskell formatter
+    pkgs.haskellPackages.cabal-fmt # Haskell .cabal formatter
     pkgs.nodePackages.prettier # Javascript formatter
   ];
   opts = {
