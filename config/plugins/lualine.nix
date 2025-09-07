@@ -73,8 +73,5 @@ _: {
     };
   };
 
-  highlightOverride = {
-    statusline.bg = "NONE";
-    statusline.fg = "#7d8618";
-  };
+  highlightOverride.statusline.fg = "#7d8618";
 }

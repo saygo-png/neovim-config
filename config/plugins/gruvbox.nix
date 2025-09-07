@@ -1,27 +1,27 @@
 _: {
   highlightOverride = {
     WinBar.bg = "NONE";
-    WinBarNC.bg = "NONE"; # not focused
+    WinBarNC.bg = "NONE"; # not focused;
+    NormalFloat.bg = "NONE";
 
     Normal.fg = "#d5c4a1";
-    "@constructor".link = "GruvboxPurple";
-    "@punctuation.special".link = "GruvboxFg1";
-    "@punctuation.delimiter".link = "GruvboxFg1";
-    DiagnosticDeprecated.link = "GruvboxAquaUnderline";
-    DiagnosticUnderlineInfo.underline = false;
-    DiagnosticUnderlineHint.underline = false;
-    DiagnosticUnderlineWarn.underline = false;
+    TSString.link = "Green";
+    TelescopeSelection.link = "CursorLine";
+    TelescopeSelectionCaret.link = "TelescopePromptPrefix";
+    TelescopePromptCounter.fg = "#504945";
+    LineNr.fg = "#7c6f64";
   };
 
-  colorschemes.gruvbox = {
+  colorschemes.gruvbox-material = {
     enable = true;
-    lazyLoad.enable = true;
     settings = {
-      bold = false;
-      undercurl = true;
-      underline = true;
-      strikethrough = false;
-      transparent_mode = true;
+      foreground = "original";
+      background = "soft";
+      transparent_background = 2;
+      enable_bold = 0;
+      enable_italic = 1;
+      statusline_style = "original";
+      better_performance = 1;
     };
   };
 }

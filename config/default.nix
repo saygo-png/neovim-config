@@ -39,6 +39,7 @@
       enable = true;
       standalonePlugins = with pkgs.vimPlugins; [
         mini-nvim
+        gruvbox-material
       ];
     };
   };
