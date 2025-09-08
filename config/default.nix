@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./neovide.nix
+    ./theme.nix
     ./performance.nix
 
     ./plugins
@@ -14,7 +15,6 @@
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/lualine.nix
-    ./plugins/gruvbox.nix
     ./plugins/harpoon.nix
     ./plugins/rainbow.nix
     ./plugins/telescope.nix
@@ -30,16 +30,6 @@
   extraPlugins = [
     pkgs.vimPlugins.vim-pencil
   ];
-
-  highlightOverride = {
-    noCursor.blend = 100;
-    ModeMsg.fg = "#7d8618";
-    MsgArea.fg = "#7d8618";
-    FloatBorder.fg = "#7d8618";
-    CursorLineNr.fg = "#7d8618";
-    CursorLineNr.bg = "#3c3836"; # Gray numberline
-    MiniIndentscopeSymbol.fg = "#3c3836"; # Gray indentline
-  };
 
   opts = {
     # Indents.
@@ -120,11 +110,6 @@
 
       -- Faster syntax highlighting.
       vim.cmd("syntax sync minlines=256")
-
-      -- Hide end of line tildes.
-      vim.opt.fillchars:append({ eob = " " })
-      -- }}}
-      -- }}}
 
       vim.cmd[[
         augroup remember_folds
@@ -268,7 +253,6 @@
     '';
 
   clipboard.register = "unnamedplus";
-  colorschemes.base16.enable = lib.mkForce false;
 
   keymaps = [
     {
