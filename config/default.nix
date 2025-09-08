@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+_: {
   imports = [
     ./neovide.nix
     ./theme.nix
@@ -104,9 +100,6 @@
         vim.opt.termguicolors = true
       end
 
-      -- Faster syntax highlighting.
-      vim.cmd("syntax sync minlines=256")
-
       vim.cmd[[
         augroup remember_folds
           autocmd!
@@ -114,27 +107,6 @@
           au BufWinEnter ?* silent! loadview 1
         augroup END
       ]]
-
-      -- Remember last line {{{
-      vim.api.nvim_create_autocmd("BufRead", {
-        callback = function(opts)
-          vim.api.nvim_create_autocmd("BufWinEnter", {
-            once = true,
-            buffer = opts.buf,
-            callback = function()
-              local ft = vim.bo[opts.buf].filetype
-              local last_known_line = vim.api.nvim_buf_get_mark(opts.buf, '"')[1]
-              if
-                not (ft:match("commit") and ft:match("rebase"))
-                and last_known_line > 1
-                and last_known_line <= vim.api.nvim_buf_line_count(opts.buf)
-              then
-                vim.api.nvim_feedkeys([[g`"]], "nx", false)
-              end
-            end,
-          })
-        end,
-      })
       -- }}}
 
       -- Keymaps {{{
@@ -245,7 +217,6 @@
       vim.keymap.set("n", "<leader>gsc", "<cmd>Gitsigns toggle_signs<CR>", {desc = "[g]it[s]igns [c]olumn"})
       vim.keymap.set("n", "<leader>gsb", "<cmd>Gitsigns toggle_current_line_blame<CR>", {desc = "[g]it[s]igns [b]lame"})
       -- }}}
-      -- }}}
     '';
 
   clipboard.register = "unnamedplus";
@@ -262,7 +233,7 @@
   # Plugins {{{
   plugins = {
     colorful-winsep = {
-      enable = true;
+      enable = false; # https://github.com/nvim-zh/colorful-winsep.nvim/issues/103
       settings = {
         hi.fg = "#7d8618";
         symbols = ["─" "│" "┌" "┐" "└" "┘"];
@@ -291,19 +262,15 @@
       settings = {
         user_default_options.names = false;
         buftypes = ["*" "!prompt" "!popup"];
-        fileTypes = let
-          css = {css = true;};
-        in [
-          "*"
-          ({language = "css";} // css)
-          ({language = "less";} // css)
-          ({language = "sass";} // css)
-          ({language = "scss";} // css)
-          ({language = "stylus";} // css)
-        ];
-      };
-    };
-
+        fileTypes =
+          map (x: {language = x;} // {css = true;}) [
+            "css"
+            "less"
+            "sass"
+            "scss"
+            "stylus"
+          ]
+          ++ ["*"];
       };
     };
 
