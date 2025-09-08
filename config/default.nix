@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./neovide.nix
+    ./performance.nix
 
     ./plugins
     ./plugins/oil.nix
@@ -26,30 +27,6 @@
     ./plugins/ide/formatting.nix
   ];
 
-  performance = {
-    byteCompileLua = {
-      enable = true;
-      configs = true;
-      luaLib = true;
-      initLua = false;
-      plugins = true;
-      nvimRuntime = true;
-    };
-
-    combinePlugins = {
-      enable = true;
-      standalonePlugins = with pkgs.vimPlugins; [
-        mini-nvim
-        gruvbox-material
-      ];
-    };
-  };
-
-  luaLoader.enable = true;
-
-  # Speeds up eval.
-  enableMan = false;
-
   extraPlugins = [
     pkgs.vimPlugins.vim-pencil
   ];
@@ -65,10 +42,6 @@
   };
 
   opts = {
-    # Speed
-    lazyredraw = true;
-    regexpengine = 1;
-
     # Indents.
     tabstop = 2;
     shiftwidth = 2;
