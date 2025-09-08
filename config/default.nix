@@ -27,10 +27,6 @@
     ./plugins/ide/formatting.nix
   ];
 
-  extraPlugins = [
-    pkgs.vimPlugins.vim-pencil
-  ];
-
   opts = {
     # Indents.
     tabstop = 2;
