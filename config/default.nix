@@ -51,7 +51,6 @@
 
   extraPlugins = [
     pkgs.vimPlugins.vim-pencil
-    pkgs.vimPlugins.cutlass-nvim
   ];
 
   highlightOverride = {
@@ -285,20 +284,6 @@
       vim.keymap.set("i", "<C-x>", "<C-x><C-o>", { desc = "Autocomplete" })
 
       vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
-      -- }}}
-
-      -- Plugins {{{
-
-      -- Cutlass (Delete copy registers) {{{
-      require("cutlass").setup({
-        override_del = true,
-        exclude = { "ns", "nS", "nx", "nX", "nxx", "nX", "vx", "vX", "xx", "xX" }, -- Motion plugins rebind this
-        registers = {
-          select = "s",
-          delete = "d",
-          change = "c",
-        },
-      })
       -- }}}
 
       -- Gitsigns {{{
