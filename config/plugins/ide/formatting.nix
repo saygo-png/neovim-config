@@ -25,41 +25,51 @@
       lazyLoad.settings.cmd = "Conform";
       settings = {
         lsp_fallback = false;
-        formatters_by_ft = {
-          # Conform will run multiple formatters sequentially.
-          json = ["jq"];
-          sh = ["shfmt"];
-          lua = ["stylua"];
-          css = ["prettierd"];
-          nix = ["alejandra"];
-          html = ["prettierd"];
-          scss = ["prettierd"];
-          jsonc = ["prettierd"];
-          haskell = ["fourmolu"];
-          graphql = ["prettierd"];
-          markdown = ["prettierd"];
-          python = ["isort" "yapf"];
-          javascript = ["prettierd"];
-          typescript = ["prettierd"];
-          javascriptreact = ["prettierd"];
-          typescriptreact = ["prettierd"];
-          # Use the "*" filetype to run formatters on all filetypes.
-          "*" = [
-            "squeeze_blanks"
-            "trim_whitespace"
-            "trim_newlines"
-          ];
-        };
+        formatters_by_ft = let
+          stopAfterFirst = {stop_after_first = true;};
+          addTreefmt = v: listToUnkeyedAttrs (["treefmt"] ++ v);
+          inherit (lib.nixvim.utils) listToUnkeyedAttrs;
+          inherit (builtins) mapAttrs;
+
+          fmts = {
+            json = ["jq"];
+            sh = ["shfmt"];
+            lua = ["stylua"];
+            python = ["yapf"];
+            css = ["prettierd"];
+            nix = ["alejandra"];
+            html = ["prettierd"];
+            scss = ["prettierd"];
+            jsonc = ["prettierd"];
+            haskell = ["fourmolu"];
+            graphql = ["prettierd"];
+            markdown = ["prettierd"];
+            javascript = ["prettierd"];
+            typescript = ["prettierd"];
+            javascriptreact = ["prettierd"];
+            typescriptreact = ["prettierd"];
+          };
+        in
+          (mapAttrs (_: v: stopAfterFirst // addTreefmt v) fmts)
+          // {
+            "*" = [
+              "squeeze_blanks"
+              "trim_whitespace"
+              "trim_newlines"
+            ];
+          };
         formatters = {
+          flakeformat = {
+            command = "nix";
+            args = ["fmt" "$FILENAME"];
+            stdin = false;
+          };
           cljfmt = {
             command = "${lib.getExe pkgs.cljfmt}";
             args = ["fix" "-"];
-            stdin = true;
           };
           shfmt.args = lib.mkOptionDefault ["-i" "2"];
-          squeeze_blanks = {
-            command = pkgs.lib.getExe' pkgs.coreutils "cat";
-          };
+          squeeze_blanks.command = pkgs.lib.getExe' pkgs.coreutils "cat";
         };
       };
     };
@@ -70,10 +80,22 @@
         group = "Conform";
         icon = " ";
       }
+      {
+        __unkeyed = "<leader>nc";
+        group = "Nix";
+        icon = " ";
+      }
     ];
   };
 
   keymaps = [
+    {
+      key = "<leader>nc";
+      action.__raw = "function()
+          require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } })
+        end";
+      options.desc = "nix [c]onform";
+    }
     {
       key = "<leader>c";
       action.__raw = "function()
