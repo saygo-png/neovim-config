@@ -4,8 +4,7 @@
     keymaps = [
       {
         key = "<Leader>e";
-        # TODO: Remove args (close events) after update to 0.11.4/0.12
-        action = "<cmd>lua vim.diagnostic.open_float(nil, {close_events = {'BufLeave', 'CursorMoved', 'InsertEnter'}})<CR>";
+        action = "<cmd>lua vim.diagnostic.open_float()<CR>";
         options.desc = "Diagnostic";
       }
       {
