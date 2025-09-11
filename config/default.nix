@@ -14,6 +14,11 @@ _: {
     ./plugins/harpoon.nix
     ./plugins/cutlass.nix
     ./plugins/rainbow.nix
+    ./plugins/colorizer.nix
+    ./plugins/gitsigns.nix
+    ./plugins/project-nvim.nix
+    ./plugins/trouble.nix
+    ./plugins/colorful-winsep.nix
     ./plugins/telescope.nix
     ./plugins/nvim-tree.nix
     ./plugins/treesitter.nix
@@ -231,56 +236,6 @@ _: {
 
   # Plugins {{{
   plugins = {
-    colorful-winsep = {
-      enable = false; # https://github.com/nvim-zh/colorful-winsep.nvim/issues/103
-      settings = {
-        hi.fg = "#7d8618";
-        symbols = ["─" "│" "┌" "┐" "└" "┘"];
-      };
-      lazyLoad.settings.event = "WinLeave";
-    };
-
-    project-nvim = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-      settings = {
-        silent_chdir = true;
-        exclude_dirs = ["~/nixos/resources/haskell/*"];
-      };
-    };
-
-    colorizer = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings = {
-        user_default_options.names = false;
-        buftypes = ["*" "!prompt" "!popup"];
-        fileTypes =
-          map (x: {language = x;} // {css = true;}) [
-            "css"
-            "less"
-            "sass"
-            "scss"
-            "stylus"
-          ]
-          ++ ["*"];
-      };
-    };
-
-    trouble = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings.auto_close = true;
-    };
-
-    gitsigns = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings = {
-        current_line_blame = false;
-        signcolumn = true;
-      };
-    };
 
     which-key = {
       enable = true;
