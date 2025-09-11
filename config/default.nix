@@ -14,6 +14,12 @@ _: {
     ./plugins/harpoon.nix
     ./plugins/cutlass.nix
     ./plugins/rainbow.nix
+    ./plugins/which-key.nix
+    ./plugins/colorizer.nix
+    ./plugins/gitsigns.nix
+    ./plugins/project-nvim.nix
+    ./plugins/trouble.nix
+    ./plugins/colorful-winsep.nix
     ./plugins/telescope.nix
     ./plugins/nvim-tree.nix
     ./plugins/treesitter.nix
@@ -212,10 +218,6 @@ _: {
       vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
       -- }}}
 
-      -- Gitsigns {{{
-      vim.keymap.set("n", "<leader>gsc", "<cmd>Gitsigns toggle_signs<CR>", {desc = "[g]it[s]igns [c]olumn"})
-      vim.keymap.set("n", "<leader>gsb", "<cmd>Gitsigns toggle_current_line_blame<CR>", {desc = "[g]it[s]igns [b]lame"})
-      -- }}}
     '';
 
   clipboard.register = "unnamedplus";
@@ -228,84 +230,6 @@ _: {
       options.desc = "[S]ort lines by length";
     }
   ];
-
-  # Plugins {{{
-  plugins = {
-    colorful-winsep = {
-      enable = false; # https://github.com/nvim-zh/colorful-winsep.nvim/issues/103
-      settings = {
-        hi.fg = "#7d8618";
-        symbols = ["─" "│" "┌" "┐" "└" "┘"];
-      };
-      lazyLoad.settings.event = "WinLeave";
-    };
-
-    project-nvim = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-      settings = {
-        silent_chdir = true;
-        exclude_dirs = ["~/nixos/resources/haskell/*"];
-      };
-    };
-
-    colorizer = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings = {
-        user_default_options.names = false;
-        buftypes = ["*" "!prompt" "!popup"];
-        fileTypes =
-          map (x: {language = x;} // {css = true;}) [
-            "css"
-            "less"
-            "sass"
-            "scss"
-            "stylus"
-          ]
-          ++ ["*"];
-      };
-    };
-
-    trouble = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings.auto_close = true;
-    };
-
-    gitsigns = {
-      lazyLoad.settings.event = "DeferredUIEnter";
-      enable = true;
-      settings = {
-        current_line_blame = false;
-        signcolumn = true;
-      };
-    };
-
-    which-key = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-      settings = {
-        delay = 1000;
-        win.border = "single";
-        spec = let
-          nRegister = key: text: icon: {
-            __unkeyed = key;
-            group = text;
-            inherit icon;
-          };
-        in [
-          (nRegister "<leader>r" "Re" " ")
-          (nRegister "<leader>q" "Quit" "󱢓 ")
-          (nRegister "<leader>S" "Sort by length" "󰒼 ")
-
-          (nRegister "<leader>gs" "Gitsigns" " ")
-        ];
-      };
-    };
-  };
-
-  # }}}
 
   autoCmd = [
     {
