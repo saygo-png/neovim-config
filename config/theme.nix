@@ -4,6 +4,7 @@
   ...
 }: {
   colorschemes.base16.enable = lib.mkForce false;
+  impureRtp = true; # Needed for better_performance setting
 
   highlightOverride = {
     WinBar.bg = "NONE";
