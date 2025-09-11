@@ -1,6 +1,6 @@
 _: {
   plugins = {
-    cutlass = {
+    cutlass-nvim = {
       enable = true;
       settings = {
         override_del = true;

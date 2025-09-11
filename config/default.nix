@@ -12,6 +12,7 @@ _: {
     ./plugins/spider.nix
     ./plugins/lualine.nix
     ./plugins/harpoon.nix
+    ./plugins/cutlass.nix
     ./plugins/rainbow.nix
     ./plugins/telescope.nix
     ./plugins/nvim-tree.nix
