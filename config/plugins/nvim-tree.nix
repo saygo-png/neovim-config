@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  inherit (config) k wk;
+in {
   plugins = {
     nvim-tree = {
       enable = true;
@@ -25,20 +27,10 @@ _: {
         };
       };
     };
-    which-key.settings.spec = [
-      {
-        __unkeyed = "<leader>op";
-        group = "File tree";
-        icon = " ";
-      }
-    ];
   };
 
-  keymaps = [
-    {
-      key = "<leader>op";
-      action = "<cmd>NvimTreeToggle<CR>";
-      options.desc = "[o]pen [p]roject";
-    }
-  ];
+  my = {
+    which-keys."<leader>op" = wk "File tree" " ";
+    keymaps.normal."<leader>op" = k "<cmd>NvimTreeToggle<CR>" "[o]pen [p]roject";
+  };
 }
