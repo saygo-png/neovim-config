@@ -171,10 +171,6 @@ in {
   extraConfigLua =
     # Lua
     ''
-      if vim.fn.has('termguicolors') == 1 then
-        vim.opt.termguicolors = true
-      end
-
       vim.cmd[[
         augroup remember_folds
           autocmd!
@@ -224,13 +220,4 @@ in {
       vim.keymap.set("n", "<Esc>", function() vim.fn.setreg("/", {}) end)
       vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
     '';
-
-  autoCmd = [
-    {
-      event = ["BufEnter"];
-      pattern = ["*"];
-      command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o";
-      desc = "Dont insert comments on newline";
-    }
-  ];
 }
