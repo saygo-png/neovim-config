@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "dirt-samples-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742324136,
+        "narHash": "sha256-OzVvy/L6jfEgGx3dMdhe/PkfMAWVV0HQ9wGy500++fw=",
+        "owner": "tidalcycles",
+        "repo": "dirt-samples",
+        "rev": "c74fc80f8db8038f6a33648ffef5ac00a07ad402",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tidalcycles",
+        "repo": "dirt-samples",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -83,6 +99,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1757745802,
+        "narHash": "sha256-hLEO2TPj55KcUFUU1vgtHE9UEIOjRcH/4QbmfHNF820=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "c23193b943c6c689d70ee98ce3128239ed9e32d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -148,7 +180,24 @@
         "nixvim": "nixvim",
         "nvim-plugin-telescope-git-file-history": "nvim-plugin-telescope-git-file-history",
         "systems": "systems_3",
+        "tidal": "tidal",
         "treefmt-nix": "treefmt-nix"
+      }
+    },
+    "superdirt-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753260711,
+        "narHash": "sha256-GriJlQtxlDdXTqJxWN/6ImdsotV2P1FYfk1phTpHCe0=",
+        "owner": "musikinformatik",
+        "repo": "superdirt",
+        "rev": "894acd06805a2a96623be95f5330a4ae4d9d8821",
+        "type": "github"
+      },
+      "original": {
+        "owner": "musikinformatik",
+        "repo": "superdirt",
+        "type": "github"
       }
     },
     "systems": {
@@ -195,6 +244,46 @@
         "type": "indirect"
       }
     },
+    "tidal": {
+      "inputs": {
+        "dirt-samples-src": "dirt-samples-src",
+        "nixpkgs": "nixpkgs_2",
+        "superdirt-src": "superdirt-src",
+        "tidal-src": "tidal-src",
+        "vim-tidal-src": "vim-tidal-src",
+        "vowel-src": "vowel-src"
+      },
+      "locked": {
+        "lastModified": 1757986396,
+        "narHash": "sha256-x6rUMTYT5iZnmE/wlEjpj8v0ib1osfAhlGoMBkcF9Us=",
+        "ref": "refs/heads/main",
+        "rev": "36946ccbff739ce6872a0bf7413056828644f480",
+        "revCount": 47,
+        "type": "git",
+        "url": "file:///home/samsepi0l/builds/tidalcycles.nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/samsepi0l/builds/tidalcycles.nix"
+      }
+    },
+    "tidal-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712519522,
+        "narHash": "sha256-LbvxQmVxHElidCgvt+w0g1k+QQbNLebK46vtRCgsLeQ=",
+        "owner": "tidalcycles",
+        "repo": "tidal",
+        "rev": "88f09edf6bef2228d5f530dea872b08a9d803066",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tidalcycles",
+        "ref": "v1.9.5",
+        "repo": "tidal",
+        "type": "github"
+      }
+    },
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
@@ -212,6 +301,38 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vim-tidal-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1685703852,
+        "narHash": "sha256-8gyk17YLeKpLpz3LRtxiwbpsIbZka9bb63nK5/9IUoA=",
+        "owner": "tidalcycles",
+        "repo": "vim-tidal",
+        "rev": "e440fe5bdfe07f805e21e6872099685d38e8b761",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tidalcycles",
+        "repo": "vim-tidal",
+        "type": "github"
+      }
+    },
+    "vowel-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1641306144,
+        "narHash": "sha256-zfF6cvAGDNYWYsE8dOIo38b+dIymd17Pexg0HiPFbxM=",
+        "owner": "supercollider-quarks",
+        "repo": "vowel",
+        "rev": "ab59caa870201ecf2604b3efdd2196e21a8b5446",
+        "type": "github"
+      },
+      "original": {
+        "owner": "supercollider-quarks",
+        "repo": "vowel",
         "type": "github"
       }
     }

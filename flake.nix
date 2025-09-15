@@ -8,6 +8,9 @@
       # url = "git+file:///home/samsepi0l/builds/nixvim?ref=lspsaga-mkNeovimPlugin";
       url = "github:nix-community/nixvim";
     };
+
+    tidal.url = "git+file:///home/samsepi0l/builds/tidalcycles.nix";
+
     nvim-plugin-telescope-git-file-history = {
       url = "github:isak102/telescope-git-file-history.nvim";
       flake = false;
@@ -33,6 +36,7 @@
         module = import ./config;
         extraSpecialArgs = {
           inherit inputs;
+          tidal-pkgs = inputs.tidal.packages.${pkgs.system};
         };
       };
     in rec {
