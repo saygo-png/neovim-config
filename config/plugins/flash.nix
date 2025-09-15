@@ -1,27 +1,23 @@
-_: {
+{
+  config,
+  lib,
+  ...
+}: {
   plugins.flash = {
     enable = true;
     settings.autojump = true;
     lazyLoad.settings.keys = ["s" "S" "gs"];
   };
 
-  keymaps = let
-    nWrapFunc = s: "function() ${s} end";
-  in [
-    {
-      key = "s";
-      action.__raw = nWrapFunc ''require("flash").remote()'';
-      options.desc = "Flash";
-    }
-    {
-      key = "S";
-      action.__raw = nWrapFunc ''require("flash").treesitter_search()'';
-      options.desc = "Flash treesitter";
-    }
-    {
-      key = "gs";
-      action.__raw = nWrapFunc ''require("flash").treesitter()'';
-      options.desc = "Flash treesitter";
-    }
-  ];
+  my.keymaps = let
+    luaFunc = f: d: config.k (lib.nixvim.mkRaw "function() ${f} end") d;
+    keys = {
+      "s" = luaFunc "require('flash').remote()" "Flash";
+      "S" = luaFunc "require('flash').treesitter_search()" "Flash treesitter search";
+      "gs" = luaFunc "require('flash').treesitter()" "Flash treesitter";
+    };
+  in {
+    visual = keys;
+    normal = keys;
+  };
 }
