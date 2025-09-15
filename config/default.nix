@@ -1,5 +1,9 @@
-_: {
+{config, ...}: let
+  inherit (config) k kns;
+in {
   imports = [
+    ./lib/keymaps.nix
+
     ./neovide.nix
     ./theme.nix
     ./performance.nix
@@ -24,7 +28,7 @@ _: {
     ./plugins/nvim-tree.nix
     ./plugins/treesitter.nix
     ./plugins/vimVisualMulti.nix
-    #
+
     ./plugins/ide/lsp.nix
     ./plugins/ide/linting.nix
     ./plugins/ide/formatting.nix
@@ -99,11 +103,74 @@ _: {
     python_recommended_style = 0; # Otherwise python sets itself to indent 4
   };
 
+  clipboard.register = "unnamedplus";
+
+  my.keymaps = {
+    normal = {
+      "<S-l>" = k "<C-6>" "Previous buffer";
+
+      # Splits
+      "<S-M-h>" = k "<cmd>wincmd h<CR>" "Move to the split on the left side";
+      "<S-M-l>" = k "<cmd>wincmd l<CR>" "Move to the split on the right side";
+      "<S-M-k>" = k "<cmd>wincmd k<CR>" "Move to the split above";
+      "<S-M-j>" = k "<cmd>wincmd j<CR>" "Move to the split below";
+
+      # Tabs
+      "tk" = k ":tabnext<CR>" "Go to next tab";
+      "tj" = k ":tabprev<CR>" "Go to previous tab";
+      "td" = k ":tabclose<CR>" "Close current tab";
+      "<leader>1" = k "1gt" "Go to tab 1";
+      "<leader>2" = k "2gt" "Go to tab 2";
+      "<leader>3" = k "3gt" "Go to tab 3";
+      "<leader>4" = k "4gt" "Go to tab 4";
+      "<leader>5" = k "5gt" "Go to tab 5";
+      "<leader>6" = k "6gt" "Go to tab 6";
+      "<leader>7" = k "7gt" "Go to tab 7";
+      "<leader>8" = k "8gt" "Go to tab 8";
+      "<leader>9" = k "9gt" "Go to tab 9";
+
+      # Center
+      "G" = k "Gzz" "Center bottom";
+      "gg" = k "ggzz" "Center top";
+      "n" = k "nzz" "Next search result and center";
+      "N" = k "Nzz" "Previous search result and center";
+      "*" = k "*zz" "Search word under cursor and center";
+      "#" = k "#zz" "Search word under cursor (reverse) and center";
+      "g*" = k "g*zz" "Search partial word under cursor and center";
+      "g#" = k "g#zz" "Search partial word under cursor (reverse) and center";
+
+      # Rebind increment to not conflict with tmux
+      "<C-s>" = k "<C-a>" "Increment number under cursor";
+
+      # Paste
+      "Y" = k "y$" "Copy till end of line without newline";
+      "yy" = k "^y$" "Copy line without newline and whitespace";
+      "<c-v>" = k ''"+p'' "Raw paste";
+
+      # Misc
+      ";" = kns ":" "Command mode with or without shift";
+      ">" = k ">>" "Indent more";
+      "<lt>" = k "<lt><lt>" "Indent less";
+    };
+    visual = {
+      # Keep selection when indenting.
+      ">" = k ">gv" "Keep selection when indenting";
+      "<" = k "<gv" "Keep selection when indenting";
+
+      # Misc
+      "v" = k "<Esc>^vg_" "Select line without newline and whitespace";
+      "p" = k ''"_dP'' "Infinite paste";
+      "L" = k ":norm yss" "Surround each line";
+      "." = k "<cmd>normal .<CR>" "Dot commands over visual blocks";
+      "gj" = k "J" "Join lines";
+
+      "<Leader>S" = k '':!awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'<CR><CR>'' "[S]ort lines by length";
+    };
+  };
+
   extraConfigLua =
     # Lua
     ''
-      -- Miscellaneous {{{
-      -- 24 bit color.
       if vim.fn.has('termguicolors') == 1 then
         vim.opt.termguicolors = true
       end
@@ -115,9 +182,7 @@ _: {
           au BufWinEnter ?* silent! loadview 1
         augroup END
       ]]
-      -- }}}
 
-      -- Keymaps {{{
       -- Better open
       local open_command = "xdg-open"
       if vim.fn.has("mac") == 1 then
@@ -151,85 +216,14 @@ _: {
       end
       vim.keymap.set('n', '<S-f>', toggle_quickfix, { silent = true, desc = "Toggle quickfix" })
 
-      -- Keep selection when indenting.
-      vim.keymap.set("v", ">", ">gv", { desc = "Keep selection after indenting" })
-      vim.keymap.set("v", "<", "<gv", { desc = "Keep selection after unindenting" })
-
-      -- Previous buffer
-      vim.keymap.set('n', '<S-l>', '<C-6>')
-
-      -- Split movement
-      vim.keymap.set("n", "<S-M-h>", "<cmd>wincmd h<CR>", { desc = "Move to the split on the left side" })
-      vim.keymap.set("n", "<S-M-l>", "<cmd>wincmd l<CR>", { desc = "Move to the split on the right side" })
-      vim.keymap.set("n", "<S-M-k>", "<cmd>wincmd k<CR>", { desc = "Move to the split above" })
-      vim.keymap.set("n", "<S-M-j>", "<cmd>wincmd j<CR>", { desc = "Move to the split below" })
-
       -- Copy and paste
-      vim.keymap.set("n", "<c-v>", '"+p', { desc = "proper paste" })
       vim.keymap.set({"i", "c"}, "<C-V>", "<C-r>+", { desc = "Proper paste" })
       vim.keymap.set({"i", "c"}, "<C-V>", "<C-r>+", { desc = "Proper paste" })
-      vim.keymap.set('n', 'Y', 'y$', { desc = "Copy till end of line without newline" })
-      vim.keymap.set('n', 'yy', '^y$', { desc = "Copy line without newline and whitespace" })
-      vim.keymap.set('v', 'v', '<Esc>^vg_', { desc = "Select line without newline and whitespace" })
-
-      -- Infinite paste
-      vim.keymap.set('v', 'p', '"_dP')
-
-      -- Surround each line
-      vim.keymap.set('v', 'L', ':norm yss')
 
       -- Basic
-      vim.keymap.set('n', ';', ':', { desc = "Command mode with or without shift" })
-      vim.keymap.set("n", ">", ">>", { desc = "Indent more", silent = true })
-      vim.keymap.set("n", "<lt>", "<lt><lt>", { desc = "Indent less", silent = true })
-      vim.keymap.set("v", ".", "<cmd>normal .<CR>", { desc = "Dot commands over visual blocks" })
-      vim.keymap.set("n", "G", "Gzz", { desc = "Center bottom" })
-      vim.keymap.set("n", "gg", "ggzz", { desc = "Center top" })
       vim.keymap.set("n", "<Esc>", function() vim.fn.setreg("/", {}) end)
-      vim.keymap.set("v", "gj", "J", { desc = "join lines" })
-      vim.keymap.set("v", "J", ":m '<-2<CR>gv=gv", { desc = "move highlighted text down" })
-      vim.keymap.set("v", "K", ":m '>+1<CR>gv=gv", { desc = "move highlighted text up" })
-
-      -- Tabs
-      vim.keymap.set('n', 'tk', ':tabnext<CR>', {silent = true, desc = "Go to next tab" })
-      vim.keymap.set('n', 'tj', ':tabprev<CR>', {silent = true, desc = "Go to previous tab" })
-      vim.keymap.set('n', 'td', ':tabclose<CR>', {silent = true, desc = "Close current tab" })
-      vim.keymap.set('n', '<leader>1', '1gt', {silent = true, desc = "Go to tab 1" })
-      vim.keymap.set('n', '<leader>2', '2gt', {silent = true, desc = "Go to tab 2" })
-      vim.keymap.set('n', '<leader>3', '3gt', {silent = true, desc = "Go to tab 3" })
-      vim.keymap.set('n', '<leader>4', '4gt', {silent = true, desc = "Go to tab 4" })
-      vim.keymap.set('n', '<leader>5', '5gt', {silent = true, desc = "Go to tab 5" })
-      vim.keymap.set('n', '<leader>6', '6gt', {silent = true, desc = "Go to tab 6" })
-      vim.keymap.set('n', '<leader>7', '7gt', {silent = true, desc = "Go to tab 7" })
-      vim.keymap.set('n', '<leader>8', '8gt', {silent = true, desc = "Go to tab 8" })
-      vim.keymap.set('n', '<leader>9', '9gt', {silent = true, desc = "Go to tab 9" })
-
-      -- Makes ctrl+s increment to not conflict with tmux
-      vim.keymap.set('n', '<C-s>', '<C-a>', {silent = true, desc = "Increment number under cursor" })
-
-      -- Center search and substitution
-      vim.keymap.set('n', 'n', 'nzz', {silent = true, desc = "Next search result and center" })
-      vim.keymap.set('n', 'N', 'Nzz', {silent = true, desc = "Previous search result and center" })
-      vim.keymap.set('n', '*', '*zz', {silent = true, desc = "Search word under cursor and center" })
-      vim.keymap.set('n', '#', '#zz', {silent = true, desc = "Search word under cursor (reverse) and center" })
-      vim.keymap.set('n', 'g*', 'g*zz', {silent = true, desc = "Search partial word under cursor and center" })
-      vim.keymap.set('n', 'g#', 'g#zz', {silent = true, desc = "Search partial word under cursor (reverse) and center" })
-
       vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
-      -- }}}
-
     '';
-
-  clipboard.register = "unnamedplus";
-
-  keymaps = [
-    {
-      action = '':!awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'<CR><CR>'';
-      key = "<Leader>S";
-      options.silent = true;
-      options.desc = "[S]ort lines by length";
-    }
-  ];
 
   autoCmd = [
     {
