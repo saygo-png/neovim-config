@@ -1,4 +1,11 @@
-_: {
+{
+  config,
+  lib,
+  ...
+}: let
+  inherit (config) k;
+  inherit (lib.nixvim) mkRaw;
+in {
   plugins.dial = {
     enable = true;
     lazyLoad.settings.event = "DeferredUIEnter";
@@ -31,14 +38,20 @@ _: {
           augend.constant.new{ elements = {"let", "const"} },
         },
       }
-      vim.keymap.set("n", "<C-a>",  function() require("dial.map").manipulate("increment", "normal")  end)
-      vim.keymap.set("n", "<C-x>",  function() require("dial.map").manipulate("decrement", "normal")  end)
-      vim.keymap.set("n", "g<C-a>", function() require("dial.map").manipulate("increment", "gnormal") end)
-      vim.keymap.set("n", "g<C-x>", function() require("dial.map").manipulate("decrement", "gnormal") end)
-      vim.keymap.set("v", "<C-a>",  function() require("dial.map").manipulate("increment", "visual")  end)
-      vim.keymap.set("v", "<C-x>",  function() require("dial.map").manipulate("decrement", "visual")  end)
-      vim.keymap.set("v", "g<C-a>", function() require("dial.map").manipulate("increment", "gvisual") end)
-      vim.keymap.set("v", "g<C-x>", function() require("dial.map").manipulate("decrement", "gvisual") end)
     '';
+  };
+  my.keymaps = {
+    normal = {
+      "<C-a>" = k (mkRaw "function() require('dial.map').manipulate('increment', 'normal') end") "Increment";
+      "<C-x>" = k (mkRaw "function() require('dial.map').manipulate('decrement', 'normal') end") "Decrement";
+      "g<C-a>" = k (mkRaw "function() require('dial.map').manipulate('increment', 'gnormal') end") "Increment";
+      "g<C-x>" = k (mkRaw "function() require('dial.map').manipulate('decrement', 'gnormal') end") "Decrement";
+    };
+    visual = {
+      "<C-a>" = k (mkRaw "function() require('dial.map').manipulate('increment', 'visual') end") "Increment";
+      "<C-x>" = k (mkRaw "function() require('dial.map').manipulate('decrement', 'visual') end") "Decrement";
+      "g<C-a>" = k (mkRaw "function() require('dial.map').manipulate('increment', 'gvisual') end") "Increment";
+      "g<C-x>" = k (mkRaw "function() require('dial.map').manipulate('decrement', 'gvisual') end") "Decrement";
+    };
   };
 }

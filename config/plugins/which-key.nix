@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  inherit (config) wk;
+in {
   plugins = {
     which-key = {
       enable = true;
@@ -6,18 +8,12 @@ _: {
       settings = {
         delay = 1000;
         win.border = "single";
-        spec = let
-          nRegister = key: text: icon: {
-            __unkeyed = key;
-            group = text;
-            inherit icon;
-          };
-        in [
-          (nRegister "<leader>r" "Re" " ")
-          (nRegister "<leader>q" "Quit" "󰩈 ")
-          (nRegister "<leader>S" "Sort by length" "󰒼 ")
-        ];
       };
     };
+  };
+  my.which-keys = {
+    "<leader>r" = wk "Re" " ";
+    "<leader>q" = wk "Quit" "󰩈 ";
+    "<leader>S" = wk "Sort by length" "󰒼 ";
   };
 }
