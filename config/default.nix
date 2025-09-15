@@ -171,10 +171,6 @@ in {
   extraConfigLua =
     # Lua
     ''
-      if vim.fn.has('termguicolors') == 1 then
-        vim.opt.termguicolors = true
-      end
-
       vim.cmd[[
         augroup remember_folds
           autocmd!
