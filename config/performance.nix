@@ -20,5 +20,5 @@ _: {
     regexpengine = 1;
   };
 
-  extraConfigLua = ''vim.cmd("syntax sync minlines=256")'';
+  extraConfigLua = "vim.cmd('syntax sync minlines=256')";
 }

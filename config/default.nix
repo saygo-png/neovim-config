@@ -169,17 +169,23 @@ in {
     };
   };
 
+  autoGroups."remember_folds".clear = true;
+  autoCmd = [
+    {
+      group = "remember_folds";
+      event = ["BufWinEnter"];
+      command = "silent! loadview 1";
+    }
+    {
+      group = "remember_folds";
+      event = ["BufWinLeave"];
+      command = "mkview 1";
+    }
+  ];
+
   extraConfigLua =
     # Lua
     ''
-      vim.cmd[[
-        augroup remember_folds
-          autocmd!
-          au BufWinLeave ?* mkview 1
-          au BufWinEnter ?* silent! loadview 1
-        augroup END
-      ]]
-
       -- Better open
       local open_command = "xdg-open"
       if vim.fn.has("mac") == 1 then

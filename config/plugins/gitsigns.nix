@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  inherit (config) k;
+in {
   plugins = {
     gitsigns = {
       lazyLoad.settings.event = "DeferredUIEnter";
@@ -23,8 +25,8 @@ _: {
     };
   };
 
-  extraConfigLua = ''
-    vim.keymap.set("n", "<leader>gsc", "<cmd>Gitsigns toggle_signs<CR>", {desc = "[g]it[s]igns [c]olumn"})
-    vim.keymap.set("n", "<leader>gsb", "<cmd>Gitsigns toggle_current_line_blame<CR>", {desc = "[g]it[s]igns [b]lame"})
-  '';
+  my.keymaps.normal = {
+    "<leader>gsc" = k "<cmd>Gitsigns toggle_signs<CR>" "[g]it[s]igns [c]olumn";
+    "<leader>gsb" = k "<cmd>Gitsigns toggle_current_line_blame<CR>" "[g]it[s]igns [b]lame";
+  };
 }
