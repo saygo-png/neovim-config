@@ -1,4 +1,8 @@
-_: {
+{
+  config,
+  lib,
+  ...
+}: {
   plugins = {
     harpoon = {
       enable = true;
@@ -8,34 +12,30 @@ _: {
         harpoon:extend(harpoon_extensions.builtins.highlight_current_file())
       '';
     };
-
-    which-key.settings.spec = let
-      nRegister = __unkeyed: group: icon: {inherit icon group __unkeyed;};
-    in [
-      (nRegister "<leader>h" "Harpoon" "󱢓")
-      (nRegister "<leader>ha" "Add file" "󱢓")
-      (nRegister "<leader>hm" "File menu" "󱢓")
-      (nRegister "<leader>hc" "Command menu" "󱢓")
-      (nRegister "<leader>hn" "Next file" "󱢓")
-      (nRegister "<leader>hp" "Previous file" "󱢓")
-    ];
   };
 
-  keymaps = let
-    mkBind = key: a: d: {
-      mode = "n";
-      inherit key;
-      options.desc = d;
-      action.__raw = "function() require'harpoon'${a} end";
+  my = let
+    inherit (config) k wk;
+    hFunc = f: d: k (lib.nixvim.mkRaw "function() require'harpoon'${f} end") d;
+  in {
+    keymaps.normal = {
+      "<leader>ha" = hFunc ":list():add()" "Add file to harpoon list";
+      "<leader>hm" = hFunc ".ui:toggle_quick_menu(require'harpoon':list())" "Harpoon menu";
+      "<leader>hn" = hFunc ":list():next()" "Harpoon next";
+      "<leader>hp" = hFunc ":list():prev()" "Harpoon previous";
+      "<C-h>" = hFunc ":list():select(1)" "Harpoon 1";
+      "<C-j>" = hFunc ":list():select(2)" "Harpoon 2";
+      "<C-k>" = hFunc ":list():select(3)" "Harpoon 3";
+      "<C-l>" = hFunc ":list():select(4)" "Harpoon 4";
     };
-  in [
-    (mkBind "<leader>ha" ":list():add()" "Add file to harpoon list")
-    (mkBind "<leader>hm" ".ui:toggle_quick_menu(require'harpoon':list())" "Harpoon menu")
-    (mkBind "<leader>hn" ":list():next()" "Harpoon next")
-    (mkBind "<leader>hp" ":list():prev()" "Harpoon previous")
-    (mkBind "<C-h>" ":list():select(1)" "Harpoon 1")
-    (mkBind "<C-j>" ":list():select(2)" "Harpoon 2")
-    (mkBind "<C-k>" ":list():select(3)" "Harpoon 3")
-    (mkBind "<C-l>" ":list():select(4)" "Harpoon 4")
-  ];
+
+    which-keys = {
+      "<leader>h" = wk "Harpoon" "󱢓";
+      "<leader>ha" = wk "Add file" "󱢓";
+      "<leader>hm" = wk "File menu" "󱢓";
+      "<leader>hc" = wk "Command menu" "󱢓";
+      "<leader>hn" = wk "Next file" "󱢓";
+      "<leader>hp" = wk "Previous file" "󱢓";
+    };
+  };
 }
