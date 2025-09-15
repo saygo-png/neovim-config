@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+_: {
   extraConfigLua = ''
     vim.keymap.set("i", "<C-x>", "<C-x><C-o>", { desc = "Autocomplete" })
   '';
@@ -13,6 +9,8 @@
       lazyLoad.settings.event = "DeferredUIEnter";
       cmp.enable = true;
     };
+
+    friendly-snippets.enable = true;
 
     luasnip = {
       enable = true;

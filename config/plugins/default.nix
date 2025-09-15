@@ -5,7 +5,6 @@ _: {
     fugitive.enable = true;
     persistence.enable = true;
     vim-surround.enable = true;
-    friendly-snippets.enable = true;
 
     lz-n.enable = true;
     lzn-auto-require.enable = true;
