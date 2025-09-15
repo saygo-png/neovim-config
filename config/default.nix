@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   inherit (config) k kns;
 in {
   imports = [
@@ -42,7 +46,6 @@ in {
     shiftwidth = 2;
     softtabstop = 2;
     expandtab = true;
-    # smartindent = true;
     breakindent = true; # Indent when wrapping
 
     # Wrapping.
@@ -152,6 +155,9 @@ in {
       ";" = kns ":" "Command mode with or without shift";
       ">" = k ">>" "Indent more";
       "<lt>" = k "<lt><lt>" "Indent less";
+
+      "<Esc>" = k (lib.nixvim.mkRaw "function() vim.fn.setreg('/', {}) end") "Clear search";
+      "<leader>q" = k (lib.nixvim.mkRaw "vim.cmd.only") "Quit other windows";
     };
     visual = {
       # Keep selection when indenting.
@@ -161,27 +167,16 @@ in {
       # Misc
       "v" = k "<Esc>^vg_" "Select line without newline and whitespace";
       "p" = k ''"_dP'' "Infinite paste";
-      "L" = k ":norm yss" "Surround each line";
+      "L" = kns ":norm yss" "Surround each line";
       "." = k "<cmd>normal .<CR>" "Dot commands over visual blocks";
       "gj" = k "J" "Join lines";
-
       "<Leader>S" = k '':!awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'<CR><CR>'' "[S]ort lines by length";
     };
-  };
 
-  autoGroups."remember_folds".clear = true;
-  autoCmd = [
-    {
-      group = "remember_folds";
-      event = ["BufWinEnter"];
-      command = "silent! loadview 1";
-    }
-    {
-      group = "remember_folds";
-      event = ["BufWinLeave"];
-      command = "mkview 1";
-    }
-  ];
+    insertAndCommand = {
+      "<C-V>" = k "<C-r>+" "Proper paste";
+    };
+  };
 
   extraConfigLua =
     # Lua
@@ -218,14 +213,6 @@ in {
         end
       end
       vim.keymap.set('n', '<S-f>', toggle_quickfix, { silent = true, desc = "Toggle quickfix" })
-
-      -- Copy and paste
-      vim.keymap.set({"i", "c"}, "<C-V>", "<C-r>+", { desc = "Proper paste" })
-      vim.keymap.set({"i", "c"}, "<C-V>", "<C-r>+", { desc = "Proper paste" })
-
-      -- Basic
-      vim.keymap.set("n", "<Esc>", function() vim.fn.setreg("/", {}) end)
-      vim.keymap.set('n', '<leader>q', vim.cmd.only, { desc = "Quit other windows"})
     '';
 
   autoCmd = [
