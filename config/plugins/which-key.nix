@@ -14,7 +14,7 @@ _: {
           };
         in [
           (nRegister "<leader>r" "Re" " ")
-          (nRegister "<leader>q" "Quit" "󱢓 ")
+          (nRegister "<leader>q" "Quit" "󰩈 ")
           (nRegister "<leader>S" "Sort by length" "󰒼 ")
         ];
       };

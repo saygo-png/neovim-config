@@ -42,7 +42,7 @@
   };
 
   # Hide end of line tildes.
-  extraConfigLua = ''vim.opt.fillchars:append({ eob = " " })'';
+  extraConfigLua = "vim.opt.fillchars:append({ eob = ' ' })";
 
   performance.combinePlugins.standalonePlugins = [
     pkgs.vimPlugins.gruvbox-material
