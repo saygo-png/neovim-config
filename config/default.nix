@@ -14,6 +14,7 @@ in {
     ./plugins/mini.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
+    ./plugins/fidget.nix
     ./plugins/lualine.nix
     ./plugins/harpoon.nix
     ./plugins/cutlass.nix
