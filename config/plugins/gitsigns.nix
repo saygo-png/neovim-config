@@ -1,5 +1,5 @@
 {config, ...}: let
-  inherit (config) k;
+  inherit (config) k wk;
 in {
   plugins = {
     gitsigns = {
@@ -10,23 +10,13 @@ in {
         signcolumn = true;
       };
     };
-    which-key = {
-      settings = {
-        spec = let
-          nRegister = key: text: icon: {
-            __unkeyed = key;
-            group = text;
-            inherit icon;
-          };
-        in [
-          (nRegister "<leader>gs" "Gitsigns" " ")
-        ];
-      };
-    };
   };
 
-  my.keymaps.normal = {
-    "<leader>gsc" = k "<cmd>Gitsigns toggle_signs<CR>" "[g]it[s]igns [c]olumn";
-    "<leader>gsb" = k "<cmd>Gitsigns toggle_current_line_blame<CR>" "[g]it[s]igns [b]lame";
+  my = {
+    which-keys."<leader>gs" = wk "Gitsigns" " ";
+    keymaps.normal = {
+      "<leader>gsc" = k "<cmd>Gitsigns toggle_signs<CR>" "[g]it[s]igns [c]olumn";
+      "<leader>gsb" = k "<cmd>Gitsigns toggle_current_line_blame<CR>" "[g]it[s]igns [b]lame";
+    };
   };
 }
