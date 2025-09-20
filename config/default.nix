@@ -4,6 +4,7 @@
   ...
 }: let
   inherit (config) k kns;
+  inherit (lib.nixvim) mkRaw;
 in {
   imports = [
     ./lib/keymaps.nix
@@ -157,8 +158,8 @@ in {
       ">" = k ">>" "Indent more";
       "<lt>" = k "<lt><lt>" "Indent less";
 
-      "<Esc>" = k (lib.nixvim.mkRaw "function() vim.fn.setreg('/', {}) end") "Clear search";
-      "<leader>q" = k (lib.nixvim.mkRaw "vim.cmd.only") "Quit other windows";
+      "<Esc>" = k (mkRaw "function() vim.fn.setreg('/', {}) end") "Clear search";
+      "<leader>q" = k (mkRaw "vim.cmd.only") "Quit other windows";
     };
     visual = {
       # Keep selection when indenting.
