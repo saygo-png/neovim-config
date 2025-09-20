@@ -4,8 +4,13 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  inherit (config) k wk;
+  inherit (lib.nixvim) mkRaw;
+in {
   plugins = {
+    harpoon.enableTelescope = true;
+    project-nvim.enableTelescope = false;
     telescope = {
       enable = true;
       # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
@@ -16,23 +21,6 @@
           fuzzy = true;
           override_file_sorter = true;
           override_generic_sorter = true;
-        };
-      };
-
-      settings = {
-        defaults = {
-          mappings = {
-            n = {
-              "<C-f>" = {
-                __raw = "require('telescope.actions.layout').toggle_preview";
-              };
-            };
-            i = {
-              "<M-f>" = {
-                __raw = "require('telescope.actions.layout').toggle_preview";
-              };
-            };
-          };
         };
       };
 
@@ -83,63 +71,36 @@
         };
       };
     };
-
-    which-key.settings.spec = [
-      {
-        __unkeyed = "<leader>t";
-        group = "Telescope";
-        icon = " ";
-      }
-    ];
-    project-nvim.enableTelescope = false;
-    harpoon.enableTelescope = true;
   };
 
-  keymaps =
-    [
+  my = {
+    which-keys."<leader>t" = wk "Telescope" " ";
+    keymaps.normal =
       {
-        key = "<leader>to";
-        action.__raw = "function()
-            require'telescope.builtin'.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
-          end";
-        options.desc = "[S]earch in [O]pen Files";
+        "<leader>to" = k (mkRaw "function()
+          require'telescope.builtin'.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
+        end") "[T]raverse in [O]pen Files";
+
+        "<leader>tcf" = k (mkRaw "function()
+          require'telescope.builtin'.find_files({ cwd = require'telescope.utils'.buffer_dir() })
+        end") "[t]elescope find [f]iles in [c]urrent dir";
+
+        "<leader>tcg" = k (mkRaw "function()
+          require'telescope.builtin'.live_grep({ cwd = require'telescope.utils'.buffer_dir() })
+        end") "[t]elescope grep in [c]urrent dir";
+
+        "<leader>tg" = k (mkRaw "function()
+          require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
+        end") "[t]elescope fuzzy [g]rep";
+
+        "<leader>tv" = k (mkRaw "function()
+          require'telescope'.extensions.git_file_history.git_file_history()
+        end") "[t]elescope [v]ersions";
       }
-      {
-        key = "<leader>tcf";
-        action.__raw = "function()
-            require'telescope.builtin'.find_files({ cwd = require'telescope.utils'.buffer_dir() })
-          end";
-        options.desc = "[t]elescope find [f]iles in [c]urrent dir";
-      }
-      {
-        key = "<leader>tcg";
-        action.__raw = "function()
-            require'telescope.builtin'.live_grep({ cwd = require'telescope.utils'.buffer_dir() })
-          end";
-        options.desc = "[t]elescope grep in [c]urrent dir";
-      }
-      {
-        key = "<leader>tg";
-        action.__raw = "function()
-            require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
-          end";
-        options.desc = "[t]elescope fuzzy [g]rep";
-      }
-      {
-        key = "<leader>tv";
-        action.__raw = "function()
-            require'telescope'.extensions.git_file_history.git_file_history()
-          end";
-        options.desc = "[t]elescope [v]ersions";
-      }
-    ]
-    ++ lib.optionals config.plugins.harpoon.enable [
-      {
-        action = "<cmd>Telescope harpoon marks<CR>";
-        key = "<Leader>th";
-        options.desc = "[t]elescope [h]arpoon Marks";
-      }
-    ];
+      // lib.optionals config.plugins.harpoon.enable {
+        "<leader>th" = k "<cmd>Telescope harpoon marks<CR>" "[t]elescope [h]arpoon Marks";
+      };
+  };
 
   highlightOverride = {
     TelescopeBorder.link = "LineNr";
