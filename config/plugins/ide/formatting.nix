@@ -1,8 +1,12 @@
 {
   lib,
   pkgs,
+  config,
   ...
-}: {
+}: let
+  inherit (config) k wk;
+  inherit (lib.nixvim) mkRaw;
+in {
   extraPackages = [
     pkgs.stylua # Lua formatter
     pkgs.shfmt # Shell formatter
@@ -13,11 +17,9 @@
     pkgs.haskellPackages.cabal-fmt # Haskell .cabal formatter
     pkgs.nodePackages.prettier # Javascript formatter
   ];
-  opts = {
-    # Use conform-nvim for gq formatting. ('formatexpr' is set to vim.lsp.formatexpr(),
-    # so you can format lines via gq if the language server supports it).
-    formatexpr = "v:lua.require'conform'.formatexpr()";
-  };
+
+  # Use conform-nvim for gq formatting.
+  opts.formatexpr = "v:lua.require'conform'.formatexpr()";
 
   plugins = {
     conform-nvim = {
@@ -26,11 +28,7 @@
       settings = {
         lsp_fallback = false;
         formatters_by_ft = let
-          stopAfterFirst = {stop_after_first = true;};
-          addTreefmt = v: listToUnkeyedAttrs (["treefmt"] ++ v);
-          inherit (lib.nixvim.utils) listToUnkeyedAttrs;
-          inherit (builtins) mapAttrs;
-
+          addTreefmt = v: lib.nixvim.utils.listToUnkeyedAttrs (["treefmt"] ++ v);
           fmts = {
             json = ["jq"];
             sh = ["shfmt"];
@@ -50,14 +48,8 @@
             typescriptreact = ["prettierd"];
           };
         in
-          (mapAttrs (_: v: stopAfterFirst // addTreefmt v) fmts)
-          // {
-            "*" = [
-              "squeeze_blanks"
-              "trim_whitespace"
-              "trim_newlines"
-            ];
-          };
+          (builtins.mapAttrs (_: v: {stop_after_first = true;} // addTreefmt v) fmts)
+          // {"*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];};
         formatters = {
           flakeformat = {
             command = "nix";
@@ -73,43 +65,24 @@
         };
       };
     };
-
-    which-key.settings.spec = [
-      {
-        __unkeyed = "<leader>c";
-        group = "Conform";
-        icon = " ";
-      }
-      {
-        __unkeyed = "<leader>nc";
-        group = "Nix";
-        icon = " ";
-      }
-    ];
   };
 
-  keymaps = [
-    {
-      key = "<leader>nc";
-      action.__raw = "function()
+  my = {
+    which-keys."<leader>c" = wk "Conform" " ";
+    keymaps.normal = {
+      "<leader>nc" = k (mkRaw "function()
           require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } })
-        end";
-      options.desc = "nix [c]onform";
-    }
-    {
-      key = "<leader>c";
-      action.__raw = "function()
+        end") "[n]ix [c]onform";
+
+      "<leader>c" = k (mkRaw "function()
           require('conform').format({ timeout_ms = 500 })
-        end";
-      options.desc = "[c]onform";
-    }
-  ];
+        end") "[c]onform";
+    };
+  };
 
   userCommands = {
     Conform = {
-      command.__raw = "function()
-          require('conform').format({ timeout_ms = 500 })
-        end";
+      command.__raw = "function() require('conform').format({ timeout_ms = 500 }) end";
       desc = "Format using Conform with a 500ms timeout";
     };
   };
