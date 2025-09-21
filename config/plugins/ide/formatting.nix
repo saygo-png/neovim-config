@@ -7,23 +7,16 @@
   inherit (config) k wk;
   inherit (lib.nixvim) mkRaw;
 in {
-  extraPackages = [
-    pkgs.stylua # Lua formatter
-    pkgs.shfmt # Shell formatter
-    pkgs.yapf # Python formatter
-    pkgs.isort # Python import sorter
-    pkgs.prettierd # Javascript formatter
-    pkgs.haskellPackages.fourmolu # Haskell formatter
-    pkgs.haskellPackages.cabal-fmt # Haskell .cabal formatter
-    pkgs.nodePackages.prettier # Javascript formatter
-  ];
-
   # Use conform-nvim for gq formatting.
   opts.formatexpr = "v:lua.require'conform'.formatexpr()";
 
   plugins = {
     conform-nvim = {
       enable = true;
+      autoInstall = {
+        enable = true;
+        overrides.treefmt = null; # I want treefmt provided by devshells
+      };
       lazyLoad.settings.cmd = "Conform";
       settings = {
         lsp_fallback = false;
@@ -51,17 +44,17 @@ in {
           (builtins.mapAttrs (_: v: {stop_after_first = true;} // addTreefmt v) fmts)
           // {"*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];};
         formatters = {
+          shfmt.args = lib.mkOptionDefault ["-i" "2"];
+          squeeze_blanks.command = pkgs.lib.getExe' pkgs.coreutils "cat";
           flakeformat = {
             command = "nix";
             args = ["fmt" "$FILENAME"];
             stdin = false;
           };
           cljfmt = {
-            command = "${lib.getExe pkgs.cljfmt}";
+            command = "cljfmt";
             args = ["fix" "-"];
           };
-          shfmt.args = lib.mkOptionDefault ["-i" "2"];
-          squeeze_blanks.command = pkgs.lib.getExe' pkgs.coreutils "cat";
         };
       };
     };
@@ -80,10 +73,8 @@ in {
     };
   };
 
-  userCommands = {
-    Conform = {
-      command.__raw = "function() require('conform').format({ timeout_ms = 500 }) end";
-      desc = "Format using Conform with a 500ms timeout";
-    };
+  userCommands.Conform = {
+    command.__raw = "function() require('conform').format({ timeout_ms = 500 }) end";
+    desc = "Format using Conform with a 500ms timeout";
   };
 }
