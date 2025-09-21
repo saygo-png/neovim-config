@@ -1,67 +1,29 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: let
+  inherit (config) lk;
+  inherit (lib.nixvim.utils) mkRaw;
+in {
   extraPackages = [pkgs.tree-sitter]; # Needed for lspsaga
   lsp = {
     keymaps = [
-      {
-        key = "<Leader>e";
-        action = "<cmd>lua vim.diagnostic.open_float()<CR>";
-        options.desc = "Diagnostic";
-      }
-      {
-        key = "gD";
-        lspBufAction = "declaration";
-        options.desc = "";
-      }
-      {
-        key = "K";
-        action = "<cmd>Lspsaga hover_doc<CR>";
-        options.desc = "Hover";
-      }
-      {
-        key = "<leader>a";
-        action = "<cmd>Lspsaga code_action<CR>";
-        options.desc = "Code [a]ctions";
-      }
-      {
-        key = "gh";
-        action = "<cmd>Lspsaga show_workspace_diagnostics<CR>";
-        options.desc = "Diagnostics [h]elp";
-      }
-      {
-        key = "gp";
-        action = "<cmd>Lspsaga diagnostic_jump_prev<CR>";
-        options.desc = "[p]revious diagnostic";
-      }
-      {
-        key = "gn";
-        action = "<cmd>Lspsaga diagnostic_jump_next<CR>";
-        options.desc = "[n]ext diagnostic";
-      }
-      {
-        key = "gd";
-        action.__raw = "require('telescope.builtin').lsp_definitions";
-        options.desc = "";
-      }
-      {
-        key = "gt";
-        action.__raw = "require('telescope.builtin').lsp_type_definitions";
-        options.desc = "";
-      }
-      {
-        key = "gr";
-        action.__raw = "require('telescope.builtin').lsp_references";
-        options.desc = "";
-      }
-      {
-        key = "gI";
-        action.__raw = "require('telescope.builtin').lsp_implementations";
-        options.desc = "";
-      }
-      {
-        key = "<leader>s";
-        action.__raw = "require('telescope.builtin').lsp_document_symbols";
-        options.desc = "";
-      }
+      (lk "<Leader>e" "<cmd>lua vim.diagnostic.open_float()<CR>" "Diagnostic")
+      (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
+      (lk "K" "<cmd>Lspsaga hover_doc<CR>" "Hover")
+
+      (lk "gD" "declaration" "")
+      (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
+      (lk "gp" "<cmd>Lspsaga diagnostic_jump_prev<CR>" "[p]revious diagnostic")
+      (lk "gn" "<cmd>Lspsaga diagnostic_jump_next<CR>" "[n]ext diagnostic")
+
+      (lk "gd" (mkRaw "require('telescope.builtin').lsp_definitions") "")
+      (lk "gt" (mkRaw "require('telescope.builtin').lsp_type_definitions") "")
+      (lk "gr" (mkRaw "require('telescope.builtin').lsp_references") "")
+      (lk "gI" (mkRaw "require('telescope.builtin').lsp_implementations") "")
+      (lk "<leader>s" (mkRaw "require('telescope.builtin').lsp_document_symbols") "")
     ];
 
     servers = {
@@ -148,7 +110,7 @@
     signs = true;
     underline = true;
     severity_sort = true;
-    jump.severity.__raw = "vim.diagnostic.severity.WARN";
+    jump.severity = mkRaw "vim.diagnostic.severity.WARN";
     float = {
       source = "if_many";
       border = "single";
