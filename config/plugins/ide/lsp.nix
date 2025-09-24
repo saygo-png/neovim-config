@@ -111,10 +111,7 @@ in {
     underline = true;
     severity_sort = true;
     jump.severity = mkRaw "vim.diagnostic.severity.WARN";
-    float = {
-      source = "if_many";
-      border = "single";
-    };
+    float.source = "if_many";
   };
 
   extraConfigLua = ''

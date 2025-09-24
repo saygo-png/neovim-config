@@ -89,6 +89,8 @@ in {
     # More space.
     cmdheight = 0;
 
+    winborder = "single";
+
     # Puts error messages on the number line.
     signcolumn = "number";
 
