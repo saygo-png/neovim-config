@@ -1,60 +1,63 @@
-_: {
-  extraConfigLua = ''
-    vim.keymap.set("i", "<C-x>", "<C-x><C-o>", { desc = "Autocomplete" })
-  '';
+{
+  config,
+  lib,
+  ...
+}: let
+  inherit (lib) mapAttrs;
+  inherit (lib.nixvim) mkRaw listToUnkeyedAttrs;
+in {
+  # Needed for blink to access friendly-snippets
+  performance.combinePlugins.standalonePlugins = ["friendly-snippets"];
+
+  my.keymaps.insertAndCommand = {
+    "<C-x>" = config.k "<C-x><C-o>" "Autocomplete";
+    "<Tab>" = config.k "" "";
+  };
 
   plugins = {
-    lspkind = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-      cmp.enable = true;
-    };
-
     friendly-snippets.enable = true;
 
-    luasnip = {
+    lspkind = {
       enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-      settings = {
-        enable_autosnippets = true;
-        store_selection_keys = "<Tab>";
-      };
+      cmp.enable = false;
+      lazyLoad.settings.event = ["InsertEnter" "CmdlineEnter"];
     };
 
-    cmp = {
+    blink-cmp = {
       enable = true;
-      autoEnableSources = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
+      lazyLoad.settings.event = ["InsertEnter" "CmdlineEnter"];
       settings = {
-        autocomplete = true;
-        sources = [{name = "nvim_lsp";}];
-        performance = {
-          debounce = 200;
-          throttle = 200;
-          maxViewEntries = 5;
-          fetchingTimeout = 100;
-        };
-        snippet.expand = ''
-          function(args)
-            require('luasnip').lsp_expand(args.body)
-          end
-        '';
-        mapping = {
-          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
-          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-          "<C-j>" = "cmp.mapping.select_next_item()";
-          "<C-k>" = "cmp.mapping.select_prev_item()";
-          "<C-e>" = "cmp.mapping.abort()";
-          "<C-b>" = "cmp.mapping.scroll_docs(-4)";
-          "<C-f>" = "cmp.mapping.scroll_docs(4)";
-          "<C-Space>" = "cmp.mapping.complete()";
-          "<CR>" = "cmp.mapping.confirm({ select = false })";
-          "<S-CR>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })";
-        };
-
-        window = {
-          completion.scrollbar = true;
-          documentation.border = "single";
+        cmdline.keymap.preset = "inherit";
+        keymap =
+          {
+            preset = "super-tab";
+            "<Tab>" = listToUnkeyedAttrs [
+              (mkRaw ''
+                function(cmp)
+                  cmp.show()
+                  if cmp.snippet_active() then return cmp.accept()
+                  else return cmp.select_and_accept() end
+                end
+              '')
+              "fallback"
+            ];
+          }
+          // mapAttrs (_: v: [v] ++ ["fallback"]) {
+            "<C-j>" = "select_next";
+            "<C-k>" = "select_prev";
+            "<CR>" = "accept";
+          };
+        completion = {
+          documentation.auto_show = true;
+          menu = {
+            auto_show = false;
+            border = "none";
+            draw.kind_icon.text = mkRaw ''
+              function(ctx)
+                return require('lspkind').symbolic(ctx.kind, { mode = 'symbol' })
+              end,
+            '';
+          };
         };
       };
     };
