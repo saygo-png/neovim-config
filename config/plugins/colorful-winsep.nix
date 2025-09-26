@@ -1,10 +1,20 @@
 _: {
   plugins = {
     colorful-winsep = {
-      enable = false; # https://github.com/nvim-zh/colorful-winsep.nvim/issues/103
+      enable = true;
       settings = {
-        hi.fg = "#7d8618";
-        symbols = ["─" "│" "┌" "┐" "└" "┘"];
+        highlight = "#b8bb26";
+        excluded_ft = [ "NvimTree" ];
+        border = [
+          "━"
+          "┃"
+          "┏"
+          "┓"
+          "┗"
+          "┛"
+        ];
+        # highlight = "#7d8618";
+        # border = ["─" "│" "┌" "┐" "└" "┘"];
       };
       lazyLoad.settings.event = "WinLeave";
     };
