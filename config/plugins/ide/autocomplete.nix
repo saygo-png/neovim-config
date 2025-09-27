@@ -52,7 +52,7 @@ in {
           menu = {
             auto_show = false;
             border = "none";
-            draw.kind_icon.text = mkRaw ''
+            draw.components.kind_icon.text = mkRaw ''
               function(ctx)
                 return require('lspkind').symbolic(ctx.kind, { mode = 'symbol' })
               end,
