@@ -13,7 +13,9 @@ in {
     ./theme.nix
     ./performance.nix
 
-    ./plugins
+    ./plugins/quickfix
+    ./plugins/trivial
+
     ./plugins/oil.nix
     ./plugins/dial.nix
     ./plugins/mini.nix
@@ -200,23 +202,6 @@ in {
       vim.keymap.set('n', 'gx', function()
         vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
       end, { silent = true })
-
-      -- Open/close quickfix on toggle
-      local function toggle_quickfix()
-        local quickfix_open = false
-        for _, win in ipairs(vim.fn.getwininfo()) do
-          if win.quickfix == 1 then
-            quickfix_open = true
-            break
-          end
-        end
-        if quickfix_open then
-          vim.cmd('cclose')
-        else
-          vim.cmd('copen')
-        end
-      end
-      vim.keymap.set('n', '<S-f>', toggle_quickfix, { silent = true, desc = "Toggle quickfix" })
 
       -- Remember last line
        vim.api.nvim_create_autocmd("BufRead", {
