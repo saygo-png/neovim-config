@@ -5,7 +5,7 @@
       inputs.nixpkgs.follows = "nixvim";
     };
     nixvim = {
-      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=lspsaga-mkNeovimPlugin";
+      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=nvim-bqf-mkNeovimPlugin";
       url = "github:nix-community/nixvim";
     };
 
