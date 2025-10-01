@@ -97,7 +97,7 @@ in {
           require'telescope'.extensions.git_file_history.git_file_history()
         end") "[t]elescope [v]ersions";
       }
-      // lib.optionals config.plugins.harpoon.enable {
+      // lib.optionalAttrs config.plugins.harpoon.enable {
         "<leader>th" = k "<cmd>Telescope harpoon marks<CR>" "[t]elescope [h]arpoon Marks";
       };
   };
