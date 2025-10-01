@@ -10,6 +10,8 @@ in {
   # Use conform-nvim for gq formatting.
   opts.formatexpr = "v:lua.require'conform'.formatexpr()";
 
+  performance.byteCompileLua.excludedPlugins = ["conform.nvim"];
+
   plugins = {
     conform-nvim = {
       enable = true;
