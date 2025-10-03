@@ -36,6 +36,7 @@ in {
     ./plugins/telescope.nix
     ./plugins/nvim-tree.nix
     ./plugins/treesitter.nix
+    ./plugins/haskell-tools.nix
     ./plugins/vimVisualMulti.nix
 
     ./plugins/ide/lsp.nix

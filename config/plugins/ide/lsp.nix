@@ -46,9 +46,6 @@ in {
       # Typst
       tinymist.enable = true;
 
-      # Haskell.
-      hls.enable = true;
-
       # Nix.
       nil_ls = {
         enable = true;
