@@ -28,6 +28,7 @@ in {
       lazyLoad.settings.event = ["InsertEnter" "CmdlineEnter"];
       settings = {
         cmdline.keymap.preset = "inherit";
+        sources.default = ["lsp" "snippets" "path"];
         keymap =
           {
             preset = "super-tab";
