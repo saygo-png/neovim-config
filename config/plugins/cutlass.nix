@@ -1,4 +1,4 @@
-_: {
+{
   plugins = {
     cutlass-nvim = {
       enable = true;

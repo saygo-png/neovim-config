@@ -1,4 +1,4 @@
-_: {
+{
   performance = {
     combinePlugins.enable = true;
     byteCompileLua = {

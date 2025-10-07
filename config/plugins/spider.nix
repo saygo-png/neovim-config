@@ -1,4 +1,4 @@
-_: {
+{
   plugins.spider = {
     enable = true;
     lazyLoad.settings.keys = ["b" "e" "ge" "w"];

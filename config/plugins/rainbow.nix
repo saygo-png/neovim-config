@@ -1,4 +1,4 @@
-_: {
+{
   plugins.rainbow = {
     enable = true;
     settings = {

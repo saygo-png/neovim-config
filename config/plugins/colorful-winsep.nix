@@ -1,4 +1,4 @@
-_: {
+{
   plugins = {
     colorful-winsep = {
       enable = true;

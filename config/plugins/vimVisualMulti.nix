@@ -1,4 +1,4 @@
-_: {
+{
   plugins.visual-multi = {
     enable = true;
     settings = {

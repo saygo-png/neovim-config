@@ -1,4 +1,4 @@
-_: {
+{
   plugins = {
     colorizer = {
       lazyLoad.settings.event = "DeferredUIEnter";
