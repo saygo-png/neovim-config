@@ -5,7 +5,10 @@
 }: {
   plugins.flash = {
     enable = true;
-    settings.autojump = true;
+    settings = {
+      autojump = true;
+      prompt.enabled = false;
+    };
     lazyLoad.settings.keys = ["s" "S" "gs"];
   };
 
