@@ -1,12 +1,23 @@
 {
   inputs = {
+    nixvim = {
+      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=nvim-bqf-mkNeovimPlugin";
+      url = "github:nix-community/nixvim";
+      inputs = {
+        systems.follows = "systems";
+        nuschtosSearch.follows = "";
+        flake-parts.inputs.nixpkgs-lib.inputs.nixpkgs.follows = "nixvim";
+      };
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixvim";
     };
-    nixvim = {
-      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=nvim-bqf-mkNeovimPlugin";
-      url = "github:nix-community/nixvim";
+
+    systems = {
+      url = "path:./systems.nix";
+      flake = false;
     };
 
     nvim-plugin-telescope-git-file-history = {
