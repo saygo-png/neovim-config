@@ -20,7 +20,6 @@ in {
     ./plugins/dial.nix
     ./plugins/mini.nix
     ./plugins/flash.nix
-    ./plugins/tidal.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
     ./plugins/lualine.nix
