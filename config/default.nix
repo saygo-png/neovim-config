@@ -84,9 +84,9 @@ in {
     grepprg = "rg --vimgrep";
     grepformat = "%f:%l:%c:%m";
 
-    # Folds.
-    foldenable = false;
-    foldmethod = "marker";
+    foldenable = true;
+    foldmethod = "expr";
+    foldexpr = "v:lua.vim.treesitter.foldexpr()";
 
     # More space.
     cmdheight = 0;
@@ -231,6 +231,12 @@ in {
       pattern = ["*"];
       command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o";
       desc = "Dont insert comments on newline";
+    }
+    {
+      event = ["BufEnter"];
+      pattern = ["*"];
+      command = "normal zR";
+      desc = "Unfold file";
     }
   ];
 }

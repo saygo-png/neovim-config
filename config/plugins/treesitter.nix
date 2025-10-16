@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: {
-  opts.foldexpr = "nvim_treesitter#foldexpr()";
   performance.combinePlugins.standalonePlugins = ["nvim-treesitter"];
 
   # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
