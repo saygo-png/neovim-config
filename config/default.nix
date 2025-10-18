@@ -84,9 +84,7 @@ in {
     grepprg = "rg --vimgrep";
     grepformat = "%f:%l:%c:%m";
 
-    foldenable = true;
-    foldmethod = "expr";
-    foldexpr = "v:lua.vim.treesitter.foldexpr()";
+    foldenable = false;
 
     # More space.
     cmdheight = 0;
