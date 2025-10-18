@@ -27,7 +27,7 @@ in {
     ];
 
     servers = {
-      "*".settings = {
+      "*".config = {
         root_markers = [".git"];
         capabilities.textDocument.semanticTokens.multilineTokenSupport = true;
       };
@@ -49,19 +49,19 @@ in {
       # Nix.
       nil_ls = {
         enable = true;
-        settings.nix.flake.autoArchive = true;
+        config.nix.flake.autoArchive = true;
       };
 
       # Typos.
       typos_lsp = {
         enable = true;
-        settings.init_options.diagnosticSeverity = "Hint";
+        config.init_options.diagnosticSeverity = "Hint";
       };
 
       # Typescript
       ts_ls = {
         enable = true;
-        settings = {
+        config = {
           root_dir = ''
             function (filename, bufnr)
               local util = require 'lspconfig.util'
@@ -79,7 +79,7 @@ in {
       # Typescript with deno
       denols = {
         enable = true;
-        settings.root_dir = ''
+        config.root_dir = ''
           function (filename, bufnr)
             local util = require 'lspconfig.util'
             return util.root_pattern("deno.json", "deno.jsonc")(filename);
