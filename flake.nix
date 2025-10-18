@@ -1,7 +1,7 @@
 {
   inputs = {
     nixvim = {
-      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=nvim-bqf-mkNeovimPlugin";
+      # url = "git+file:///home/samsepi0l/builds/nixvim?ref=fix-ts-folds";
       url = "github:nix-community/nixvim";
       inputs = {
         systems.follows = "systems";
