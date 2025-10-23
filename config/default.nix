@@ -98,9 +98,6 @@ in {
     list = true;
     listchars = "tab:▸ ,trail:·,nbsp:␣";
 
-    # Better completion.
-    completeopt = ["menuone" "noselect" "noinsert"];
-
     # (https://neovim.io/doc/user/options.html#'laststatus')
     laststatus = 3;
   };
