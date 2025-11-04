@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   extraPackages = [
     pkgs.deadnix # Nix linter
-    pkgs.statix # Nix linter
     pkgs.nodePackages.jsonlint
     pkgs.shellcheck
   ];
@@ -49,7 +48,7 @@
         json = ["jsonlint"];
         bash = ["shellcheck"];
         shell = ["shellcheck"];
-        nix = ["nlint" "nix" "deadnix" "statix"];
+        nix = ["nlint" "nix" "deadnix"];
       };
     };
   };
