@@ -8,7 +8,6 @@
     vim-surround.enable = true;
 
     lz-n.enable = true;
-    lzn-auto-require.enable = true;
 
     comment = {
       enable = true;
