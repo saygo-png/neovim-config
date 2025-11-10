@@ -19,11 +19,11 @@ in {
       (lk "gp" "<cmd>Lspsaga diagnostic_jump_prev<CR>" "[p]revious diagnostic")
       (lk "gn" "<cmd>Lspsaga diagnostic_jump_next<CR>" "[n]ext diagnostic")
 
-      (lk "gd" (mkRaw "require('telescope.builtin').lsp_definitions") "")
-      (lk "gt" (mkRaw "require('telescope.builtin').lsp_type_definitions") "")
-      (lk "gr" (mkRaw "require('telescope.builtin').lsp_references") "")
-      (lk "gI" (mkRaw "require('telescope.builtin').lsp_implementations") "")
-      (lk "<leader>s" (mkRaw "require('telescope.builtin').lsp_document_symbols") "")
+      (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "")
+      (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "")
+      (lk "gr" "<cmd>Telescope lsp_references<CR>" "")
+      (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "")
+      (lk "<leader>s" "<cmd>Telescope lsp_document_symbols<CR>" "")
     ];
 
     servers = {
