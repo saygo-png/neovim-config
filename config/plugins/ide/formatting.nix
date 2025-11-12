@@ -17,7 +17,10 @@ in {
       enable = true;
       autoInstall = {
         enable = true;
-        overrides.treefmt = null; # I want treefmt provided by devshells
+        overrides = {
+          treefmt = null; # I want treefmt provided by devshells
+          fourmolu = null;
+        };
       };
       lazyLoad.settings.cmd = "Conform";
       settings = {
