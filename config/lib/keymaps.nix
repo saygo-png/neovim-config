@@ -19,6 +19,21 @@
       description = "Make keybind for lsp module";
     };
 
+    toLazyKeys = lib.mkOption {
+      readOnly = true;
+      type = lib.types.anything;
+      description = "Convert keybinds to lz-n spec";
+      default = binds: let
+        toLazyKey =
+        bind: {
+          __unkeyed-1 = bind.name;
+          __unkeyed-2 = bind.value.action;
+          desc = bind.value.desc;
+        };
+        in
+        map toLazyKey (lib.attrsToList binds);
+    };
+
     kns = lib.mkOption {
       readOnly = true;
       type = lib.types.anything;
