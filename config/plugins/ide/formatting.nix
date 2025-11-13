@@ -4,13 +4,15 @@
   config,
   ...
 }: let
-  inherit (config) k wk;
+  inherit (config) k wk toLazyKeys;
   inherit (lib.nixvim) mkRaw;
 in {
   # Use conform-nvim for gq formatting.
   opts.formatexpr = "v:lua.require'conform'.formatexpr()";
 
   performance.byteCompileLua.excludedPlugins = ["conform.nvim"];
+
+  my.which-keys."<leader>c" = wk "Conform" " ";
 
   plugins = {
     conform-nvim = {
@@ -22,7 +24,20 @@ in {
           fourmolu = null;
         };
       };
-      lazyLoad.settings.cmd = "Conform";
+
+      lazyLoad.settings = {
+        cmd = "Conform";
+        keys =
+          toLazyKeys {
+            "<leader>nc" = k (mkRaw "function()
+          require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } })
+        end") "[n]ix [c]onform";
+            "<leader>c" = k (mkRaw "function()
+          require('conform').format({ timeout_ms = 500 })
+        end") "[c]onform";
+          };
+      };
+
       settings = {
         lsp_fallback = false;
         formatters_by_ft = let
@@ -62,19 +77,6 @@ in {
           };
         };
       };
-    };
-  };
-
-  my = {
-    which-keys."<leader>c" = wk "Conform" " ";
-    keymaps.normal = {
-      "<leader>nc" = k (mkRaw "function()
-          require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } })
-        end") "[n]ix [c]onform";
-
-      "<leader>c" = k (mkRaw "function()
-          require('conform').format({ timeout_ms = 500 })
-        end") "[c]onform";
     };
   };
 
