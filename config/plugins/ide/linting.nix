@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   extraPackages = [
     pkgs.deadnix # Nix linter
-    pkgs.nodePackages.jsonlint
     pkgs.shellcheck
   ];
 
@@ -45,7 +44,6 @@
         };
       };
       lintersByFt = {
-        json = ["jsonlint"];
         bash = ["shellcheck"];
         shell = ["shellcheck"];
         nix = ["nlint" "nix" "deadnix"];
