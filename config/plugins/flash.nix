@@ -2,25 +2,21 @@
   config,
   lib,
   ...
-}: {
+}: let
+  inherit (config) k;
+  inherit (lib.nixvim) mkRaw;
+in {
   plugins.flash = {
     enable = true;
     settings = {
       autojump = true;
       prompt.enabled = false;
     };
-    lazyLoad.settings.keys = ["s" "S" "gs"];
-  };
-
-  my.keymaps = let
-    luaFunc = f: d: config.k (lib.nixvim.mkRaw "function() ${f} end") d;
-    keys = {
-      "s" = luaFunc "require('flash').remote()" "Flash";
-      "S" = luaFunc "require('flash').treesitter_search()" "Flash treesitter search";
-      "gs" = luaFunc "require('flash').treesitter()" "Flash treesitter";
-    };
-  in {
-    visual = keys;
-    normal = keys;
+    lazyLoad.settings.keys = map (b: b // {mode = ["v" "n"];}) (config.toLazyKeys
+      {
+        "s" = k (mkRaw "function() require('flash').remote() end") "Flash";
+        "S" = k (mkRaw "function() require('flash').treesitter_search() end") "Flash treesitter search";
+        "gs" = k (mkRaw "function() require('flash').treesitter() end") "Flash treesitter";
+      });
   };
 }
