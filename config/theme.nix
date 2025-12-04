@@ -26,6 +26,16 @@
       fg = "#7d8618";
       bg = "#3c3836"; # Gray numberline
     };
+
+    # Strings should be blue
+
+    "@string".link = "Blue";
+    "@lsp.type.string".link = "Blue";
+
+    # Functions should be green
+    "@variable.member.nix".link = "Green";
+
+    "@lsp.type.property.nix".link = "Green";
   };
 
   colorschemes.gruvbox-material = {
