@@ -17,13 +17,12 @@ in {
     ./plugins/trivial
 
     ./plugins/oil.nix
-    ./plugins/dial.nix
+    # ./plugins/dial.nix
     ./plugins/mini.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
     ./plugins/lualine.nix
-    ./plugins/harpoon.nix
     ./plugins/cutlass.nix
     ./plugins/rainbow.nix
     ./plugins/which-key.nix
