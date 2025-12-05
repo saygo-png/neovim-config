@@ -27,15 +27,12 @@
       bg = "#3c3836"; # Gray numberline
     };
 
-    # Strings should be blue
+    # Strings should be aqua
+    "@string".link = "Aqua";
+    "@lsp.type.string".link = "Aqua";
 
-    "@string".link = "Blue";
-    "@lsp.type.string".link = "Blue";
-
-    # Functions should be green
-    "@variable.member.nix".link = "Green";
-
-    "@lsp.type.property.nix".link = "Green";
+    # "@variable.member.nix".link = "";
+    # "@lsp.type.property.nix".link = "Aqua";
   };
 
   colorschemes.gruvbox-material = {
@@ -52,7 +49,10 @@
   };
 
   # Hide end of line tildes.
-  extraConfigLua = "vim.opt.fillchars:append({ eob = ' ' })";
+  extraConfigLua = ''
+    vim.highlight.priorities.semantic_tokens = 95
+    vim.opt.fillchars:append({ eob = ' ' })
+  '';
 
   performance.combinePlugins.standalonePlugins = [
     pkgs.vimPlugins.gruvbox-material
