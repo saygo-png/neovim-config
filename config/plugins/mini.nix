@@ -7,6 +7,7 @@
       draw = {
         delay = 0;
         priority = 2;
+        animation.__raw = "require('mini.indentscope').gen_animation.none()";
       };
       options = {
         border = "top";
