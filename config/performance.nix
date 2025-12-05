@@ -5,7 +5,7 @@
       enable = true;
       configs = true;
       luaLib = true;
-      initLua = false;
+      initLua = true;
       plugins = true;
       nvimRuntime = true;
     };
