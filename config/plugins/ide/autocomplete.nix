@@ -55,7 +55,7 @@ in {
             border = "none";
             draw.components.kind_icon.text = mkRaw ''
               function(ctx)
-                return require('lspkind').symbolic(ctx.kind, { mode = 'symbol' })
+                return require('lspkind').symbol_map[ctx.kind] or ""
               end,
             '';
           };

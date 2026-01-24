@@ -32,7 +32,7 @@
     filteredGrammars = builtins.filter (set: !matchCommentGrammar set.name) allGrammars;
   in {
     enable = true;
-    folding = true;
+    folding.enable = true;
     nixvimInjections = true;
     grammarPackages = filteredGrammars;
     nixGrammars = true; # Install grammars with Nix
