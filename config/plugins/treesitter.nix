@@ -1,5 +1,7 @@
 {
   lib,
+  inputs,
+  config,
   pkgs,
   ...
 }: {
@@ -21,35 +23,35 @@
     '';
   };
 
-  plugins.treesitter = let
-    inherit (pkgs.vimPlugins.nvim-treesitter) allGrammars;
-    boolMatch = regex: str: (builtins.match regex str) != null && checkPassed;
-    checkPassed =
-      lib.assertMsg
-      (builtins.match "abc" "abc" == [] && builtins.match "foo" "abc" == null)
-      "builtins.match must have changed";
-    matchCommentGrammar = str: boolMatch ".*comment-grammar.*" str;
-    filteredGrammars = builtins.filter (set: !matchCommentGrammar set.name) allGrammars;
-  in {
-    enable = true;
-    folding.enable = true;
-    nixvimInjections = true;
-    grammarPackages = filteredGrammars;
-    nixGrammars = true; # Install grammars with Nix
-    settings = {
-      auto_install = false;
+  extraPlugins =
+    lib.singleton
+    ((pkgs.vimUtils.buildVimPlugin {
+        name = "treesitter-modules";
+        src = inputs.nvim-plugin-treesitter-modules;
+      }).overrideAttrs
+      {dependencies = [config.plugins.treesitter.package];});
+
+  extraConfigLua = ''
+    require('treesitter-modules').setup({
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = "<Enter>",
+                node_incremental = "<Enter>",
+                scope_incremental = "gsi",
+                node_decremental = "<BS>",
+            },
+        },
+    })
+  '';
+
+  plugins = {
+    treesitter = {
+      enable = true;
+      folding.enable = true;
+      nixvimInjections = true;
       indent.enable = true;
       highlight.enable = true;
-      ignore_install = ["comment"]; # Comment parser is very slow
-      incremental_selection = {
-        enable = true;
-        keymaps = {
-          scope_incremental = "gsi";
-          node_decremental = "<BS>";
-          node_incremental = "<Enter>";
-          init_selection = "<Enter>";
-        };
-      };
     };
   };
 }

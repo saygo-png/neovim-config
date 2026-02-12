@@ -23,6 +23,11 @@
       url = "github:isak102/telescope-git-file-history.nvim";
       flake = false;
     };
+
+    nvim-plugin-treesitter-modules = {
+      url = "github:MeanderingProgrammer/treesitter-modules.nvim";
+      flake = false;
+    };
   };
   outputs = {
     nixvim,
