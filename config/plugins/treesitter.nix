@@ -22,7 +22,7 @@
   };
 
   plugins.treesitter = let
-    inherit (pkgs.vimPlugins.nvim-treesitter.passthru) allGrammars;
+    inherit (pkgs.vimPlugins.nvim-treesitter) allGrammars;
     boolMatch = regex: str: (builtins.match regex str) != null && checkPassed;
     checkPassed =
       lib.assertMsg
