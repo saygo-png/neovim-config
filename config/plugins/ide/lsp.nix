@@ -11,7 +11,8 @@ in {
     pkgs.tree-sitter
     pkgs.deadnix
     pkgs.shellcheck
-  ]; # Needed for lspsaga
+  ];
+
   lsp = {
     keymaps = [
       (lk "<Leader>e" "<cmd>lua vim.diagnostic.open_float()<CR>" "Diagnostic")

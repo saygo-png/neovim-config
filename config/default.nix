@@ -22,6 +22,7 @@ in {
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
+    ./plugins/roslyn.nix
     ./plugins/lualine.nix
     ./plugins/cutlass.nix
     ./plugins/rainbow.nix
