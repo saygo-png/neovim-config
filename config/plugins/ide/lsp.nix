@@ -9,8 +9,6 @@
 in {
   extraPackages = [
     pkgs.tree-sitter
-    pkgs.deadnix
-    pkgs.shellcheck
   ];
 
   lsp = {
