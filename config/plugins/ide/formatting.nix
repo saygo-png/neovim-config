@@ -52,6 +52,7 @@ in {
             html = ["prettierd"];
             scss = ["prettierd"];
             jsonc = ["prettierd"];
+            cabal = ["cabal_fmt"];
             haskell = ["fourmolu"];
             graphql = ["prettierd"];
             markdown = ["prettierd"];
