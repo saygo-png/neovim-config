@@ -26,7 +26,7 @@ in {
       (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "")
       (lk "gr" "<cmd>Telescope lsp_references<CR>" "")
       (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "")
-      (lk "<leader>s" "<cmd>Telescope lsp_document_symbols<CR>" "")
+      (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "")
     ];
 
     servers = {

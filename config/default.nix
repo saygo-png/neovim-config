@@ -19,6 +19,7 @@ in {
     ./plugins/oil.nix
     # ./plugins/dial.nix
     ./plugins/mini.nix
+    ./plugins/iron.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
@@ -111,6 +112,15 @@ in {
   clipboard.register = "unnamedplus";
 
   my.keymaps = {
+    terminal = {
+      "<Esc>" = k "<C-\\><C-n>" "Escape terminal mode";
+
+      # Splits, escapes out of terminal mode.
+      "<S-M-h>" = k "<C-\\><C-n><cmd>wincmd h<CR>" "Move to the split on the left side";
+      "<S-M-l>" = k "<C-\\><C-n><cmd>wincmd l<CR>" "Move to the split on the right side";
+      "<S-M-k>" = k "<C-\\><C-n><cmd>wincmd k<CR>" "Move to the split above";
+      "<S-M-j>" = k "<C-\\><C-n><cmd>wincmd j<CR>" "Move to the split below";
+    };
     normal = {
       "<S-l>" = k "<C-6>" "Previous buffer";
 

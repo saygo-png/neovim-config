@@ -41,9 +41,9 @@ in {
           action = "find_files";
           options.desc = "[t]elescope [f]iles";
         };
-        "<leader>ts" = {
+        "<leader>tt" = {
           action = "builtin";
-          options.desc = "[t]elescope [s]elect telescope";
+          options.desc = "[t]elescope search [t]elescope";
         };
         "<leader>tw" = {
           action = "grep_string";

@@ -24,13 +24,12 @@
       type = lib.types.anything;
       description = "Convert keybinds to lz-n spec";
       default = binds: let
-        toLazyKey =
-        bind: {
+        toLazyKey = bind: {
           __unkeyed-1 = bind.name;
           __unkeyed-2 = bind.value.action;
           desc = bind.value.desc;
         };
-        in
+      in
         map toLazyKey (lib.attrsToList binds);
     };
 
@@ -66,6 +65,7 @@
           "normal"
           "visual"
           "insertAndCommand"
+          "terminal"
         ]);
     };
   };
@@ -89,13 +89,14 @@
         );
 
       sharedOpts = {options.silent = true;};
-      inherit (config.my.keymaps) normal visual insertAndCommand;
+      inherit (config.my.keymaps) normal visual insertAndCommand terminal;
     in
       lib.nixvim.keymaps.mkKeymaps sharedOpts
       (lib.flatten [
         (toKeymapList "n" normal)
         (toKeymapList "v" visual)
         (toKeymapList ["i" "c"] insertAndCommand)
+        (toKeymapList "t" terminal)
       ]);
   };
 }
