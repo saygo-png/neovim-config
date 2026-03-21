@@ -15,6 +15,9 @@ in {
   plugins.haskell-tools = {
     enable = true;
     hlsPackageFallback = true;
+    settings = {
+      tools.repl.prefer = "cabal";
+    };
   };
 
   my.keymaps = let
