@@ -24,7 +24,6 @@ in {
     ht = "require('haskell-tools')";
   in {
     normal = {
-      "<space>l" = k (mkRaw "vim.lsp.codelens.run") "Run code lens";
       "<space>hs" = k (mkRaw "${ht}.hoogle.hoogle_signature") "Search signature";
       "<space>he" = k (mkRaw "${ht}.lsp.buf_eval_all") "Eval snippets";
       "<space>hr" = k (mkRaw "${ht}.repl.toggle") "Toggle repl";

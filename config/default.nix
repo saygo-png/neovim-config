@@ -192,11 +192,6 @@ in {
   extraConfigLua =
     # Lua
     ''
-      -- Better open
-      local open_command = "xdg-open"
-      if vim.fn.has("mac") == 1 then
-        open_command = 'open'
-      end
       local function url_repo()
         local cursorword = vim.fn.expand('<cfile>')
         if string.find(cursorword, '^[a-zA-Z0-9-_.]*/[a-zA-Z0-9-_.]*$') then
@@ -205,43 +200,37 @@ in {
         return cursorword or ""
       end
       vim.keymap.set('n', 'gx', function()
-        vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
-      end, { silent = true })
+        vim.ui.open(url_repo())
+      end, { silent = true, desc = "Open thing under cursor" })
 
       -- Remember last line
-       vim.api.nvim_create_autocmd("BufRead", {
-         callback = function(opts)
-           vim.api.nvim_create_autocmd("BufWinEnter", {
-             once = true,
-             buffer = opts.buf,
-             callback = function()
-               local ft = vim.bo[opts.buf].filetype
-               local last_known_line = vim.api.nvim_buf_get_mark(opts.buf, '"')[1]
-               if
-                 not (ft:match("commit") and ft:match("rebase"))
-                 and last_known_line > 1
-                 and last_known_line <= vim.api.nvim_buf_line_count(opts.buf)
-               then
-                 vim.api.nvim_feedkeys([[g`"]], "nx", false)
-               end
-             end,
-           })
-         end,
-       })
+      vim.api.nvim_create_autocmd("BufRead", {
+        callback = function(opts)
+          vim.api.nvim_create_autocmd("BufWinEnter", {
+            once = true,
+            buffer = opts.buf,
+            callback = function()
+              local ft = vim.bo[opts.buf].filetype
+              local last_known_line = vim.api.nvim_buf_get_mark(opts.buf, '"')[1]
+              if
+                not (ft:match("commit") or ft:match("rebase"))
+                and last_known_line > 1
+                and last_known_line <= vim.api.nvim_buf_line_count(opts.buf)
+              then
+                vim.api.nvim_feedkeys([[g`"]], "nx", false)
+              end
+            end,
+          })
+        end,
+      })
     '';
 
   autoCmd = [
     {
-      event = ["BufEnter"];
+      event = ["FileType"];
       pattern = ["*"];
       command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o";
       desc = "Dont insert comments on newline";
-    }
-    {
-      event = ["BufEnter"];
-      pattern = ["*"];
-      command = "normal zR";
-      desc = "Unfold file";
     }
   ];
 }

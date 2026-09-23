@@ -19,6 +19,18 @@
       description = "Make keybind for lsp module";
     };
 
+    lkb = lib.mkOption {
+      default = key: lspBufAction: desc: {inherit key lspBufAction;} // {options.desc = desc;};
+      readOnly = true;
+      type = lib.types.anything;
+      description = ''
+        Make keybind for lsp module bound to `vim.lsp.buf.<action>`.
+
+        `lk` takes a literal keymap RHS, so `lk "gD" "declaration"` types the
+        characters "declaration" rather than calling `vim.lsp.buf.declaration`.
+      '';
+    };
+
     toLazyKeys = lib.mkOption {
       readOnly = true;
       type = lib.types.anything;
@@ -38,6 +50,13 @@
       type = lib.types.anything;
       description = "Make keybind not silent";
       default = action: desc: {inherit action desc;} // {silent = false;};
+    };
+
+    kr = lib.mkOption {
+      readOnly = true;
+      type = lib.types.anything;
+      description = "Make keybind that recurses into other mappings";
+      default = action: desc: {inherit action desc;} // {remap = true;};
     };
 
     wk = lib.mkOption {
@@ -75,17 +94,14 @@
     keymaps = let
       toKeymapList = mode:
         lib.mapAttrsToList (
-          key: actionAndDesc:
-            {
-              inherit key mode;
-              inherit (actionAndDesc) action;
-            }
-            // lib.optionalAttrs (actionAndDesc.desc != null) {
-              options.desc = actionAndDesc.desc;
-            }
-            // lib.optionalAttrs (actionAndDesc.silent or null != null) {
-              options.silent = actionAndDesc.silent;
-            }
+          key: spec: {
+            inherit key mode;
+            inherit (spec) action;
+            options =
+              lib.optionalAttrs (spec.desc or null != null) {inherit (spec) desc;}
+              // lib.optionalAttrs (spec.silent or null != null) {inherit (spec) silent;}
+              // lib.optionalAttrs (spec.remap or null != null) {inherit (spec) remap;};
+          }
         );
 
       sharedOpts = {options.silent = true;};

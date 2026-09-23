@@ -6,15 +6,16 @@
       settings = {
         user_default_options.names = false;
         buftypes = ["*" "!prompt" "!popup"];
-        fileTypes =
-          map (x: {language = x;} // {css = true;}) [
-            "css"
-            "less"
-            "sass"
-            "scss"
-            "stylus"
-          ]
-          ++ ["*"];
+
+        filetypes = [
+          "*"
+          "!css"
+          "!scss"
+          "!less"
+          "!sass"
+          "!stylus"
+          "!typst"
+        ];
       };
     };
   };

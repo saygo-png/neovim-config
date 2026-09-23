@@ -1,49 +1,40 @@
 {
-  lib,
-  inputs,
   config,
-  pkgs,
+  lib,
   ...
-}: {
+}: let
+  inherit (config) k kr;
+  inherit (lib.nixvim) mkRaw;
+in {
   performance.combinePlugins.standalonePlugins = ["nvim-treesitter"];
 
   # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
   extraFiles."ftplugin/haskell.vim".text = "set nocursorline";
 
-  autoGroups."_cmd_win".clear = true;
-  autoCmd = lib.singleton {
-    group = "_cmd_win";
-    event = ["CmdWinEnter"];
-    callback.__raw = ''
-      function()
-        local ok, _ = pcall(vim.keymap.del, "n", "<CR>", { buffer = true })
-        -- Silently ignore error when node increment isn't set like in q/
-        if not ok then end
-      end
-    '';
+  dependencies.tree-sitter.enable = true;
+
+  my.keymaps = {
+    normal."<CR>" =
+      k (mkRaw ''
+        function()
+          local selectable = vim.bo.buftype == ""
+            and vim.fn.getcmdwintype() == ""
+            and vim.treesitter.get_parser(nil, nil, {error = false}) ~= nil
+
+          if selectable then
+            vim.api.nvim_feedkeys("van", "m", false)
+          else
+            vim.api.nvim_feedkeys(vim.keycode("<CR>"), "n", false)
+          end
+        end
+      '')
+      "Select node under cursor";
+
+    visual = {
+      "<CR>" = kr "an" "Expand selection to parent node";
+      "<BS>" = kr "in" "Shrink selection to child node";
+    };
   };
-
-  extraPlugins =
-    lib.singleton
-    ((pkgs.vimUtils.buildVimPlugin {
-        name = "treesitter-modules";
-        src = inputs.nvim-plugin-treesitter-modules;
-      }).overrideAttrs
-      {dependencies = [config.plugins.treesitter.package];});
-
-  extraConfigLua = ''
-    require('treesitter-modules').setup({
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = "<Enter>",
-                node_incremental = "<Enter>",
-                scope_incremental = "gsi",
-                node_decremental = "<BS>",
-            },
-        },
-    })
-  '';
 
   plugins = {
     treesitter = {

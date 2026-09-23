@@ -4,7 +4,7 @@
       enable = true;
       settings = {
         highlight = "#b8bb26";
-        excluded_ft = [ "NvimTree" ];
+        excluded_ft = ["NvimTree"];
         border = [
           "━"
           "┃"

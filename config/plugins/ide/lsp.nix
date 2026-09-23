@@ -1,30 +1,32 @@
 {
-  pkgs,
   config,
   lib,
   ...
 }: let
-  inherit (config) lk;
+  inherit (config) lk lkb;
   inherit (lib.nixvim.utils) mkRaw;
 in {
-  extraPackages = [
-    pkgs.tree-sitter
-  ];
-
   lsp = {
-    keymaps = [
-      (lk "<Leader>e" "<cmd>lua vim.diagnostic.open_float()<CR>" "Diagnostic")
-      (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
-      (lk "K" "<cmd>Lspsaga hover_doc<CR>" "Hover")
+    linkedEditingRange.enable = true;
+    codelens.enable = true;
+    documentColor = {
+      enable = true;
+      settings.style = "background";
+    };
 
-      (lk "gD" "declaration" "")
+    keymaps = [
+      (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
+      (lk "<Leader>e" (mkRaw "vim.diagnostic.open_float") "Diagnostic")
+      (lkb "K" "hover" "Hover")
+
       (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
-      (lk "gp" "<cmd>Lspsaga diagnostic_jump_prev<CR>" "[p]revious diagnostic")
-      (lk "gn" "<cmd>Lspsaga diagnostic_jump_next<CR>" "[n]ext diagnostic")
+      (lkb "gD" "declaration" "Declaration")
+      (lk "gp" (mkRaw "function() vim.diagnostic.jump({count = -1}) end") "[p]revious diagnostic")
+      (lk "gn" (mkRaw "function() vim.diagnostic.jump({count = 1}) end") "[n]ext diagnostic")
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "")
       (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "")
-      (lk "gr" "<cmd>Telescope lsp_references<CR>" "")
+      (lk "te" "<cmd>Telescope lsp_references<CR>" "")
       (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "")
       (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "")
     ];
@@ -61,34 +63,8 @@ in {
         config.init_options.diagnosticSeverity = "Hint";
       };
 
-      # Typescript
-      ts_ls = {
-        enable = true;
-        config = {
-          root_dir = ''
-            function (filename, bufnr)
-              local util = require 'lspconfig.util'
-              local denoRootDir = util.root_pattern("deno.json", "deno.jsonc")(filename);
-              if denoRootDir then
-                return nil;
-              end
-              return util.root_pattern("package.json")(filename);
-            end
-          '';
-          single_file_support = false;
-        };
-      };
-
-      # Typescript with deno
-      denols = {
-        enable = true;
-        config.root_dir = ''
-          function (filename, bufnr)
-            local util = require 'lspconfig.util'
-            return util.root_pattern("deno.json", "deno.jsonc")(filename);
-          end
-        '';
-      };
+      ts_ls.enable = true;
+      denols.enable = true;
     };
   };
 
@@ -98,7 +74,6 @@ in {
     lspsaga = {
       enable = true;
       settings = {
-        ui.border = "single";
         symbol_in_winbar.enable = true;
         implement.enable = true;
         lightbulb.enable = false;
@@ -110,8 +85,15 @@ in {
     signs = true;
     underline = true;
     severity_sort = true;
-    jump.severity = mkRaw "vim.diagnostic.severity.WARN";
     float.source = "if_many";
+    jump = {
+      severity = mkRaw "vim.diagnostic.severity.WARN";
+      on_jump = mkRaw ''
+        function(_, bufnr)
+          vim.diagnostic.open_float({buffer = bufnr, scope = "cursor", focus = false})
+        end
+      '';
+    };
   };
 
   extraConfigLua = ''

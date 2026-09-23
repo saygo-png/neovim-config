@@ -72,10 +72,6 @@ in {
             args = ["fmt" "$FILENAME"];
             stdin = false;
           };
-          cljfmt = {
-            command = "cljfmt";
-            args = ["fix" "-"];
-          };
         };
       };
     };

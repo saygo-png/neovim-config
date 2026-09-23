@@ -11,7 +11,6 @@
     WinBarNC.bg = "NONE"; # not focused;
     NormalFloat.bg = "NONE";
 
-    noCursor.blend = 100;
     ModeMsg.fg = "#7d8618";
     MsgArea.fg = "#7d8618";
     FloatBorder.fg = "#7d8618";
@@ -49,10 +48,9 @@
   };
 
   # Hide end of line tildes.
-  extraConfigLua = ''
-    vim.highlight.priorities.semantic_tokens = 95
-    vim.opt.fillchars:append({ eob = ' ' })
-  '';
+  opts.fillchars.eob = " ";
+
+  extraConfigLua = "vim.hl.priorities.semantic_tokens = 95";
 
   performance.combinePlugins.standalonePlugins = [
     pkgs.vimPlugins.gruvbox-material
