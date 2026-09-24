@@ -29,9 +29,6 @@
     # Strings should be aqua
     "@string".link = "Aqua";
     "@lsp.type.string".link = "Aqua";
-
-    # "@variable.member.nix".link = "";
-    # "@lsp.type.property.nix".link = "Aqua";
   };
 
   colorschemes.gruvbox-material = {
