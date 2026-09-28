@@ -17,6 +17,10 @@ in {
     hlsPackageFallback = true;
     settings = {
       tools.repl.prefer = "cabal";
+      hls.default_settings.haskell.plugin = {
+        importLens.codeLensOn = false;
+        class.codeLensOn = false;
+      };
     };
   };
 
