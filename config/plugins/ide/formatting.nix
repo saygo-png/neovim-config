@@ -13,6 +13,8 @@ in {
   performance.byteCompileLua.excludedPlugins = ["conform.nvim"];
 
   my.which-keys."<leader>c" = wk "Conform" " ";
+  my.which-keys."<leader>nc" = wk "Nix fmt" " ";
+  my.which-keys."<leader>gc" = wk "Treefmt" " ";
 
   plugins = {
     conform-nvim = {
@@ -27,21 +29,17 @@ in {
 
       lazyLoad.settings = {
         cmd = "Conform";
-        keys =
-          toLazyKeys {
-            "<leader>nc" = k (mkRaw "function()
-          require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } })
-        end") "[n]ix [c]onform";
-            "<leader>c" = k (mkRaw "function()
-          require('conform').format({ timeout_ms = 500 })
-        end") "[c]onform";
-          };
+        keys = toLazyKeys {
+          "<leader>c" = k (mkRaw "function() require('conform').format({ timeout_ms = 500}) end") "[c]onform";
+          "<leader>gc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[c]onform";
+          "<leader>nc" = k (mkRaw "function() require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } }) end") "[n]ix [c]onform";
+        };
       };
 
       settings = {
-        lsp_fallback = false;
+        default_format_opts.lsp_format = "never";
         formatters_by_ft = let
-          addTreefmt = v: lib.nixvim.utils.listToUnkeyedAttrs (["treefmt"] ++ v);
+          foo = v: lib.nixvim.utils.listToUnkeyedAttrs ([] ++ v);
           fmts = {
             json = ["jq"];
             sh = ["shfmt"];
@@ -62,11 +60,16 @@ in {
             typescriptreact = ["prettierd"];
           };
         in
-          (builtins.mapAttrs (_: v: {stop_after_first = true;} // addTreefmt v) fmts)
+          (builtins.mapAttrs (_: v: {stop_after_first = true;} // foo v) fmts)
           // {"*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];};
         formatters = {
           shfmt.args = lib.mkOptionDefault ["-i" "2"];
           squeeze_blanks.command = pkgs.lib.getExe' pkgs.coreutils "cat";
+          my-treefmt = {
+            command = "treefmt";
+            args = ["$FILENAME"];
+            stdin = false;
+          };
           flakeformat = {
             command = "nix";
             args = ["fmt" "$FILENAME"];
