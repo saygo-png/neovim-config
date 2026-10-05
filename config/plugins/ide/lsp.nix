@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   inherit (config) lk lkb;
@@ -60,7 +61,13 @@ in {
       # Typos.
       typos_lsp = {
         enable = true;
-        config.init_options.diagnosticSeverity = "Hint";
+        config.init_options = {
+          diagnosticSeverity = "Hint";
+          config = builtins.toFile "typos.toml" ''
+            [default.extend-words]
+            bimap = "bimap"
+          '';
+        };
       };
 
       ts_ls.enable = true;
