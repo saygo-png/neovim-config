@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   inherit (config) k kr;
@@ -44,21 +45,27 @@ in {
       indent.enable = true;
       highlight.enable = true;
 
-      # Upstream guesses whether a top-level binding is a function or a variable
-      # from the shape of its type, so `f :: Foo Bar` ends up as @variable while
-      # `f :: Foo -> Bar` is @function. Patch the query to treat every top-level
-      # definition (and anything with a signature) as a function.
+      # Use our own fork of the haskell highlights query, see the header of
+      # ../etc/haskell-highlights.scm for what changed from upstream.
       grammarPackages = let
         inherit (config.plugins.treesitter.package) allGrammars builtGrammars;
+        highlights = ../etc/haskell-highlights.scm;
+        checkQuery = pkgs.writeText "check-haskell-highlights.lua" ''
+          vim.treesitter.language.add("haskell", {path = "${builtGrammars.haskell}/parser"})
+          vim.treesitter.query.parse("haskell", io.open("${highlights}"):read("*a"))
+        '';
         haskell = builtGrammars.haskell.overrideAttrs (old: {
           passthru =
             old.passthru
             // {
               associatedQuery = old.passthru.associatedQuery.overrideAttrs {
                 buildCommand = ''
+                  # Fail the build if the forked query no longer fits the grammar
+                  HOME=$TMPDIR ${lib.getExe pkgs.neovim-unwrapped} --clean -l ${checkQuery}
+
                   mkdir -p $out/queries
                   cp -rL --no-preserve=mode ${old.passthru.associatedQuery}/queries/haskell $out/queries/
-                  patch -d $out/queries/haskell -p1 < ${../etc/haskell-highlights.patch}
+                  cp ${highlights} $out/queries/haskell/highlights.scm
                 '';
               };
             };
