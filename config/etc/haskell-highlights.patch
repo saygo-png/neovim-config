@@ -1,0 +1,63 @@
+--- a/highlights.scm
++++ b/highlights.scm
+@@ -143,30 +143,11 @@
+       (variable) @function)
+   ])
+ 
+-(decl/bind
+-  name: (variable) @variable)
+-
+-; Consider signatures (and accompanying functions)
+-; with only one value on the rhs as variables
+-(decl/signature
+-  name: (variable) @variable
+-  type: (type))
+-
+-((decl/signature
+-  name: (variable) @_name
+-  type: (type))
+-  .
+-  (decl
+-    [
+-      (signature
+-        name: (variable) @variable)
+-      (function
+-        name: (variable) @variable)
+-      (bind
+-        name: (variable) @variable)
+-    ])
+-  match: (_)
+-  (#eq? @_name @variable))
++; Only consider local bindings without a signature as variables,
++; top-level definitions are always functions
++(local_binds
++  (decl/bind
++    name: (variable) @variable))
+ 
+ ; but consider a type that involves 'IO' a decl/function
+ (decl/signature
+@@ -175,24 +156,6 @@
+     constructor: (name) @_type)
+   (#eq? @_type "IO"))
+ 
+-((decl/signature
+-  name: (variable) @_name
+-  type: (type/apply
+-    constructor: (name) @_type)
+-  (#eq? @_type "IO"))
+-  .
+-  (decl
+-    [
+-      (signature
+-        name: (variable) @function)
+-      (function
+-        name: (variable) @function)
+-      (bind
+-        name: (variable) @function)
+-    ])
+-  match: (_)
+-  (#eq? @_name @function))
+-
+ ((decl/signature) @function
+   .
+   (decl/function

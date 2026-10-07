@@ -43,6 +43,32 @@ in {
       nixvimInjections = true;
       indent.enable = true;
       highlight.enable = true;
+
+      # Upstream guesses whether a top-level binding is a function or a variable
+      # from the shape of its type, so `f :: Foo Bar` ends up as @variable while
+      # `f :: Foo -> Bar` is @function. Patch the query to treat every top-level
+      # definition (and anything with a signature) as a function.
+      grammarPackages = let
+        inherit (config.plugins.treesitter.package) allGrammars builtGrammars;
+        haskell = builtGrammars.haskell.overrideAttrs (old: {
+          passthru =
+            old.passthru
+            // {
+              associatedQuery = old.passthru.associatedQuery.overrideAttrs {
+                buildCommand = ''
+                  mkdir -p $out/queries
+                  cp -rL --no-preserve=mode ${old.passthru.associatedQuery}/queries/haskell $out/queries/
+                  patch -d $out/queries/haskell -p1 < ${../etc/haskell-highlights.patch}
+                '';
+              };
+            };
+        });
+      in
+        map (g:
+          if g == builtGrammars.haskell
+          then haskell
+          else g)
+        allGrammars;
     };
   };
 }
