@@ -18,6 +18,28 @@ in {
     keymaps = [
       (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
       (lk "<Leader>e" (mkRaw "vim.diagnostic.open_float") "Diagnostic")
+      (lk "<leader>w" (mkRaw ''
+        function()
+          local S = vim.diagnostic.severity
+          vim.g.warnings_hidden = not vim.g.warnings_hidden
+          local severity = vim.g.warnings_hidden and { S.ERROR, S.INFO, S.HINT } or nil
+
+          local current = vim.diagnostic.config()
+          local cfg = {}
+          for _, h in ipairs({ "underline", "virtual_text", "signs", "float" }) do
+            if current[h] == false then
+              cfg[h] = false
+            else
+              local t = vim.deepcopy(type(current[h]) == "table" and current[h] or {})
+              t.severity = severity
+              cfg[h] = t
+            end
+          end
+          vim.diagnostic.config(cfg)
+
+          vim.notify("Warnings " .. (vim.g.warnings_hidden and "hidden" or "shown"))
+        end
+      '') "toggle [w]arnings")
       (lkb "K" "hover" "Hover")
 
       (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
