@@ -50,7 +50,7 @@ in {
             html = ["prettierd"];
             scss = ["prettierd"];
             jsonc = ["prettierd"];
-            cabal = ["cabal_fmt"];
+            cabal = ["my-cabal-gild"];
             haskell = ["fourmolu"];
             graphql = ["prettierd"];
             markdown = ["prettierd"];
@@ -70,6 +70,11 @@ in {
             args = ["$FILENAME"];
             stdin = false;
           };
+          my-cabal-gild = {
+            command = "cabal-gild";
+            args = ["--stdin=$FILENAME"];
+            stdin = true;
+          };
           flakeformat = {
             command = "nix";
             args = ["fmt" "$FILENAME"];
@@ -79,6 +84,10 @@ in {
       };
     };
   };
+
+  extraPackages = [
+    pkgs.haskellPackages.cabal-gild
+  ];
 
   userCommands.Conform = {
     command.__raw = "function() require('conform').format({ timeout_ms = 500 }) end";
