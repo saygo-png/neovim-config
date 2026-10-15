@@ -11,12 +11,20 @@
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixvim";
+      inputs.nixpkgs.follows = "nixvim/nixpkgs";
     };
 
     systems = {
       url = "path:./systems.nix";
       flake = false;
+    };
+
+    simple-tree-sitter-haskell = {
+      url = "github:saygo-png/simple-tree-sitter-haskell";
+      inputs = {
+        nixpkgs.follows = "nixvim/nixpkgs";
+        systems.follows = "systems";
+      };
     };
 
     nvim-plugin-telescope-git-file-history = {

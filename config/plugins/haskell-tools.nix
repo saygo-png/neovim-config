@@ -20,6 +20,8 @@ in {
       hls.default_settings.haskell.plugin = {
         importLens.codeLensOn = false;
         class.codeLensOn = false;
+        # Off by default in HLS.
+        semanticTokens.globalOn = true;
       };
     };
   };

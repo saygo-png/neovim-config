@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -9,8 +10,23 @@
 in {
   performance.combinePlugins.standalonePlugins = ["nvim-treesitter"];
 
+  extraConfigLua = "vim.hl.priorities.semantic_tokens = 150";
+
   # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
   extraFiles."ftplugin/haskell.vim".text = "set nocursorline";
+
+  # Captures for my theme on top of simple-tree-sitter-haskell's queries:
+  # names declared by a type signature (f :: …, f, g :: …)
+  extraFiles."queries/haskell/highlights.scm".text = ''
+    ; extends
+
+    (signature
+      [
+        name: (variable) @variable.signature
+        names: (binding_list
+          (variable) @variable.signature)
+      ])
+  '';
 
   dependencies.tree-sitter.enable = true;
 
@@ -44,38 +60,16 @@ in {
       nixvimInjections = true;
       indent.enable = true;
       highlight.enable = true;
-
-      # Use our own fork of the haskell highlights query, see the header of
-      # ../etc/haskell-highlights.scm for what changed from upstream.
       grammarPackages = let
         inherit (config.plugins.treesitter.package) allGrammars builtGrammars;
-        highlights = ../etc/haskell-highlights.scm;
-        checkQuery = pkgs.writeText "check-haskell-highlights.lua" ''
-          vim.treesitter.language.add("haskell", {path = "${builtGrammars.haskell}/parser"})
-          vim.treesitter.query.parse("haskell", io.open("${highlights}"):read("*a"))
-        '';
-        haskell = builtGrammars.haskell.overrideAttrs (old: {
-          passthru =
-            old.passthru
-            // {
-              associatedQuery = old.passthru.associatedQuery.overrideAttrs {
-                buildCommand = ''
-                  # Fail the build if the forked query no longer fits the grammar
-                  HOME=$TMPDIR ${lib.getExe pkgs.neovim-unwrapped} --clean -l ${checkQuery}
-
-                  mkdir -p $out/queries
-                  cp -rL --no-preserve=mode ${old.passthru.associatedQuery}/queries/haskell $out/queries/
-                  cp ${highlights} $out/queries/haskell/highlights.scm
-                '';
-              };
-            };
-        });
+        customHaskell = inputs.simple-tree-sitter-haskell.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        replaceGrammar = target: replacement:
+          map (grammar:
+            if grammar == builtGrammars.${target}
+            then replacement
+            else grammar);
       in
-        map (g:
-          if g == builtGrammars.haskell
-          then haskell
-          else g)
-        allGrammars;
+        replaceGrammar "haskell" customHaskell allGrammars;
     };
   };
 }

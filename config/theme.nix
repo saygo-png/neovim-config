@@ -29,6 +29,11 @@
     # Strings should be aqua
     "@string".link = "Aqua";
     "@lsp.type.string".link = "Aqua";
+
+    # Plain type variables, HLS colours them like types otherwise
+    "@lsp.type.typeParameter.haskell".link = "";
+    "@variable.signature.haskell".link = "Green";
+    "@type.parameter.haskell".link = "";
   };
 
   colorschemes.gruvbox-material = {
@@ -46,8 +51,6 @@
 
   # Hide end of line tildes.
   opts.fillchars.eob = " ";
-
-  extraConfigLua = "vim.hl.priorities.semantic_tokens = 95";
 
   performance.combinePlugins.standalonePlugins = [
     pkgs.vimPlugins.gruvbox-material
