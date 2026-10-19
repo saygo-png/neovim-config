@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   inherit (config) lk lkb;
@@ -60,14 +59,12 @@ in {
         capabilities.textDocument.semanticTokens.multilineTokenSupport = true;
       };
 
-      rust_analyzer.enable = true;
       pyright.enable = true;
       bashls.enable = true;
-      lua_ls.enable = true;
+      jsonls.enable = true;
 
       # Web
       html.enable = true;
-      jsonls.enable = true;
       cssls.enable = true;
       eslint.enable = true;
 
@@ -93,7 +90,6 @@ in {
       };
 
       ts_ls.enable = true;
-      denols.enable = true;
     };
   };
 
