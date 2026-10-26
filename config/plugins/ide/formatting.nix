@@ -30,7 +30,7 @@ in {
       lazyLoad.settings = {
         cmd = "Conform";
         keys = toLazyKeys {
-          "<leader>c" = k (mkRaw "function() require('conform').format({ timeout_ms = 500}) end") "[c]onform";
+          "<leader>c" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000}) end") "[c]onform";
           "<leader>gc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[c]onform";
           "<leader>nc" = k (mkRaw "function() require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } }) end") "[n]ix [c]onform";
         };
@@ -90,7 +90,7 @@ in {
   ];
 
   userCommands.Conform = {
-    command.__raw = "function() require('conform').format({ timeout_ms = 500 }) end";
+    command.__raw = "function() require('conform').format({ timeout_ms = 5000 }) end";
     desc = "Format using Conform with a 500ms timeout";
   };
 }
