@@ -15,6 +15,39 @@ in {
   # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
   extraFiles."ftplugin/haskell.vim".text = "set nocursorline";
 
+  # nil sends function names as properties/variables, which would hide the
+  # green of definitions and calls, so those go above semantic tokens (150).
+  extraFiles."queries/nix/highlights.scm".text = ''
+    ; extends
+
+    ((binding
+      attrpath: (attrpath
+        attr: (identifier) @function .)
+      expression: (function_expression))
+      (#set! priority 155))
+
+    ((apply_expression
+      function: (variable_expression
+        name: (identifier) @function.call))
+      (#set! priority 155))
+
+    ((apply_expression
+      function: (select_expression
+        attrpath: (attrpath
+          attr: (identifier) @function.call .)))
+      (#set! priority 155))
+
+    ; inherit x; defines attribute x (nil: property)
+    (inherited_attrs
+      attr: (identifier) @variable.member)
+
+    ; `builtins` is a namespace, like a Haskell module qualifier
+    ((variable_expression
+      name: (identifier) @module)
+      (#eq? @module "builtins")
+      (#set! priority 101))
+  '';
+
   # Captures for my theme on top of simple-tree-sitter-haskell's queries.
   # Where the syntax is enough to tell, they match HLS's semantic token kinds,
   # so colours don't shift when HLS attaches (see theme.nix).

@@ -52,7 +52,25 @@ in {
     # Import keywords red like other keywords (gruvbox.nvim: Include, aqua)
     "@keyword.import".link = "Keyword";
 
+    # Nix coloured like Haskell where it maps.
     "@punctuation.delimiter.nix".link = "@module.haskell";
+    "@variable.nix".link = "";
+    "@lsp.type.variable.nix".link = ""; # nil: let-bound names, hides calls
+    "@variable.parameter.nix".link = ""; # Arguments Normal, like variables
+    "@lsp.type.parameter.nix".link = "";
+    "@variable.parameter.builtin.nix".link = "@module.haskell"; # ...
+    "@function.builtin.nix".link = "Function"; # nil: function, green
+    "@keyword.import.nix".link = "Function"; # import is a builtin function
+    "@constant.builtin.nix".link = "Constant"; # null
+    "@module.nix".link = "@module.haskell"; # builtins
+    "@lsp.type.struct.nix".link = "@module.nix"; # nil: builtins
+    "@number.nix".link = "GruvboxAqua";
+    "@number.float.nix".link = "GruvboxAqua";
+    "@lsp.type.number.nix".link = "@number.nix";
+    "@string.special.path.nix" = {
+      fg = palette "bright_aqua";
+      underline = true;
+    };
 
     # Haskell. HLS semantic tokens keep gruvbox.nvim's colours.
 
