@@ -4,12 +4,9 @@
     settings = {
       active = 1;
       conf.guifgs = [
-        "#fabd2f"
-        "#8ec07c"
-        "#d3869b"
-        "#b8bb26"
-        "#fe8019"
-        "#83a598"
+        "#bdae93"
+        "#A9B665"
+        "#baa16a"
       ];
     };
   };
