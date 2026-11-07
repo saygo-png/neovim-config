@@ -9,7 +9,6 @@
 in {
   extraPackages = [
     pkgs.haskellPackages.fast-tags
-    pkgs.haskellPackages.hoogle
   ];
 
   plugins.haskell-tools = {

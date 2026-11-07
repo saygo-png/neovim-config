@@ -17,13 +17,11 @@ in {
     ./plugins/trivial
 
     ./plugins/oil.nix
-    # ./plugins/dial.nix
     ./plugins/mini.nix
     ./plugins/iron.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
-    ./plugins/roslyn.nix
     ./plugins/lualine.nix
     ./plugins/cutlass.nix
     ./plugins/rainbow.nix
