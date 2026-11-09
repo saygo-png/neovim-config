@@ -49,7 +49,7 @@
       options =
         {
           globalstatus = true;
-          icons_enable = false;
+          icons_enabled = false;
           theme = genAttrs [
             "normal"
             "insert"
