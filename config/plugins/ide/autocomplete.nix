@@ -17,12 +17,6 @@ in {
   plugins = {
     friendly-snippets.enable = true;
 
-    lspkind = {
-      enable = true;
-      cmp.enable = false;
-      lazyLoad.settings.event = ["InsertEnter" "CmdlineEnter"];
-    };
-
     blink-cmp = {
       enable = true;
       lazyLoad.settings.event = ["InsertEnter" "CmdlineEnter"];
@@ -53,11 +47,6 @@ in {
           menu = {
             auto_show = false;
             border = "none";
-            draw.components.kind_icon.text = mkRaw ''
-              function(ctx)
-                return require('lspkind').symbol_map[ctx.kind] or ""
-              end,
-            '';
           };
         };
       };
