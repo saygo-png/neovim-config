@@ -7,11 +7,6 @@
 
     lz-n.enable = true;
 
-    comment = {
-      enable = true;
-      lazyLoad.settings.event = "DeferredUIEnter";
-    };
-
     web-devicons = {
       enable = true;
       lazyLoad.settings.event = "DeferredUIEnter";
