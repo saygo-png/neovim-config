@@ -18,7 +18,6 @@ in {
 
     ./plugins/oil.nix
     ./plugins/mini.nix
-    ./plugins/iron.nix
     ./plugins/flash.nix
     ./plugins/spider.nix
     ./plugins/fidget.nix
