@@ -9,7 +9,6 @@
   inherit (lib.nixvim) mkRaw;
 in {
   plugins = {
-    harpoon.enableTelescope = true;
     project-nvim.enableTelescope = false;
     telescope = {
       enable = true;
@@ -75,31 +74,27 @@ in {
 
   my = {
     which-keys."<leader>t" = wk "Telescope" " ";
-    keymaps.normal =
-      {
-        "<leader>to" = k (mkRaw "function()
+    keymaps.normal = {
+      "<leader>to" = k (mkRaw "function()
           require'telescope.builtin'.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
         end") "[T]raverse in [O]pen Files";
 
-        "<leader>tcf" = k (mkRaw "function()
+      "<leader>tcf" = k (mkRaw "function()
           require'telescope.builtin'.find_files({ cwd = require'telescope.utils'.buffer_dir() })
         end") "[t]elescope find [f]iles in [c]urrent dir";
 
-        "<leader>tcg" = k (mkRaw "function()
+      "<leader>tcg" = k (mkRaw "function()
           require'telescope.builtin'.live_grep({ cwd = require'telescope.utils'.buffer_dir() })
         end") "[t]elescope grep in [c]urrent dir";
 
-        "<leader>tg" = k (mkRaw "function()
+      "<leader>tg" = k (mkRaw "function()
           require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
         end") "[t]elescope fuzzy [g]rep";
 
-        "<leader>tv" = k (mkRaw "function()
+      "<leader>tv" = k (mkRaw "function()
           require'telescope'.extensions.git_file_history.git_file_history()
         end") "[t]elescope [v]ersions";
-      }
-      // lib.optionalAttrs config.plugins.harpoon.enable {
-        "<leader>th" = k "<cmd>Telescope harpoon marks<CR>" "[t]elescope [h]arpoon Marks";
-      };
+    };
   };
 
   highlightOverride = {
