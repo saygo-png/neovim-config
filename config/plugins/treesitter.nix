@@ -149,15 +149,64 @@ in {
       indent.enable = true;
       highlight.enable = true;
       grammarPackages = let
-        inherit (config.plugins.treesitter.package) allGrammars builtGrammars;
-        customHaskell = inputs.simple-tree-sitter-haskell.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        replaceGrammar = target: replacement:
-          map (grammar:
-            if grammar == builtGrammars.${target}
-            then replacement
-            else grammar);
-      in
-        replaceGrammar "haskell" customHaskell allGrammars;
+        grammar = config.plugins.treesitter.package.builtGrammars;
+      in [
+        inputs.simple-tree-sitter-haskell.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+        grammar.bash
+        grammar.css
+        grammar.fish
+        grammar.graphql
+        grammar.html
+        grammar.javascript
+        grammar.json
+        grammar.lua
+        grammar.markdown
+        grammar.markdown_inline
+        grammar.nix
+        grammar.python
+        grammar.scss
+        grammar.tsx
+        grammar.typescript
+        grammar.typst
+
+        # Used by Neovim itself and in comments.
+        grammar.comment
+        grammar.luadoc
+        grammar.luap
+        grammar.printf
+        grammar.query
+        grammar.regex
+        grammar.vim
+        grammar.vimdoc
+
+        # Config files and git.
+        grammar.csv
+        grammar.diff
+        grammar.dockerfile
+        grammar.git_config
+        grammar.git_rebase
+        grammar.gitattributes
+        grammar.gitcommit
+        grammar.gitignore
+        grammar.ini
+        grammar.jsdoc
+        grammar.json5
+        grammar.kdl
+        grammar.make
+        grammar.rasi
+        grammar.sql
+        grammar.ssh_config
+        grammar.toml
+        grammar.xml
+        grammar.yaml
+
+        # Common languages.
+        grammar.c
+        grammar.cpp
+        grammar.go
+        grammar.rust
+      ];
     };
   };
 }
