@@ -161,7 +161,6 @@ in {
       "<C-s>" = k "<C-a>" "Increment number under cursor";
 
       # Paste
-      "Y" = k "y$" "Copy till end of line without newline";
       "yy" = k "^y$" "Copy line without newline and whitespace";
       "<c-v>" = k ''"+p'' "Raw paste";
 
