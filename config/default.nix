@@ -179,7 +179,6 @@ in {
 
       # Misc
       "v" = k "<Esc>^vg_" "Select line without newline and whitespace";
-      "p" = k ''"_dP'' "Infinite paste";
       "L" = kns ":norm yss" "Surround each line";
       "." = k ":normal .<CR>" "Dot commands over visual blocks";
       "gj" = k "J" "Join lines";
