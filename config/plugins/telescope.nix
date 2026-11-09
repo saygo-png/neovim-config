@@ -24,12 +24,6 @@ in {
         };
       };
 
-      settings = {
-        mappings = {
-          "<c-d>" = mkRaw "require('telescope.actions').delete_buffer";
-        };
-      };
-
       keymaps = {
         "<leader>tb" = {
           action = "current_buffer_fuzzy_find";
