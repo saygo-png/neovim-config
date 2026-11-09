@@ -109,6 +109,11 @@ in {
 
   clipboard.register = "unnamedplus";
 
+  # Neovim 0.12's new message and cmdline UI. Fixes issues with `cmdheight = 0` like black flashes at startup.
+  extraConfigLuaPre = ''
+    require('vim._core.ui2').enable({ msg = { targets = 'msg' } })
+  '';
+
   my.keymaps = {
     terminal = {
       "<Esc>" = k "<C-\\><C-n>" "Escape terminal mode";

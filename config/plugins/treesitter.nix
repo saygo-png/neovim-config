@@ -12,9 +12,6 @@ in {
 
   extraConfigLua = "vim.hl.priorities.semantic_tokens = 150";
 
-  # https://github.com/nvim-treesitter/nvim-treesitter/issues/7967
-  extraFiles."ftplugin/haskell.vim".text = "set nocursorline";
-
   # nil sends function names as properties/variables, which would hide the
   # green of definitions and calls, so those go above semantic tokens (150).
   extraFiles."queries/nix/highlights.scm".text = ''
