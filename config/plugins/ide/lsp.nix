@@ -7,6 +7,8 @@
   inherit (lib.nixvim.utils) mkRaw;
 in {
   lsp = {
+    # HLS shows explicit import lists and record wildcard fields as hints.
+    inlayHints.enable = true;
     linkedEditingRange.enable = true;
     codelens.enable = true;
     documentColor = {
