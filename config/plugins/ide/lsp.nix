@@ -106,6 +106,27 @@ in {
     };
   };
 
+  # LSP progress as native progress messages, shown by ui2 (see default.nix).
+  autoCmd = [
+    {
+      event = "LspProgress";
+      desc = "Show LSP progress";
+      callback = mkRaw ''
+        function(ev)
+          local value = ev.data.params.value
+          vim.api.nvim_echo({ { value.message or "done" } }, false, {
+            id = "lsp." .. ev.data.params.token,
+            kind = "progress",
+            source = "vim.lsp",
+            title = value.title,
+            status = value.kind ~= "end" and "running" or "success",
+            percent = value.percentage,
+          })
+        end
+      '';
+    }
+  ];
+
   diagnostic.settings = {
     signs = true;
     underline = true;
