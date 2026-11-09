@@ -29,7 +29,6 @@ in {
     ./plugins/colorizer.nix
     ./plugins/gitsigns.nix
     ./plugins/project-nvim.nix
-    ./plugins/trouble.nix
     ./plugins/colorful-winsep.nix
     ./plugins/telescope.nix
     ./plugins/nvim-tree.nix
