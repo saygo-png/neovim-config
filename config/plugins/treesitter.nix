@@ -151,7 +151,7 @@ in {
       grammarPackages = let
         grammar = config.plugins.treesitter.package.builtGrammars;
       in [
-        inputs.simple-tree-sitter-haskell.packages.${pkgs.stdenv.hostPlatform.system}.default
+        (inputs.simple-tree-sitter-haskell.lib.mkGrammar pkgs)
 
         grammar.bash
         grammar.css
