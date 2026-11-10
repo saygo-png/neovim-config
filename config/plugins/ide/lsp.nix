@@ -61,8 +61,7 @@ in {
         capabilities.textDocument.semanticTokens.multilineTokenSupport = true;
       };
 
-      pyright.enable = true;
-      bashls.enable = true;
+      zuban.enable = true;
       biome.enable = true;
 
       # Typst
