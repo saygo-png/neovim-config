@@ -45,19 +45,19 @@ in {
             sh = ["shfmt"];
             lua = ["stylua"];
             python = ["yapf"];
-            css = ["prettierd"];
+            css = ["biome"];
             nix = ["alejandra"];
-            html = ["prettierd"];
-            scss = ["prettierd"];
-            jsonc = ["prettierd"];
+            html = ["biome"];
+            scss = ["biome"];
+            jsonc = ["biome"];
             cabal = ["my-cabal-gild"];
             haskell = ["fourmolu"];
-            graphql = ["prettierd"];
-            markdown = ["prettierd"];
-            javascript = ["prettierd"];
-            typescript = ["prettierd"];
-            javascriptreact = ["prettierd"];
-            typescriptreact = ["prettierd"];
+            graphql = ["biome"];
+            markdown = ["biome"];
+            javascript = ["biome"];
+            typescript = ["biome"];
+            javascriptreact = ["biome"];
+            typescriptreact = ["biome"];
           };
         in
           (builtins.mapAttrs (_: v: {stop_after_first = true;} // foo v) fmts)

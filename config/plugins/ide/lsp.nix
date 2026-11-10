@@ -63,12 +63,7 @@ in {
 
       pyright.enable = true;
       bashls.enable = true;
-      jsonls.enable = true;
-
-      # Web
-      html.enable = true;
-      cssls.enable = true;
-      eslint.enable = true;
+      biome.enable = true;
 
       # Typst
       tinymist.enable = true;
@@ -90,8 +85,6 @@ in {
           '';
         };
       };
-
-      ts_ls.enable = true;
     };
   };
 
