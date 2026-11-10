@@ -46,7 +46,7 @@
       # };
       lintersByFt = {
         bash = ["shellcheck"];
-        shell = ["shellcheck"];
+        sh = ["shellcheck"];
         nix = ["nix" "deadnix"];
       };
     };
