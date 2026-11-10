@@ -38,24 +38,26 @@
     ...
   } @ inputs: let
     inherit (nixvim.inputs) nixpkgs;
-    pkgsFor = nixpkgs.lib.genAttrs (import systems) (system: import nixpkgs {inherit system;});
+    pkgsFor = nixpkgs.legacyPackages;
     eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f system pkgsFor.${system});
     treefmtEval = eachSystem (_: pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
-    mkNixvimConfig = system:
+    # Built from the given nixpkgs instead of one nixvim imports itself, so a
+    # system can share its own.
+    mkNixvimConfig = pkgs:
       nixvim.lib.evalNixvim
       {
-        inherit system;
-        modules = [./config];
+        modules = [./config {nixpkgs.pkgs = pkgs;}];
         extraSpecialArgs = {inherit inputs;};
       };
   in {
+    lib.mkNeovim = pkgs: (mkNixvimConfig pkgs).config.build.package;
     formatter = eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
-    checks = eachSystem (system: _: {
-      configCheck = (mkNixvimConfig system).config.build.test;
+    checks = eachSystem (_: pkgs: {
+      configCheck = (mkNixvimConfig pkgs).config.build.test;
     });
-    packages = eachSystem (system: _: rec {
-      neovim = (mkNixvimConfig system).config.build.package;
+    packages = eachSystem (_: pkgs: rec {
+      neovim = (mkNixvimConfig pkgs).config.build.package;
       default = neovim;
     });
   };
