@@ -40,6 +40,8 @@ in {
     ./plugins/ide/autocomplete.nix
   ];
 
+  withRuby = false;
+
   opts = {
     # Indents.
     tabstop = 2;
