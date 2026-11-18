@@ -2,7 +2,7 @@
 """Runs shhell.nvim in a headless Neovim and drives it like a user, with keys
 sent over RPC.
 
-usage: test.py <nvim> <directory with "dir one/" and "file two.txt">
+usage: test.py <nvim> <directory with "file two.txt" and "dir one/three.txt">
 """
 import os, subprocess, sys, tempfile, time
 
@@ -64,8 +64,16 @@ keys('putStrLn "hello"<CR>')
 check(wait(shows("\nhello")), "<CR> runs the command")
 check(where("prompt i")(), "and the prompt keeps the keys")
 
-keys('do putStrLn "multi"<M-CR>   putStrLn "line"<CR>')
+def height():
+    return expr("winheight(0)")
+
+
+check(height() == "1", "the prompt is one line")
+keys('do putStrLn "multi"<M-CR>   putStrLn "line"')
+check(wait(lambda: height() == "2"), "and grows with what is typed")
+keys("<CR>")
 check(wait(shows("multi\nline")), "<M-CR> makes a multi-line command")
+check(wait(lambda: height() == "1"), "sending it shrinks the prompt back")
 
 keys("<Esc>")
 check(wait(where("prompt n")), "<Esc> goes to normal mode")
@@ -95,8 +103,11 @@ check(wait(lambda: expr("getline(1)") == '"file two.txt"'), "<C-CR> puts a link 
 keys("<Esc><Esc>")
 wait(where("output nt"))
 expr("v:lua.cursor_to('dir one')")
+before = expr("string(getpos('.'))")
 keys("<CR>")
 check(wait(lambda: expr("luaeval('require(\"shhell\")._state.cwd')").endswith("/dir one")), "<CR> on a directory goes there")
+check(wait(shows("three.txt")), "and lists it")
+check(expr("string(getpos('.'))") == before, "the cursor stays where it was")
 
 keys(f'i<Esc>cccd "{FILES}"<CR><Esc><Esc>')
 wait(where("output nt"))

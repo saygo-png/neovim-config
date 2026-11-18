@@ -7,8 +7,7 @@ local M = {}
 
 ---@class shhell.Config
 ---@field cmd string[] The shell to run.
----@field height integer Height of the prompt window.
-local config = { cmd = { "shhell" }, height = 3 }
+local config = { cmd = { "shhell" } }
 
 ---@class shhell.Link
 ---@field path string
@@ -171,10 +170,6 @@ function M.send(lines)
     vim.notify("shhell is not running", vim.log.levels.WARN)
     return
   end
-  -- Show the end of the output, and follow it.
-  if s.term_win then
-    vim.api.nvim_win_set_cursor(s.term_win, { vim.api.nvim_buf_line_count(assert(s.term_buf)), 0 })
-  end
   local text = #lines == 1 and lines[1] or ":{\r" .. table.concat(lines, "\r") .. "\r:}"
   vim.api.nvim_chan_send(s.job, text .. "\r")
 end
@@ -200,9 +195,17 @@ end
 
 ---@param buf integer
 local function prompt_keymaps(buf)
+  -- As tall as what is typed, up to 20 lines.
+  local function fit()
+    if s.prompt_win and vim.api.nvim_win_is_valid(s.prompt_win) then
+      vim.api.nvim_win_set_height(s.prompt_win, math.min(20, vim.api.nvim_win_text_height(s.prompt_win, {}).all))
+    end
+  end
+  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, { buffer = buf, callback = fit })
   map(buf, { "n", "i" }, "<CR>", function()
     M.send(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+    fit()
   end)
   map(buf, "i", "<M-CR>", "<CR>")
   map(buf, { "n", "i" }, "<C-c>", function() vim.api.nvim_chan_send(assert(s.job), "\3") end)
@@ -226,6 +229,7 @@ local function output_keymaps(buf)
       vim.api.nvim_feedkeys(vim.keycode("<CR>"), "n", false)
     elseif vim.fn.isdirectory(path) == 1 then
       M.send({ "cd " .. haskell_string(path) })
+      M.send({ "ls" })
     else
       vim.cmd.edit(vim.fn.fnameescape(path))
     end
@@ -298,14 +302,14 @@ function M.open()
     pcall(vim.treesitter.start, s.prompt_buf, "haskell")
     prompt_keymaps(s.prompt_buf)
   end
-  vim.cmd("belowright " .. config.height .. "split")
+  vim.cmd("belowright 1split")
   s.prompt_win = vim.api.nvim_get_current_win()
   vim.api.nvim_win_set_buf(s.prompt_win, s.prompt_buf)
   vim.wo.winfixheight = true
   M.focus_prompt()
 end
 
----@param opts? {cmd?: string[], height?: integer}
+---@param opts? {cmd?: string[]}
 function M.setup(opts)
   config = vim.tbl_extend("force", config, opts or {})
   vim.api.nvim_create_user_command("Shhell", M.open, {})
