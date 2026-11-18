@@ -16,6 +16,7 @@ in {
     ./plugins/quickfix
     ./plugins/trivial
 
+    ./plugins/shhell
     ./plugins/oil.nix
     ./plugins/mini.nix
     ./plugins/flash.nix

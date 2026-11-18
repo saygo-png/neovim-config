@@ -114,6 +114,8 @@ in {
   colorschemes.gruvbox = {
     enable = true;
     settings = {
+      # Leave :terminal's colours alone.
+      terminal_colors = false;
       contrast = "soft";
       transparent_mode = true;
       bold = false;
