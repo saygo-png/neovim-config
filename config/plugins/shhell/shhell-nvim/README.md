@@ -25,9 +25,10 @@ In the prompt:
 
 In the output, `i`, `a`, `I` and `A` go back to the prompt. On a link that a
 program printed (`eza --hyperlink=always`, `ls --hyperlink=always`,
-`fd --hyperlink`), `<CR>` sends `cd "dir"` or `nvim "file"`, and `<C-CR>` adds
-the path to the prompt. Paths are relative to the shell's
-directory when it reports it (OSC 7, which `shhellPrompt` does).
+`fd --hyperlink`), `<CR>` sends `cd "dir"` for a directory, and opens a file in
+place of the shell, which `:Shhell` brings back. `<C-CR>` adds the path to the
+prompt. Paths are relative to the shell's directory when it reports it (OSC 7,
+which `shhellPrompt` does).
 
 A program that wants the keys, like btop, fzf, nvim or a password prompt, gets
 them while it does: the plugin sees the shell's child turn off the terminal's

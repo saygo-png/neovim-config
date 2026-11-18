@@ -218,13 +218,16 @@ end
 
 ---@param buf integer
 local function output_keymaps(buf)
-  -- On a link, cd into a directory or open a file in nvim; elsewhere as usual.
+  -- On a link, cd into a directory, or edit a file in this window, in place of
+  -- the shell; elsewhere as usual.
   map(buf, "n", "<CR>", function()
     local path = link_at_cursor()
-    if path then
-      M.send({ (vim.fn.isdirectory(path) == 1 and "cd " or "nvim ") .. haskell_string(path) })
-    else
+    if not path then
       vim.api.nvim_feedkeys(vim.keycode("<CR>"), "n", false)
+    elseif vim.fn.isdirectory(path) == 1 then
+      M.send({ "cd " .. haskell_string(path) })
+    else
+      vim.cmd.edit(vim.fn.fnameescape(path))
     end
   end)
   -- Add a link's path to the end of the prompt.

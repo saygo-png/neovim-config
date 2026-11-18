@@ -98,8 +98,12 @@ expr("v:lua.cursor_to('dir one')")
 keys("<CR>")
 check(wait(lambda: expr("luaeval('require(\"shhell\")._state.cwd')").endswith("/dir one")), "<CR> on a directory goes there")
 
-keys("<Esc><Esc>:enew<CR>")
-check(wait(lambda: expr("winnr('$')") == "1"), "another buffer in the output closes the prompt")
+keys(f'i<Esc>cccd "{FILES}"<CR><Esc><Esc>')
+wait(where("output nt"))
+expr("v:lua.cursor_to('two')")
+keys("<CR>")
+check(wait(lambda: expr("expand('%:t')") == "file two.txt" and expr("winnr('$')") == "1"),
+      "<CR> on a file edits it in place of the shell")
 keys(":Shhell<CR>")
 check(wait(where("prompt i")) and shows("\ninterrupted")(), ":Shhell brings both back")
 
