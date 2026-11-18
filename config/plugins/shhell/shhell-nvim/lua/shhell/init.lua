@@ -1,8 +1,6 @@
 -- shhell.nvim: shhell in a terminal, with commands typed in a prompt buffer
 -- below it. See README.md.
 
-local ffi = require("ffi")
-
 local M = {}
 
 ---@class shhell.Config
@@ -20,10 +18,11 @@ local config = { cmd = { "shhell" } }
 ---@field prompt_win integer?
 ---@field prompt_buf integer?
 ---@field cwd string? The shell's directory, from OSC 7.
----@field took boolean The running program has the keys.
----@field wanted integer For how many checks in a row it has wanted them.
+---@field marked boolean The prompt marks itself (OSC 133), so we know when commands end.
+---@field running boolean A command was sent and its prompt has not come back yet.
+---@field took boolean The running command has the keys.
 ---@field link {row: integer, cell: integer, path: string}? The link being printed.
-local s = { took = false, wanted = 0 }
+local s = { marked = false, running = false, took = false }
 
 local ns = vim.api.nvim_create_namespace("shhell")
 local links = {} ---@type table<integer, shhell.Link>
@@ -36,55 +35,6 @@ function M.focus_prompt()
   else
     vim.api.nvim_set_current_win(assert(s.prompt_win))
     vim.cmd.startinsert({ bang = true })
-  end
-end
-
--- Programs that want the keys -------------------------------------------------
---
--- A program that reads keys one at a time (btop, fzf, nvim) or a password
--- turns off the terminal's line editing or echo. GHCi does too while it waits
--- at its prompt, but then it has no child process, except for a moment while
--- the prompt runs direnv.
-
-pcall(ffi.cdef, [[
-  struct shhell_termios { unsigned int iflag, oflag, cflag, lflag; unsigned char line, cc[32]; unsigned int ispeed, ospeed; };
-  int tcgetattr(int fd, struct shhell_termios *termios);
-]])
-
----@return boolean
-local function program_wants_keys()
-  local children = vim.fn.glob("/proc/" .. vim.fn.jobpid(s.job) .. "/task/*/children", false, true)
-  if not vim.iter(children):any(function(f) return vim.fn.readfile(f)[1] ~= nil end) then
-    return false
-  end
-  local pty = vim.api.nvim_get_chan_info(assert(s.job)).pty
-  local c = vim.uv.constants
-  local fd = pty and vim.uv.fs_open(pty, bit.bor(c.O_RDONLY, c.O_NOCTTY, c.O_NONBLOCK), 0)
-  if not fd then
-    return false
-  end
-  local t = ffi.new("struct shhell_termios") --[[@as {lflag: integer}]]
-  local ok = ffi.C.tcgetattr(fd, t) == 0
-  vim.uv.fs_close(fd)
-  local ICANON, ECHO = 2, 8
-  return ok and bit.band(t.lflag, ICANON + ECHO) ~= ICANON + ECHO
-end
-
--- Checked ten times a second: the keys go to the program once it has wanted
--- them for 300 ms, and come back as soon as it doesn't.
-local function watch()
-  s.wanted = s.job ~= nil and program_wants_keys() and s.wanted + 1 or 0
-  local wants = s.wanted >= 3
-  if wants == s.took then
-    return
-  end
-  s.took = wants
-  local win = vim.api.nvim_get_current_win()
-  if wants and (win == s.prompt_win or win == s.term_win) then
-    vim.api.nvim_set_current_win(assert(s.term_win))
-    vim.cmd.startinsert()
-  elseif not wants and win == s.term_win and vim.api.nvim_get_mode().mode == "t" then
-    M.focus_prompt()
   end
 end
 
@@ -133,6 +83,18 @@ local function on_request(ev)
     vim.defer_fn(function() mark_link(link, end_cell) end, 100)
   elseif dir then
     s.cwd = unescape(dir)
+  elseif data.sequence:match("^\27%]133;A") then
+    -- The next prompt is starting, so the command has finished: if it had the
+    -- keys, they go back to the prompt.
+    s.marked, s.running = true, false
+    if s.took then
+      s.took = false
+      vim.schedule(function()
+        if vim.api.nvim_get_current_win() == s.term_win then
+          M.focus_prompt()
+        end
+      end)
+    end
   end
 end
 
@@ -172,6 +134,8 @@ function M.send(lines)
   end
   local text = #lines == 1 and lines[1] or ":{\r" .. table.concat(lines, "\r") .. "\r:}"
   vim.api.nvim_chan_send(s.job, text .. "\r")
+  -- Without the prompt's markers there is no telling when a command ends.
+  s.running = s.marked
 end
 
 --- Send the current line, or the visual selection, from any buffer.
@@ -202,10 +166,16 @@ local function prompt_keymaps(buf)
     end
   end
   vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, { buffer = buf, callback = fit })
+  -- While a command runs, the keys go to it, as in any shell.
   map(buf, { "n", "i" }, "<CR>", function()
     M.send(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
     fit()
+    if s.running and s.term_win then
+      s.took = true
+      vim.api.nvim_set_current_win(s.term_win)
+      vim.cmd.startinsert()
+    end
   end)
   map(buf, "i", "<M-CR>", "<CR>")
   map(buf, { "n", "i" }, "<C-c>", function() vim.api.nvim_chan_send(assert(s.job), "\3") end)
@@ -248,7 +218,7 @@ local function output_keymaps(buf)
   -- Typing goes to the prompt, unless a program has the keys.
   for _, key in ipairs({ "i", "a", "I", "A" }) do
     map(buf, "n", key, function()
-      if s.took then
+      if s.running then
         vim.cmd.startinsert()
       else
         M.focus_prompt()
@@ -283,15 +253,12 @@ function M.open()
         end
       end,
     })
-    local timer = assert(vim.uv.new_timer())
     s.job = vim.fn.jobstart(config.cmd, {
       term = true,
       on_exit = function()
-        s.job = nil
-        timer:close()
+        s.job, s.running = nil, false
       end,
     })
-    timer:start(100, 100, vim.schedule_wrap(watch))
     output_keymaps(s.term_buf)
   end
   s.term_win = vim.api.nvim_get_current_win()

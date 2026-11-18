@@ -32,9 +32,11 @@ file in place of the shell, which `:Shhell` brings back. `<C-CR>` adds the path
 to the prompt. Paths are relative to the shell's directory when it reports it
 (OSC 7, which `shhellPrompt` does).
 
-A program that wants the keys, like btop, fzf, nvim or a password prompt, gets
-them while it does: the plugin sees the shell's child turn off the terminal's
-line editing or echo.
+While a command you sent from the prompt runs, the keys go to it, as in any
+shell, so btop, fzf, nvim and password prompts work. They come back to the
+prompt when the next prompt appears, which the plugin learns from the prompt's
+OSC 133 markers (`shhellPrompt` sends them). Without the markers, the keys stay
+in the prompt.
 
 ## Test
 
