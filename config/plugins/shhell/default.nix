@@ -24,8 +24,8 @@
     };
   });
 in {
-  # shhell, the GHCi shell from the NixOS config, in a terminal tab with a
-  # prompt below it. See shhell-nvim/README.md.
+  # shhell, the GHCi shell from the NixOS config, in a terminal with a prompt
+  # below it. See shhell-nvim/README.md.
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "shhell.nvim";

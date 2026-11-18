@@ -98,6 +98,11 @@ expr("v:lua.cursor_to('dir one')")
 keys("<CR>")
 check(wait(lambda: expr("luaeval('require(\"shhell\")._state.cwd')").endswith("/dir one")), "<CR> on a directory goes there")
 
+keys("<Esc><Esc>:enew<CR>")
+check(wait(lambda: expr("winnr('$')") == "1"), "another buffer in the output closes the prompt")
+keys(":Shhell<CR>")
+check(wait(where("prompt i")) and shows("\ninterrupted")(), ":Shhell brings both back")
+
 nvim.kill()
 print(f"{failures} failed" if failures else "all passed")
 sys.exit(failures > 0)

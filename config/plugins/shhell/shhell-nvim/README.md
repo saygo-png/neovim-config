@@ -1,7 +1,8 @@
 # shhell.nvim (prototype)
 
-shhell in a Neovim terminal tab, with commands typed in a prompt buffer below
-it. The output above is an ordinary terminal buffer.
+shhell in a Neovim terminal, with commands typed in a prompt buffer below it.
+`:Shhell` shows both in the current window; showing another buffer there closes
+the prompt. The output is an ordinary terminal buffer.
 
 ```lua
 require("shhell").setup() -- optional: { cmd = { "shhell" }, height = 3 }

@@ -1,5 +1,5 @@
--- shhell.nvim: shhell in a terminal tab, with commands typed in a prompt
--- buffer below it. See README.md.
+-- shhell.nvim: shhell in a terminal, with commands typed in a prompt buffer
+-- below it. See README.md.
 
 local ffi = require("ffi")
 
@@ -16,8 +16,7 @@ local config = { cmd = { "shhell" }, height = 3 }
 
 ---@class shhell.State
 ---@field job integer?
----@field tab integer?
----@field term_win integer?
+---@field term_win integer? The window showing the terminal, while it does.
 ---@field term_buf integer?
 ---@field prompt_win integer?
 ---@field prompt_buf integer?
@@ -106,7 +105,7 @@ end
 ---@param link {row: integer, cell: integer, path: string}
 ---@param end_cell integer
 local function mark_link(link, end_cell)
-  if not (s.term_win and vim.api.nvim_win_is_valid(s.term_win)) then
+  if not s.term_win then
     return
   end
   local line = vim.api.nvim_buf_get_lines(assert(s.term_buf), link.row - 1, link.row, false)[1] or ""
@@ -173,7 +172,9 @@ function M.send(lines)
     return
   end
   -- Show the end of the output, and follow it.
-  vim.api.nvim_win_set_cursor(assert(s.term_win), { vim.api.nvim_buf_line_count(assert(s.term_buf)), 0 })
+  if s.term_win then
+    vim.api.nvim_win_set_cursor(s.term_win, { vim.api.nvim_buf_line_count(assert(s.term_buf)), 0 })
+  end
   local text = #lines == 1 and lines[1] or ":{\r" .. table.concat(lines, "\r") .. "\r:}"
   vim.api.nvim_chan_send(s.job, text .. "\r")
 end
@@ -249,36 +250,55 @@ local function output_keymaps(buf)
   end
 end
 
---- Open shhell in a new tab: output above, prompt below.
+--- Show shhell in the current window, with the prompt below it. Showing
+--- another buffer there closes the prompt.
 function M.open()
-  if s.tab and vim.api.nvim_tabpage_is_valid(s.tab) then
-    vim.api.nvim_set_current_tabpage(s.tab)
+  if s.prompt_win and vim.api.nvim_win_is_valid(s.prompt_win) then
+    vim.api.nvim_set_current_win(s.prompt_win)
     return M.focus_prompt()
   end
-  vim.cmd.tabnew()
-  s.tab, s.term_win, s.term_buf = vim.api.nvim_get_current_tabpage(), vim.api.nvim_get_current_win(), vim.api.nvim_get_current_buf()
-  -- The most Neovim keeps. Once it is full, Neovim moves lines without saying,
-  -- and links stop working.
-  vim.bo.scrollback = 100000
-  vim.api.nvim_create_autocmd("TermRequest", { buffer = s.term_buf, callback = on_request })
-  local timer = assert(vim.uv.new_timer())
-  s.job = vim.fn.jobstart(config.cmd, {
-    term = true,
-    on_exit = function()
-      s.job = nil
-      timer:close()
-    end,
-  })
-  timer:start(100, 100, vim.schedule_wrap(watch))
-  output_keymaps(s.term_buf)
+  if s.job then
+    vim.api.nvim_win_set_buf(0, assert(s.term_buf))
+  else
+    vim.cmd.enew()
+    s.term_buf = vim.api.nvim_get_current_buf()
+    -- The most Neovim keeps. Once it is full, Neovim moves lines without
+    -- saying, and links stop working.
+    vim.bo.scrollback = 100000
+    vim.api.nvim_create_autocmd("TermRequest", { buffer = s.term_buf, callback = on_request })
+    vim.api.nvim_create_autocmd("BufWinLeave", {
+      buffer = s.term_buf,
+      callback = function(ev)
+        if ev.buf == s.term_buf then
+          s.term_win = nil
+          local win = s.prompt_win
+          vim.schedule(function() pcall(vim.api.nvim_win_close, win, true) end)
+        end
+      end,
+    })
+    local timer = assert(vim.uv.new_timer())
+    s.job = vim.fn.jobstart(config.cmd, {
+      term = true,
+      on_exit = function()
+        s.job = nil
+        timer:close()
+      end,
+    })
+    timer:start(100, 100, vim.schedule_wrap(watch))
+    output_keymaps(s.term_buf)
+  end
+  s.term_win = vim.api.nvim_get_current_win()
 
-  vim.cmd("botright " .. config.height .. "split")
-  s.prompt_win, s.prompt_buf = vim.api.nvim_get_current_win(), vim.api.nvim_create_buf(false, true)
+  if not (s.prompt_buf and vim.api.nvim_buf_is_valid(s.prompt_buf)) then
+    s.prompt_buf = vim.api.nvim_create_buf(false, true)
+    -- Haskell highlighting, without the filetype, which would start a language server.
+    pcall(vim.treesitter.start, s.prompt_buf, "haskell")
+    prompt_keymaps(s.prompt_buf)
+  end
+  vim.cmd("belowright " .. config.height .. "split")
+  s.prompt_win = vim.api.nvim_get_current_win()
   vim.api.nvim_win_set_buf(s.prompt_win, s.prompt_buf)
   vim.wo.winfixheight = true
-  -- Haskell highlighting, without the filetype, which would start a language server.
-  pcall(vim.treesitter.start, s.prompt_buf, "haskell")
-  prompt_keymaps(s.prompt_buf)
   M.focus_prompt()
 end
 
