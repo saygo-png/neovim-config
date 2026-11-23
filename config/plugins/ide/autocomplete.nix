@@ -11,7 +11,6 @@ in {
 
   my.keymaps.insertAndCommand = {
     "<C-x>" = config.k "<C-x><C-o>" "Autocomplete";
-    "<Tab>" = config.k "" "";
   };
 
   plugins = {
