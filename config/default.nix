@@ -55,7 +55,6 @@ in {
 
     # Wrapping.
     linebreak = true;
-    wrap = true;
 
     # Center it all.
     scrolloff = 999;
@@ -69,8 +68,6 @@ in {
     # g in substitute implicit
     gdefault = true;
 
-    # Incremental search.
-    incsearch = true;
     updatetime = 250;
 
     # Relative numberline on the left.
@@ -85,7 +82,6 @@ in {
     smartcase = true;
     ignorecase = true;
     grepprg = "rg --vimgrep";
-    grepformat = "%f:%l:%c:%m";
 
     foldenable = false;
 

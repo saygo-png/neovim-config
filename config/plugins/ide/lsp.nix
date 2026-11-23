@@ -41,7 +41,6 @@ in {
           vim.notify("Warnings " .. (vim.g.warnings_hidden and "hidden" or "shown"))
         end
       '') "toggle [w]arnings")
-      (lkb "K" "hover" "Hover")
 
       (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
       (lkb "gD" "declaration" "Declaration")
@@ -56,10 +55,7 @@ in {
     ];
 
     servers = {
-      "*".config = {
-        root_markers = [".git"];
-        capabilities.textDocument.semanticTokens.multilineTokenSupport = true;
-      };
+      "*".config.root_markers = [".git"];
 
       zuban.enable = true;
       biome.enable = true;
@@ -136,8 +132,6 @@ in {
   ];
 
   diagnostic.settings = {
-    signs = true;
-    underline = true;
     severity_sort = true;
     float.source = "if_many";
     jump = {
