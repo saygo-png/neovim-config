@@ -6,9 +6,9 @@
 }: {
   extraPlugins = [pkgs.vimPlugins.vim-qf];
 
-  my.keymaps.normal."<S-f>" =
+  my.keymaps.normal."<leader>x" =
     config.k (lib.nixvim.mkRaw ''function() require("quicker").toggle() end '')
-    "Toggle quick[f]ix";
+    "Toggle quickfi[x]";
 
   plugins = {
     quicker = {
