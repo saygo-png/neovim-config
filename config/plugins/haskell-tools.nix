@@ -27,18 +27,13 @@ in {
 
   my.which-keys."<leader>h".group = "Haskell";
 
-  my.keymaps = let
+  performance.byteCompileLua.excludedPlugins = ["haskell-tools.nvim"];
+
+  my.keymaps.normal = let
     ht = "require('haskell-tools')";
   in {
-    normal = {
-      "<leader>hs" = k (mkRaw "${ht}.hoogle.hoogle_signature") "Search signature";
-      "<leader>he" = k (mkRaw "${ht}.lsp.buf_eval_all") "Eval snippets";
-      "<leader>hr" = k (mkRaw "${ht}.repl.toggle") "Toggle repl";
-
-      # Replaces haskell-tools' own `ghc` map, which has no description.
-      # `:Telescope keymaps` crashes on undescribed maps from byte-compiled
-      # plugins. Reading `.repl` loads the module (and its map) first.
-      "ghc" = k (mkRaw "${ht}.repl.operator") "Send motion to GHCi repl";
-    };
+    "<leader>hs" = k (mkRaw "function() ${ht}.hoogle.hoogle_signature() end") "Search signature";
+    "<leader>he" = k (mkRaw "function() ${ht}.lsp.buf_eval_all() end") "Eval snippets";
+    "<leader>hr" = k (mkRaw "function() ${ht}.repl.toggle() end") "Toggle repl";
   };
 }
