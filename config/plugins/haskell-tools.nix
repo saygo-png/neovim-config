@@ -25,6 +25,8 @@ in {
     };
   };
 
+  my.which-keys."<leader>h".group = "Haskell";
+
   my.keymaps = let
     ht = "require('haskell-tools')";
   in {

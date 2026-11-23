@@ -15,6 +15,7 @@ in {
   };
 
   my = {
+    which-keys."<leader>tc".group = "Current dir";
     which-keys."<leader>t" = wk "Telescope" " ";
     keymaps.normal = {
       "<leader>tb" = k "<cmd>Telescope current_buffer_fuzzy_find<CR>" "[t]elescope [b]uffer";

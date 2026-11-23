@@ -1,5 +1,5 @@
 {config, ...}: let
-  inherit (config) k wk;
+  inherit (config) k;
 in {
   plugins = {
     oil = {
@@ -14,7 +14,7 @@ in {
   performance.combinePlugins.standalonePlugins = ["oil.nvim"];
 
   my = {
-    which-keys."<leader>f" = wk "File browser" " ";
+    which-keys."<leader>f".icon = " ";
     keymaps.normal."<leader>f" = k "<cmd>Oil<CR>" "[f]ile browser";
   };
 }

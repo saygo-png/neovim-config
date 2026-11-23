@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  inherit (config) k wk toLazyKeys;
+  inherit (config) k toLazyKeys;
   inherit (lib.nixvim) mkRaw;
 in {
   # Use conform-nvim for gq formatting.
@@ -12,9 +12,9 @@ in {
 
   performance.byteCompileLua.excludedPlugins = ["conform.nvim"];
 
-  my.which-keys."<leader>c" = wk "Conform" " ";
-  my.which-keys."<leader>nc" = wk "Nix fmt" " ";
-  my.which-keys."<leader>gc" = wk "Treefmt" " ";
+  my.which-keys."<leader>c".icon = " ";
+  my.which-keys."<leader>nc".icon = " ";
+  my.which-keys."<leader>gc".icon = " ";
 
   plugins = {
     conform-nvim = {

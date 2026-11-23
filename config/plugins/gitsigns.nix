@@ -9,6 +9,7 @@ in {
   };
 
   my = {
+    which-keys."<leader>g".group = "Git";
     which-keys."<leader>gs" = wk "Gitsigns" " ";
     keymaps.normal = {
       "<leader>gsc" = k "<cmd>Gitsigns toggle_signs<CR>" "[g]it[s]igns [c]olumn";

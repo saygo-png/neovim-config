@@ -1,5 +1,5 @@
 {config, ...}: let
-  inherit (config) k wk;
+  inherit (config) k;
 in {
   plugins = {
     nvim-tree = {
@@ -30,7 +30,7 @@ in {
   };
 
   my = {
-    which-keys."<leader>op" = wk "File tree" " ";
+    which-keys."<leader>op".icon = " ";
     keymaps.normal."<leader>op" = k "<cmd>NvimTreeToggle<CR>" "[o]pen [p]roject";
   };
 }

@@ -1,6 +1,4 @@
-{config, ...}: let
-  inherit (config) wk;
-in {
+{
   plugins = {
     which-key = {
       enable = true;
@@ -9,8 +7,8 @@ in {
     };
   };
   my.which-keys = {
-    "<leader>r" = wk "Re" " ";
-    "<leader>q" = wk "Quit" "󰩈 ";
-    "<leader>S" = wk "Sort by length" "󰒼 ";
+    "<leader>rn".icon = " ";
+    "<leader>q".icon = "󰩈 ";
+    "<leader>S".icon = "󰒼 ";
   };
 }
