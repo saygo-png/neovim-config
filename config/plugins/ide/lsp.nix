@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (config) k kns lk lkb;
+  inherit (config) kns lk lkb;
   inherit (lib.nixvim.utils) mkRaw;
 in {
   lsp = {
@@ -44,8 +44,6 @@ in {
 
       (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
       (lkb "gD" "declaration" "Declaration")
-      (lk "gp" (mkRaw "function() vim.diagnostic.jump({count = -1}) end") "[p]revious diagnostic")
-      (lk "gn" (mkRaw "function() vim.diagnostic.jump({count = 1}) end") "[n]ext diagnostic")
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
       (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
