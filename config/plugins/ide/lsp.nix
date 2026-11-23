@@ -48,11 +48,11 @@ in {
       (lk "gp" (mkRaw "function() vim.diagnostic.jump({count = -1}) end") "[p]revious diagnostic")
       (lk "gn" (mkRaw "function() vim.diagnostic.jump({count = 1}) end") "[n]ext diagnostic")
 
-      (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "")
-      (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "")
-      (lk "te" "<cmd>Telescope lsp_references<CR>" "")
-      (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "")
-      (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "")
+      (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
+      (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
+      (lk "te" "<cmd>Telescope lsp_references<CR>" "References")
+      (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "Implementations")
+      (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "Document symbols")
     ];
 
     servers = {
