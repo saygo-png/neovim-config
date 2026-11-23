@@ -61,6 +61,8 @@ in {
     scrolloff = 999;
     sidescrolloff = 999;
 
+    synmaxcol = 300;
+
     # Delay on switching to normal mode.
     ttimeoutlen = 0;
 
