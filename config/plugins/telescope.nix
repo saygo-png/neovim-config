@@ -1,16 +1,14 @@
 {
-  lib,
   config,
   inputs,
   pkgs,
   ...
 }: let
   inherit (config) k wk;
-  inherit (lib.nixvim) mkRaw;
 in {
   plugins.telescope = {
     enable = true;
-    # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
+    lazyLoad.settings.cmd = "Telescope";
     extensions.fzf-native.enable = true;
   };
 
@@ -34,9 +32,7 @@ in {
       "<leader>tcg" = k "<cmd>Telescope live_grep cwd=%:p:h<CR>" "[t]elescope grep in [c]urrent dir";
       "<leader>tv" = k "<cmd>Telescope git_file_history<CR>" "[t]elescope [v]ersions";
       "<leader>tp" = k "<cmd>Telescope projects<CR>" "[t]elescope [p]rojects";
-      "<leader>tg" = k (mkRaw "function()
-          require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
-        end") "[t]elescope fuzzy [g]rep";
+      "<leader>tg" = k "<cmd>Telescope grep_string search= only_sort_text=true shorten_path=true<CR>" "[t]elescope fuzzy [g]rep";
     };
   };
 

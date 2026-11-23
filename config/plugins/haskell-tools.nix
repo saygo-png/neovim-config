@@ -32,7 +32,7 @@ in {
   my.keymaps.normal = let
     ht = "require('haskell-tools')";
   in {
-    "<leader>hs" = k (mkRaw "function() ${ht}.hoogle.hoogle_signature() end") "Search signature";
+    "<leader>hs" = k (mkRaw "function() require('lz.n').trigger_load('telescope.nvim'); ${ht}.hoogle.hoogle_signature() end") "Search signature";
     "<leader>he" = k (mkRaw "function() ${ht}.lsp.buf_eval_all() end") "Eval snippets";
     "<leader>hr" = k (mkRaw "function() ${ht}.repl.toggle() end") "Toggle repl";
   };
