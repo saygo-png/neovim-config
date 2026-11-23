@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (config) lk lkb;
+  inherit (config) k kns lk lkb;
   inherit (lib.nixvim.utils) mkRaw;
 in {
   lsp = {
@@ -87,6 +87,15 @@ in {
     };
   };
 
+  # `<leader>rn` opens the cmdline window on `:Rename <word>`, so the new name
+  # is edited with normal vim motions.
+  userCommands.Rename = {
+    command = mkRaw "function(args) vim.lsp.buf.rename(args.args) end";
+    nargs = 1;
+    desc = "Rename the symbol under the cursor";
+  };
+  my.keymaps.normal."<leader>rn" = kns ":Rename <C-r><C-w><C-f>0w" "[r]e[n]ame node";
+
   plugins = {
     lspconfig.enable = true;
 
@@ -135,29 +144,4 @@ in {
       '';
     };
   };
-
-  extraConfigLua = ''
-    -- Rename node using vim binds
-    vim.keymap.set("n", "<leader>rn", function()
-      local cmdId
-      cmdId = vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
-        callback = function()
-          local key = vim.api.nvim_replace_termcodes("<C-f>", true, false, true)
-          vim.api.nvim_feedkeys(key, "c", false)
-          vim.api.nvim_feedkeys("0", "n", false)
-          -- autocmd was triggered and so we can remove the ID and return true to delete the autocmd
-          cmdId = nil
-          return true
-        end,
-      })
-      vim.lsp.buf.rename()
-      -- if LSP couldn't trigger rename on the symbol, clear the autocmd
-      vim.defer_fn(function()
-        -- the cmdId is not nil only if the LSP failed to rename
-        if cmdId then
-          vim.api.nvim_del_autocmd(cmdId)
-        end
-      end, 500)
-    end, {desc = "rename node"})
-  '';
 }
