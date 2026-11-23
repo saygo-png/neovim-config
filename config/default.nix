@@ -131,9 +131,6 @@ in {
       "<S-M-j>" = k "<cmd>wincmd j<CR>" "Move to the split below";
 
       # Tabs
-      "tk" = k ":tabnext<CR>" "Go to next tab";
-      "tj" = k ":tabprev<CR>" "Go to previous tab";
-      "td" = k ":tabclose<CR>" "Close current tab";
       "<leader>1" = k "1gt" "Go to tab 1";
       "<leader>2" = k "2gt" "Go to tab 2";
       "<leader>3" = k "3gt" "Go to tab 3";
@@ -176,7 +173,6 @@ in {
       "v" = k "<Esc>^vg_" "Select line without newline and whitespace";
       "L" = kns ":norm yss" "Surround each line";
       "." = k ":normal .<CR>" "Dot commands over visual blocks";
-      "gj" = k "J" "Join lines";
       "<Leader>S" = k '':!awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'<CR><CR>'' "[S]ort lines by length";
     };
 
@@ -184,21 +180,6 @@ in {
       "<C-V>" = k "<C-r>+" "Proper paste";
     };
   };
-
-  extraConfigLua =
-    # Lua
-    ''
-      local function url_repo()
-        local cursorword = vim.fn.expand('<cfile>')
-        if string.find(cursorword, '^[a-zA-Z0-9-_.]*/[a-zA-Z0-9-_.]*$') then
-          cursorword = "https://github.com/" .. cursorword
-        end
-        return cursorword or ""
-      end
-      vim.keymap.set('n', 'gx', function()
-        vim.ui.open(url_repo())
-      end, { silent = true, desc = "Open thing under cursor" })
-    '';
 
   autoCmd = [
     {

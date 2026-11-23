@@ -1,17 +1,9 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{lib, ...}: let
   inherit (lib) mapAttrs;
   inherit (lib.nixvim) mkRaw listToUnkeyedAttrs;
 in {
   # Needed for blink to access friendly-snippets
   performance.combinePlugins.standalonePlugins = ["friendly-snippets"];
-
-  my.keymaps.insertAndCommand = {
-    "<C-x>" = config.k "<C-x><C-o>" "Autocomplete";
-  };
 
   plugins = {
     friendly-snippets.enable = true;
