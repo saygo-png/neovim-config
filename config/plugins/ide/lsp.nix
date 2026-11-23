@@ -70,7 +70,7 @@ in {
       # Nix.
       nil_ls = {
         enable = true;
-        config.nix.flake.autoArchive = true;
+        config.settings.nil.nix.flake.autoArchive = true;
       };
 
       # Typos.
