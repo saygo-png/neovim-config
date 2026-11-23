@@ -41,6 +41,9 @@ in {
   ];
 
   withRuby = false;
+  withNodeJs = false;
+  withPerl = false;
+  withPython3 = false;
 
   opts = {
     # Indents.
