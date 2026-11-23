@@ -86,7 +86,7 @@
       lib.nixvim.keymaps.mkKeymaps sharedOpts
       (lib.flatten [
         (toKeymapList "n" normal)
-        (toKeymapList "v" visual)
+        (toKeymapList "x" visual)
         (toKeymapList ["i" "c"] insertAndCommand)
         (toKeymapList "t" terminal)
       ]);
