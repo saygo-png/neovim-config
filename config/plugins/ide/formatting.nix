@@ -31,7 +31,7 @@ in {
         cmd = "Conform";
         keys = toLazyKeys {
           "<leader>c" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000}) end") "[c]onform";
-          "<leader>gc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[c]onform";
+          "<leader>gc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[g]it [c]onform (treefmt)";
           "<leader>nc" = k (mkRaw "function() require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } }) end") "[n]ix [c]onform";
         };
       };
@@ -39,7 +39,7 @@ in {
       settings = {
         default_format_opts.lsp_format = "never";
         formatters_by_ft = let
-          foo = v: lib.nixvim.utils.listToUnkeyedAttrs ([] ++ v);
+          toUnkeyed = lib.nixvim.utils.listToUnkeyedAttrs;
           fmts = {
             json = ["jq"];
             sh = ["shfmt"];
@@ -60,7 +60,7 @@ in {
             typescriptreact = ["biome"];
           };
         in
-          (builtins.mapAttrs (_: v: {stop_after_first = true;} // foo v) fmts)
+          (builtins.mapAttrs (_: v: {stop_after_first = true;} // toUnkeyed v) fmts)
           // {"*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];};
         formatters = {
           shfmt.args = lib.mkOptionDefault ["-i" "2"];
@@ -91,6 +91,6 @@ in {
 
   userCommands.Conform = {
     command.__raw = "function() require('conform').format({ timeout_ms = 5000 }) end";
-    desc = "Format using Conform with a 500ms timeout";
+    desc = "Format using Conform with a 5s timeout";
   };
 }
