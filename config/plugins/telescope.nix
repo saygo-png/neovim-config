@@ -9,6 +9,8 @@
   inherit (lib.nixvim) mkRaw;
 in {
   plugins = {
+    # project.nvim is lazy-loaded, so its extension is loaded by the
+    # `<leader>tp` keymap below instead of at telescope's setup.
     project-nvim.enableTelescope = false;
     telescope = {
       enable = true;
@@ -75,6 +77,13 @@ in {
   my = {
     which-keys."<leader>t" = wk "Telescope" " ";
     keymaps.normal = {
+      "<leader>tp" = k (mkRaw ''
+        function()
+          local telescope = require("telescope")
+          telescope.load_extension("projects")
+          telescope.extensions.projects.projects()
+        end
+      '') "[t]elescope [p]rojects";
       "<leader>to" = k (mkRaw "function()
           require'telescope.builtin'.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
         end") "[T]raverse in [O]pen Files";
