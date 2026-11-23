@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  inherit (config) k toLazyKeys;
+  inherit (config) k wk toLazyKeys;
   inherit (lib.nixvim) mkRaw;
 in {
   # Use conform-nvim for gq formatting.
@@ -12,9 +12,11 @@ in {
 
   performance.byteCompileLua.excludedPlugins = ["conform.nvim"];
 
-  my.which-keys."<leader>c".icon = " ";
-  my.which-keys."<leader>nc".icon = " ";
-  my.which-keys."<leader>gc".icon = " ";
+  my.which-keys = {
+    "<leader>c" = wk "Format" " ";
+    "<leader>ct".icon = " ";
+    "<leader>cn".icon = " ";
+  };
 
   plugins = {
     conform-nvim = {
@@ -30,9 +32,9 @@ in {
       lazyLoad.settings = {
         cmd = "Conform";
         keys = toLazyKeys {
-          "<leader>c" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000}) end") "[c]onform";
-          "<leader>gc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[g]it [c]onform (treefmt)";
-          "<leader>nc" = k (mkRaw "function() require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } }) end") "[n]ix [c]onform";
+          "<leader>cc" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000}) end") "[c]onform";
+          "<leader>ct" = k (mkRaw "function() require('conform').format({ timeout_ms = 5000, formatters = { 'my-treefmt' } }) end") "[t]reefmt";
+          "<leader>cn" = k (mkRaw "function() require('conform').format({ timeout_ms = 20000, formatters = { 'flakeformat' } }) end") "[n]ix fmt";
         };
       };
 
