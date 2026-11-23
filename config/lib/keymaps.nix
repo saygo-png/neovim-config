@@ -71,21 +71,12 @@
         description = "Registrations for which-key";
         type = with lib.types; attrsOf (attrsOf str);
       };
-      keymaps = let
-        mkKeymapOption = mn: {
-          ${mn} = lib.mkOption {
-            default = {};
-            description = "Set keybindings for ${mn} mode";
-            type = with lib.types; attrsOf (attrsOf (oneOf [str bool (attrsOf str)]));
-          };
-        };
-      in
-        lib.mergeAttrsList (map mkKeymapOption [
-          "normal"
-          "visual"
-          "insertAndCommand"
-          "terminal"
-        ]);
+      keymaps = lib.genAttrs ["normal" "visual" "insertAndCommand" "terminal"] (mn:
+        lib.mkOption {
+          default = {};
+          description = "Set keybindings for ${mn} mode";
+          type = with lib.types; attrsOf (attrsOf (oneOf [str bool (attrsOf str)]));
+        });
     };
   };
 
@@ -97,10 +88,7 @@
           key: spec: {
             inherit key mode;
             inherit (spec) action;
-            options =
-              lib.optionalAttrs (spec.desc or null != null) {inherit (spec) desc;}
-              // lib.optionalAttrs (spec.silent or null != null) {inherit (spec) silent;}
-              // lib.optionalAttrs (spec.remap or null != null) {inherit (spec) remap;};
+            options = removeAttrs spec ["action"];
           }
         );
 
