@@ -13,7 +13,12 @@
     };
 
     lk = lib.mkOption {
-      default = key: action: desc: {inherit key action;} // {options.desc = desc;};
+      default = key: action: desc:
+        {inherit key action;}
+        // {
+          mode = "n";
+          options.desc = desc;
+        };
       readOnly = true;
       type = lib.types.anything;
       description = "Make keybind for lsp module";

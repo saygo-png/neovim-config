@@ -14,7 +14,7 @@ in {
     documentColor.enable = true;
 
     keymaps = [
-      (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
+      (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions" // {mode = ["n" "x"];})
       (lk "<Leader>e" (mkRaw "vim.diagnostic.open_float") "Diagnostic")
       (lk "<leader>w" (mkRaw ''
         function()
@@ -43,9 +43,9 @@ in {
       (lk "gD" (mkRaw "vim.lsp.buf.declaration") "Declaration")
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
-      (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
+      (lk "grt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
       (lk "grr" "<cmd>Telescope lsp_references<CR>" "References")
-      (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "Implementations")
+      (lk "gri" "<cmd>Telescope lsp_implementations<CR>" "Implementations")
       (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "Document symbols")
     ];
 
