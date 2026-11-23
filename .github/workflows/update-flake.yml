@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update-flake:
@@ -21,11 +22,6 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configure Git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
 
       - name: Update flake lockfile
         run: nix flake update
@@ -45,9 +41,12 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: nix build
 
-      - name: Commit and push changes
+      - name: Open pull request
         if: steps.changes.outputs.changed == 'true'
-        run: |
-          git add flake.lock
-          git commit -m "chore: update flake lockfile"
-          git push
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/update-flake-lock
+          commit-message: "chore: update flake lockfile"
+          title: "chore: update flake lockfile"
+          body: Automated weekly `nix flake update`. The build passed before this PR was opened.
+          add-paths: flake.lock
