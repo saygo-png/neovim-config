@@ -50,7 +50,7 @@ in {
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
       (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
-      (lk "te" "<cmd>Telescope lsp_references<CR>" "References")
+      (lk "grr" "<cmd>Telescope lsp_references<CR>" "References")
       (lk "gI" "<cmd>Telescope lsp_implementations<CR>" "Implementations")
       (lk "<leader>ts" "<cmd>Telescope lsp_document_symbols<CR>" "Document symbols")
     ];
