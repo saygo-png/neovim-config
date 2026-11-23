@@ -38,30 +38,26 @@ in {
 
       settings = {
         default_format_opts.lsp_format = "never";
-        formatters_by_ft = let
-          toUnkeyed = lib.nixvim.utils.listToUnkeyedAttrs;
-          fmts = {
-            json = ["jq"];
-            sh = ["shfmt"];
-            lua = ["stylua"];
-            python = ["yapf"];
-            css = ["biome"];
-            nix = ["alejandra"];
-            html = ["biome"];
-            scss = ["biome"];
-            jsonc = ["biome"];
-            cabal = ["my-cabal-gild"];
-            haskell = ["fourmolu"];
-            graphql = ["biome"];
-            markdown = ["biome"];
-            javascript = ["biome"];
-            typescript = ["biome"];
-            javascriptreact = ["biome"];
-            typescriptreact = ["biome"];
-          };
-        in
-          (builtins.mapAttrs (_: v: {stop_after_first = true;} // toUnkeyed v) fmts)
-          // {"*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];};
+        formatters_by_ft = {
+          "*" = ["squeeze_blanks" "trim_whitespace" "trim_newlines"];
+          json = ["jq"];
+          sh = ["shfmt"];
+          lua = ["stylua"];
+          python = ["yapf"];
+          css = ["biome"];
+          nix = ["alejandra"];
+          html = ["biome"];
+          scss = ["biome"];
+          jsonc = ["biome"];
+          cabal = ["my-cabal-gild"];
+          haskell = ["fourmolu"];
+          graphql = ["biome"];
+          markdown = ["biome"];
+          javascript = ["biome"];
+          typescript = ["biome"];
+          javascriptreact = ["biome"];
+          typescriptreact = ["biome"];
+        };
         formatters = {
           shfmt.args = lib.mkOptionDefault ["-i" "2"];
           squeeze_blanks.command = pkgs.lib.getExe' pkgs.coreutils "cat";
