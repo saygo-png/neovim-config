@@ -4,7 +4,6 @@ in {
   plugins = {
     oil = {
       enable = true;
-      settings.defaultFileExplorer = true;
       lazyLoad.settings = {
         cmd = "Oil";
         event = "VimEnter";

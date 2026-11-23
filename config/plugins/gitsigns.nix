@@ -5,10 +5,6 @@ in {
     gitsigns = {
       lazyLoad.settings.event = "DeferredUIEnter";
       enable = true;
-      settings = {
-        current_line_blame = false;
-        signcolumn = true;
-      };
     };
   };
 

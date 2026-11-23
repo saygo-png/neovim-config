@@ -103,7 +103,6 @@ in {
         cmd = "Lspsaga";
       };
       settings = {
-        symbol_in_winbar.enable = true;
         implement.enable = true;
         lightbulb.enable = false;
       };

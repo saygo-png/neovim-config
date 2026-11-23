@@ -16,14 +16,7 @@ in {
       enable = true;
       # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
       enabledExtensions = ["git_file_history"];
-      extensions.fzf-native = {
-        enable = true;
-        settings = {
-          fuzzy = true;
-          override_file_sorter = true;
-          override_generic_sorter = true;
-        };
-      };
+      extensions.fzf-native.enable = true;
 
       keymaps = {
         "<leader>tb" = {

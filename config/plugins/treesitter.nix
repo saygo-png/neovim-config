@@ -145,7 +145,6 @@ in {
     treesitter = {
       enable = true;
       folding.enable = true;
-      nixvimInjections = true;
       indent.enable = true;
       highlight.enable = true;
       grammarPackages = let
