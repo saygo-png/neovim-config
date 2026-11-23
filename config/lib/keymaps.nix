@@ -19,18 +19,6 @@
       description = "Make keybind for lsp module";
     };
 
-    lkb = lib.mkOption {
-      default = key: lspBufAction: desc: {inherit key lspBufAction;} // {options.desc = desc;};
-      readOnly = true;
-      type = lib.types.anything;
-      description = ''
-        Make keybind for lsp module bound to `vim.lsp.buf.<action>`.
-
-        `lk` takes a literal keymap RHS, so `lk "gD" "declaration"` types the
-        characters "declaration" rather than calling `vim.lsp.buf.declaration`.
-      '';
-    };
-
     toLazyKeys = lib.mkOption {
       readOnly = true;
       type = lib.types.anything;

@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (config) kns lk lkb;
+  inherit (config) kns lk;
   inherit (lib.nixvim.utils) mkRaw;
 in {
   lsp = {
@@ -40,7 +40,7 @@ in {
       '') "toggle [w]arnings")
 
       (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
-      (lkb "gD" "declaration" "Declaration")
+      (lk "gD" (mkRaw "vim.lsp.buf.declaration") "Declaration")
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
       (lk "gt" "<cmd>Telescope lsp_type_definitions<CR>" "Type definitions")
