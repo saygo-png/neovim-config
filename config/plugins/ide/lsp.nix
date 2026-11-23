@@ -101,6 +101,11 @@ in {
 
     lspsaga = {
       enable = true;
+      # Loads on the first LSP attach, or when a keymap calls :Lspsaga.
+      lazyLoad.settings = {
+        event = "LspAttach";
+        cmd = "Lspsaga";
+      };
       settings = {
         symbol_in_winbar.enable = true;
         implement.enable = true;
