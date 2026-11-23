@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  ...
-}: let
-  inherit (config) kr;
+{lib, ...}: let
   inherit (lib.nixvim) mkRaw;
 in {
   plugins = {
@@ -34,47 +29,5 @@ in {
         MiniMisc.setup_restore_cursor()
       '';
     };
-
-    # Same keys as vim-surround: ys{motion}{char}, cs, ds, yss; gS in visual.
-    mini-surround = {
-      enable = true;
-      lazyLoad.settings.keys = [
-        {
-          __unkeyed-1 = "ys";
-          mode = "n";
-          desc = "Add surrounding";
-        }
-        {
-          __unkeyed-1 = "ds";
-          mode = "n";
-          desc = "Delete surrounding";
-        }
-        {
-          __unkeyed-1 = "cs";
-          mode = "n";
-          desc = "Replace surrounding";
-        }
-        {
-          __unkeyed-1 = "gS";
-          mode = "x";
-          desc = "Surround selection";
-        }
-      ];
-      settings.mappings = {
-        add = "ys";
-        delete = "ds";
-        replace = "cs";
-        find = "";
-        find_left = "";
-        highlight = "";
-        update_n_lines = "";
-      };
-      luaConfig.content = lib.mkAfter ''
-        vim.keymap.del("x", "ys")
-        vim.keymap.set("x", "gS", [[:<C-u>lua MiniSurround.add("visual")<CR>]], { silent = true, desc = "Surround selection" })
-      '';
-    };
   };
-
-  my.keymaps.normal."yss" = kr "ys_" "Surround line";
 }
