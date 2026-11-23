@@ -39,7 +39,7 @@ in {
         end
       '') "toggle [w]arnings")
 
-      (lk "gh" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Diagnostics [h]elp")
+      (lk "<leader>d" "<cmd>Lspsaga show_workspace_diagnostics<CR>" "Workspace [d]iagnostics")
       (lk "gD" (mkRaw "vim.lsp.buf.declaration") "Declaration")
 
       (lk "gd" "<cmd>Telescope lsp_definitions<CR>" "Definitions")
