@@ -11,10 +11,7 @@ in {
     inlayHints.enable = true;
     linkedEditingRange.enable = true;
     codelens.enable = true;
-    documentColor = {
-      enable = true;
-      settings.style = "background";
-    };
+    documentColor.enable = true;
 
     keymaps = [
       (lk "<leader>a" "<cmd>Lspsaga code_action<CR>" "Code [a]ctions")
