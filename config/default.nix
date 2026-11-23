@@ -66,7 +66,7 @@ in {
 
     # Incremental search.
     incsearch = true;
-    updatetime = 100;
+    updatetime = 250;
 
     # Relative numberline on the left.
     number = true;
