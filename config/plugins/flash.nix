@@ -11,12 +11,15 @@ in {
     settings = {
       autojump = true;
       prompt.enabled = false;
+      modes.char.enabled = false;
     };
-    lazyLoad.settings.keys = map (b: b // {mode = ["v" "n"];}) (config.toLazyKeys
-      {
+    lazyLoad.settings.keys =
+      map (b: b // {mode = ["n" "x"];}) (config.toLazyKeys {
         "s" = k (mkRaw "function() require('flash').remote() end") "Flash";
-        "S" = k (mkRaw "function() require('flash').treesitter_search() end") "Flash treesitter search";
         "gs" = k (mkRaw "function() require('flash').treesitter() end") "Flash treesitter";
-      });
+      })
+      ++ config.toLazyKeys {
+        "S" = k (mkRaw "function() require('flash').treesitter_search() end") "Flash treesitter search";
+      };
   };
 }
