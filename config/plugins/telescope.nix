@@ -8,94 +8,34 @@
   inherit (config) k wk;
   inherit (lib.nixvim) mkRaw;
 in {
-  plugins = {
-    # project.nvim is lazy-loaded, so its extension is loaded by the
-    # `<leader>tp` keymap below instead of at telescope's setup.
-    project-nvim.enableTelescope = false;
-    telescope = {
-      enable = true;
-      # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
-      enabledExtensions = ["git_file_history"];
-      extensions.fzf-native.enable = true;
-
-      keymaps = {
-        "<leader>tb" = {
-          action = "current_buffer_fuzzy_find";
-          options.desc = "[t]elescope [b]uffer";
-        };
-        "<leader>tn" = {
-          action = "help_tags";
-          options.desc = "[t]elescope [n]oob";
-        };
-        "<leader>tk" = {
-          action = "keymaps";
-          options.desc = "[t]elescope [k]eymaps";
-        };
-        "<leader>tf" = {
-          action = "find_files";
-          options.desc = "[t]elescope [f]iles";
-        };
-        "<leader>tt" = {
-          action = "builtin";
-          options.desc = "[t]elescope search [t]elescope";
-        };
-        "<leader>tw" = {
-          action = "grep_string";
-          options.desc = "[t]elescope current [w]ord";
-        };
-        "<leader>tl" = {
-          action = "live_grep";
-          options.desc = "[t]elescope [l]ive grep";
-        };
-        "<leader>td" = {
-          action = "diagnostics";
-          options.desc = "[t]elescope [d]iagnostics";
-        };
-        "<leader>tr" = {
-          action = "resume";
-          options.desc = "[t]elescope [r]esume";
-        };
-        "<leader>t." = {
-          action = "oldfiles";
-          options.desc = "[t]elescope recent files (. for repeat)";
-        };
-        "<leader><leader>" = {
-          action = "buffers";
-          options.desc = "Find existing buffers";
-        };
-      };
-    };
+  plugins.telescope = {
+    enable = true;
+    # lazyLoad.settings.cmd = ["Telescope"]; # Lazyloading makes extensions not load in
+    extensions.fzf-native.enable = true;
   };
 
   my = {
     which-keys."<leader>t" = wk "Telescope" " ";
     keymaps.normal = {
-      "<leader>tp" = k (mkRaw ''
-        function()
-          local telescope = require("telescope")
-          telescope.load_extension("projects")
-          telescope.extensions.projects.projects()
-        end
-      '') "[t]elescope [p]rojects";
-      "<leader>to" = k (mkRaw "function()
-          require'telescope.builtin'.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
-        end") "[T]raverse in [O]pen Files";
-
-      "<leader>tcf" = k (mkRaw "function()
-          require'telescope.builtin'.find_files({ cwd = require'telescope.utils'.buffer_dir() })
-        end") "[t]elescope find [f]iles in [c]urrent dir";
-
-      "<leader>tcg" = k (mkRaw "function()
-          require'telescope.builtin'.live_grep({ cwd = require'telescope.utils'.buffer_dir() })
-        end") "[t]elescope grep in [c]urrent dir";
-
+      "<leader>tb" = k "<cmd>Telescope current_buffer_fuzzy_find<CR>" "[t]elescope [b]uffer";
+      "<leader>tn" = k "<cmd>Telescope help_tags<CR>" "[t]elescope [n]oob";
+      "<leader>tk" = k "<cmd>Telescope keymaps<CR>" "[t]elescope [k]eymaps";
+      "<leader>tf" = k "<cmd>Telescope find_files<CR>" "[t]elescope [f]iles";
+      "<leader>tt" = k "<cmd>Telescope builtin<CR>" "[t]elescope search [t]elescope";
+      "<leader>tw" = k "<cmd>Telescope grep_string<CR>" "[t]elescope current [w]ord";
+      "<leader>tl" = k "<cmd>Telescope live_grep<CR>" "[t]elescope [l]ive grep";
+      "<leader>td" = k "<cmd>Telescope diagnostics<CR>" "[t]elescope [d]iagnostics";
+      "<leader>tr" = k "<cmd>Telescope resume<CR>" "[t]elescope [r]esume";
+      "<leader>t." = k "<cmd>Telescope oldfiles<CR>" "[t]elescope recent files (. for repeat)";
+      "<leader><leader>" = k "<cmd>Telescope buffers<CR>" "Find existing buffers";
+      "<leader>to" = k "<cmd>Telescope live_grep grep_open_files=true<CR>" "[T]raverse in [O]pen Files";
+      "<leader>tcf" = k "<cmd>Telescope find_files cwd=%:p:h<CR>" "[t]elescope find [f]iles in [c]urrent dir";
+      "<leader>tcg" = k "<cmd>Telescope live_grep cwd=%:p:h<CR>" "[t]elescope grep in [c]urrent dir";
+      "<leader>tv" = k "<cmd>Telescope git_file_history<CR>" "[t]elescope [v]ersions";
+      "<leader>tp" = k "<cmd>Telescope projects<CR>" "[t]elescope [p]rojects";
       "<leader>tg" = k (mkRaw "function()
           require'telescope.builtin'.grep_string({ shorten_path = true, only_sort_text = true, search = '' })
         end") "[t]elescope fuzzy [g]rep";
-
-      "<leader>tv" = k (mkRaw "function()
-          require'telescope'.extensions.git_file_history.git_file_history()
-        end") "[t]elescope [v]ersions";
     };
   };
 
