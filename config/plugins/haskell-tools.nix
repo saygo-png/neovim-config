@@ -29,9 +29,9 @@ in {
     ht = "require('haskell-tools')";
   in {
     normal = {
-      "<space>hs" = k (mkRaw "${ht}.hoogle.hoogle_signature") "Search signature";
-      "<space>he" = k (mkRaw "${ht}.lsp.buf_eval_all") "Eval snippets";
-      "<space>hr" = k (mkRaw "${ht}.repl.toggle") "Toggle repl";
+      "<leader>hs" = k (mkRaw "${ht}.hoogle.hoogle_signature") "Search signature";
+      "<leader>he" = k (mkRaw "${ht}.lsp.buf_eval_all") "Eval snippets";
+      "<leader>hr" = k (mkRaw "${ht}.repl.toggle") "Toggle repl";
 
       # Replaces haskell-tools' own `ghc` map, which has no description.
       # `:Telescope keymaps` crashes on undescribed maps from byte-compiled
