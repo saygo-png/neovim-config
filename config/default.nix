@@ -157,13 +157,11 @@ in {
       "<C-s>" = k "<C-a>" "Increment number under cursor";
 
       # Paste
-      "yy" = k "^y$" "Copy line without newline and whitespace";
+      "<leader>yy" = k "^y$" "Copy line without newline and whitespace";
       "<c-v>" = k ''"+p'' "Raw paste";
 
       # Misc
       ";" = kns ":" "Command mode with or without shift";
-      ">" = k ">>" "Indent more";
-      "<lt>" = k "<lt><lt>" "Indent less";
 
       "<Esc>" = k (mkRaw "function() vim.fn.setreg('/', {}) end") "Clear search";
       "<leader>q" = k (mkRaw "vim.cmd.only") "Quit other windows";
