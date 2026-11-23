@@ -104,7 +104,7 @@ in {
     python_recommended_style = 0; # Otherwise python sets itself to indent 4
   };
 
-  clipboard.register = "unnamedplus";
+  extraConfigLua = "vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)";
 
   # Neovim 0.12's new message and cmdline UI.
   extraConfigLuaPre = ''
