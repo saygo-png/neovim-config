@@ -20,9 +20,11 @@ in {
             "<Tab>" = listToUnkeyedAttrs [
               (mkRaw ''
                 function(cmp)
-                  cmp.show()
-                  if cmp.snippet_active() then return cmp.accept()
-                  else return cmp.select_and_accept() end
+                  if cmp.snippet_active() then return cmp.accept() end
+                  if cmp.is_menu_visible() then return cmp.select_and_accept() end
+                  local col = vim.api.nvim_win_get_cursor(0)[2]
+                  if col == 0 or vim.api.nvim_get_current_line():sub(col, col):match("%s") then return end
+                  return cmp.show()
                 end
               '')
               "fallback"
